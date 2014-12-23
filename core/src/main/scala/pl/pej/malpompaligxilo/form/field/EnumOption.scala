@@ -7,5 +7,5 @@ case class EnumOption(
   value: String,
   caption: I18nableString
                        ) extends HTMLable {
-  override def toHTML: JQuery = s"""<option value="$value">${caption("eo")}</option>"""
+  override def toJQuery: JQuery = s"""<option value="$value">${caption("eo")}</option>"""
 }

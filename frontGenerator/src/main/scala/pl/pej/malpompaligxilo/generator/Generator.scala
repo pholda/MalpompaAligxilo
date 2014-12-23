@@ -4,7 +4,7 @@ import org.scalajs.dom
 import org.scalajs.dom.Element
 import org.scalajs.jquery.{JQueryEventObject, jQuery}
 import pl.pej.malpompaligxilo.form.field._
-import pl.pej.malpompaligxilo.form.{Expression, Form}
+import pl.pej.malpompaligxilo.form.{FormExpression, Form}
 import pl.pej.malpompaligxilo.util.{NoI18nString, I18nString}
 
 import scala.scalajs.js
@@ -20,43 +20,35 @@ object Generator extends JSApp {
     val form = Form(
       "aligxilo",
       "http://192.168.56.101/aligxilo/AligxiloTest.php",
+      SimpleFieldFormatter,
       StringField(
-        name = "familiaNomo",
-        caption = I18nString(
-          "eo" -> "Familia Nomo",
-          "pl" -> "Nazwisko"
-        )
+        name = "familiaNomo"
+      ) @# I18nString(
+        "eo" -> "Familia Nomo",
+        "pl" -> "Nazwisko"
       ),
       StringField(
-        name = "personaNomo",
-        caption = I18nString(
-          "eo" -> "Persona Nomo",
-          "pl" -> "Imie"
-        )
+        name = "personaNomo"
+      ) @# I18nString(
+        "eo" -> "Persona Nomo",
+        "pl" -> "Imie"
       ),
       StringField(
-        name = "kromnomo",
-        caption = I18nString(
-          "eo" -> "Kromnomo",
-          "pl" -> "Pseudonim"
-        ),
-        description = Some(I18nString(
-          "eo" -> "kion vi ŝatus aperigi sur via ŝildo?"
-        ))
-      ),
+        name = "kromnomo"
+      ) @## (I18nString(
+        "eo" -> "Kromnomo",
+        "pl" -> "Pseudonim"
+      ),I18nString(
+        "eo" -> "kion vi ŝatus aperigi sur via ŝildo?"
+      )),
       DateField(
-        name = "naskigxdato",
-        caption = I18nString(
-          "eo" -> "Naskiĝdato",
-          "pl" -> "Data urodzenia"
-        )
+        name = "naskigxdato"
+      ) @# I18nString(
+        "eo" -> "Naskiĝdato",
+        "pl" -> "Data urodzenia"
       ),
       SelectField(
         name = "genro",
-        caption = I18nString(
-          "eo" -> "Genro",
-          "pl" -> "Płeć"
-        ),
         options = List(
           EnumOption(
             value = "ina",
@@ -80,30 +72,28 @@ object Generator extends JSApp {
             )
           )
         )
+      ) @# I18nString(
+        "eo" -> "Genro",
+        "pl" -> "Płeć"
       ),
       EmailField(
-        name = "retposxtadreso",
-        caption = I18nString(
-          "eo" -> "Retpoŝtadreso",
-          "pl" -> "Adres email"
-        )
+        name = "retposxtadreso"
+      ) @# I18nString(
+        "eo" -> "Retpoŝtadreso",
+        "pl" -> "Adres email"
       ),
-      countryField.copy(size = 1),
+      countryField,
       SelectField(
         name = "logxado",
-        caption = I18nString(
-          "eo" -> "Loĝado"
-        ),
         options = List(
           EnumOption("cxambro", I18nString("eo" -> "ĉambro")),
           EnumOption("amaslogxejo", I18nString("eo" -> "amasloĝejo"))
         )
+      ) @# I18nString(
+        "eo" -> "Loĝado"
       ),
       TableCheckBoxField(
         name = "mangxado",
-        caption = I18nString(
-          "eo" -> "Mi mendas..."
-        ),
         rows = List(
           "m" -> I18nString(
             "eo" -> "Matenmanĝo"
@@ -131,30 +121,29 @@ object Generator extends JSApp {
           "t" -> "3",
           "v" -> "3"
         )
+      ) @# I18nString(
+        "eo" -> "Mi mendas..."
       ),
       SelectField(
         name = "matenmangxPrefero",
-        caption = I18nString(
-          "eo" -> "Mi preferas matenmanĝi..."
-        ),
         options = List(
           EnumOption("dolcxe", I18nString("eo" -> "dolĉe")),
           EnumOption("sale", I18nString("eo" -> "sale"))
         )
+      ) @# I18nString(
+        "eo" -> "Mi preferas matenmanĝi..."
       ),
       SelectField(
         name = "mangxTipo",
-        caption = I18nString("eo" -> "Mi volas manĝi..."),
         options = List(
           EnumOption("viande", I18nString("eo" -> "viande")),
           EnumOption("vegetare", I18nString("eo" -> "vegetare")),
           EnumOption("vegane", I18nString("eo" -> "vegane")),
           EnumOption("specialan", I18nString("eo" -> "specialan manĝon"))
         )
-      ),
+      ) @# I18nString("eo" -> "Mi volas manĝi..."),
       SelectField(
         name = "mangxoTipo2",
-        caption = I18nString("eo" -> "Mi volas havi..."),
         options = List(
           EnumOption("a", I18nString("eo" -> "viandon kun viando!")),
           EnumOption("b", I18nString("eo" -> "viandon kun aliaj nutraĵoj!"))
@@ -162,30 +151,29 @@ object Generator extends JSApp {
       //viandon kun viando! (mi volas havi viandaĵon por ĉiu plado) |
       // viandon kun aliaj nutraĵoj (ĉiutage viandon, sed ne nur viandajn pladojn - ekz. senvianda supo + vianda ĉefplado) |
 
-      ),
+      ) @# I18nString("eo" -> "Mi volas havi..."),
       StringField(
         name = "programkontribuo",
-        caption = I18nString("eo" -> "Programkontribuo"),
-        description = Some(I18nString("eo" -> "Se vi ŝatus fari programeron, bv. skribu ĉi tien mallonge vian proponon!")),
         textarea = true
+      ) @## (
+        I18nString("eo" -> "Programkontribuo"),
+        I18nString("eo" -> "Se vi ŝatus fari programeron, bv. skribu ĉi tien mallonge vian proponon!")
       ),
       StringField(
-        name = "donaco",
-        caption = I18nString("eo" -> "Mi ŝatus donaci al JES 2015..."),
-        description = Some(I18nString("eo" -> "Se vi ŝatus subteni la eventon per iom da mono, ĝi certe bonvenas. :) Vi eĉ povas indiki, por kia celo ni elspezu ĝin!"))
+        name = "donaco"
+      ) @## (
+        I18nString("eo" -> "Mi ŝatus donaci al JES 2015..."),
+        I18nString("eo" -> "Se vi ŝatus subteni la eventon per iom da mono, ĝi certe bonvenas. :) Vi eĉ povas indiki, por kia celo ni elspezu ĝin!")
       ),
       SelectField(
         name = "invitilo",
-        caption = I18nString("eo" -> "Invitilo"),
         options = List(
           EnumOption("jes", I18nString("eo" -> "jes")),
           EnumOption("ne", I18nString("eo" -> "ne"))
         )
-      ),
+      ) @# I18nString("eo" -> "Invitilo"),
       TableCheckBoxField(
         name = "adresaro",
-        caption = I18nString("eo" -> "Adresaro"),
-        description = Some(I18nString("eo" -> "Post la aranĝo ni sendas al la partoprenantoj adresaron. Ĉu vi ŝatus aperi en ĝi? Se jes, kun kiuj datumoj?")),
         cols = List("jes" -> NoI18nString("jes")),
         rows = List(
           "personaNomo" -> I18nString("eo" -> "Persona Nomo"),
@@ -194,24 +182,26 @@ object Generator extends JSApp {
           "retposxtadreso" -> I18nString("eo" -> "Retpoŝtadreso"),
           "adreso" -> I18nString("eo" -> "Adreso")
         )
-      ),
+      ) @## (
+        I18nString("eo" -> "Adresaro"),
+        I18nString("eo" -> "Post la aranĝo ni sendas al la partoprenantoj adresaron. Ĉu vi ŝatus aperi en ĝi? Se jes, kun kiuj datumoj?")
+      )/*,
 
       CalculateField[String](
         name = "agxo",
-        caption = I18nString(
-          "eo" -> "2·nomo"
-        ),
-        formula = new Expression[String]{
+        formula = new FormExpression[String]{
 
           override def apply(form: Form): String = {
             form.getFieldValue("familiaNomo").toString * 2
           }
         }
-      )
+      ) @# I18nString(
+        "eo" -> "2·nomo"
+      )*/
 
     )
 
-    val jqForm = form.toHTML
+    val jqForm = form.toJQuery
 
     jQuery("body").append(jqForm)
 
@@ -225,14 +215,6 @@ object Generator extends JSApp {
     jqForm.find(":input").change{e: dom.Element =>
       refresh()
     }
-
-//    jQuery().date
-//    if (!Modernizr.inputtypes.date) {
-//      $('input[type=date]').datepicker({
-//        // Consistent format with the HTML5 picker
-//        dateFormat: 'yy-mm-dd'
-//      });
-//    }
 
   }
 }

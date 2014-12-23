@@ -6,14 +6,12 @@ import pl.pej.malpompaligxilo.util.I18nableString
 
 case class TableCheckBoxField(
   name: String,
-  caption: I18nableString,
-  description: Option[I18nableString] = None,
   rows: List[(String, I18nableString)],
   cols: List[(String, I18nableString)],
   disabled: List[(String, String)] = Nil
                                ) extends Field[Array[Array[Boolean]]] {
 
-  override def toHTML: JQuery = {
+  override def toJQuery: JQuery = {
     val table = jQuery("<table />")
 
     if (cols.size > 1) {
@@ -40,6 +38,5 @@ case class TableCheckBoxField(
     }
 
     table
-    jQuery(s"""<div>${caption("eo")}: </div>""").append(table)
   }
 }

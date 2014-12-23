@@ -10,10 +10,6 @@ package object generator {
 
   lazy val countryField = SelectField(
     name = "lando",
-    caption = I18nString(
-      "eo" -> "lando",
-      "pl" -> "kraj"
-    ),
     required = true,
     options = List[EnumOption](
       "cy" -> I18nString("eo" -> "Kipro"),
@@ -212,6 +208,9 @@ package object generator {
       "gr" -> I18nString("eo" -> "Grekio"),
       "ss" -> I18nString("eo" -> "Sud-Sudano")
       ).sortBy(_.caption("eo"))(pl.pej.util.Esperanto.ordering)
+  ) @# I18nString(
+    "eo" -> "lando",
+    "pl" -> "kraj"
   )
 
 }

@@ -1,22 +1,22 @@
 package pl.pej.malpompaligxilo.form.field
 
 import org.scalajs.jquery.{JQuery, jQuery}
-import pl.pej.malpompaligxilo.form.{Expression, Field, Form}
+import pl.pej.malpompaligxilo.form.{FormExpression, Field, Form}
 import pl.pej.malpompaligxilo.util._
 
 case class CalculateField[T /*<: HTMLable*/](
   name: String,
-  caption: I18nableString,
-  formula: Expression[T]
+  formula: FormExpression[T]
                                               ) extends Field[T] {
 //  override def validate: (T) => Option[ErrorMsg] = ???
 
-  override def toHTML: JQuery = {
+  override def toJQuery: JQuery = {
     val jq = jQuery(s"""
-       |<div>${caption("eo")}: <span class="formExpression" /></div>
+       |<span class="formExpression" >ohujtujh</span>
      """.stripMargin)
 
-    jq.find(".formExpression").data("expression", formula)
+    jq/*.find(".formExpression")*/.data("expression", formula)
+    println(formula)
 
     jq
   }

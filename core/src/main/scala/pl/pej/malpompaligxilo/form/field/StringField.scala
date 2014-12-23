@@ -6,19 +6,17 @@ import pl.pej.malpompaligxilo.util._
 
 case class StringField(
   name: String,
-  caption: I18nableString,
-  description: Option[I18nableString] = None,
   placeholder: Option[I18nableString] = None,
   required: Boolean = false,
   textarea: Boolean = false
                         ) extends Field[String] {
 //  override def validate: (String) => Option[ErrorMsg] = ???
 
-  override def toHTML: JQuery = {
+  override def toJQuery: JQuery = {
     if (textarea) {
-      s"""<div>${caption("eo")}: <textarea name="$name" placeholder="${placeholder.getOrElse(caption)("eo")}" ></textarea></div>"""
+      s"""<textarea name="$name" placeholder="${placeholder.map(_("eo")).getOrElse("")}" ></textarea>"""
     } else {
-      s"""<div>${caption("eo")}: <input type="text" name="$name" placeholder="${placeholder.getOrElse(caption)("eo")}" /></div>"""
+      s"""<input type="text" name="$name" placeholder="${placeholder.map(_("eo")).getOrElse("")}" />"""
     }
   }
 }

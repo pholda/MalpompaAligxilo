@@ -1,0 +1,23 @@
+
+.field1 {
+    width: 300px;
+    /*float: left;*/
+    /*clear: left;*/
+    display: inline-block;
+    text-align: right;
+    padding: 5px;
+}
+
+.fieldDesc {
+    font-size: 10pt;
+}
+
+.field2 {
+    width: 500px;
+    /*float: left;*/
+    /*clear: right;*/
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+    padding: 5px;
+}

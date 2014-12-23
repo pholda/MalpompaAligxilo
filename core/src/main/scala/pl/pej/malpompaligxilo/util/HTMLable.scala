@@ -4,7 +4,7 @@ import org.scalajs.jquery.JQuery
 import org.scalajs.jquery.jQuery
 
 trait HTMLable {
-  def toHTML: JQuery
+  def toJQuery: JQuery
 
   implicit def string2jQuery(str: String): JQuery = jQuery(str)
 }
