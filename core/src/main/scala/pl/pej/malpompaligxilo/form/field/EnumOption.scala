@@ -1,8 +1,11 @@
 package pl.pej.malpompaligxilo.form.field
 
 import org.scalajs.jquery.JQuery
-import pl.pej.malpompaligxilo.util.{HTMLable, I18nString}
+import pl.pej.malpompaligxilo.util._
 
-case class EnumOption(value: String, caption: I18nString) extends HTMLable {
+case class EnumOption(
+  value: String,
+  caption: I18nableString
+                       ) extends HTMLable {
   override def toHTML: JQuery = s"""<option value="$value">${caption("eo")}</option>"""
 }

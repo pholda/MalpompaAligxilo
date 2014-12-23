@@ -13,7 +13,7 @@ case class Form(id: String, action: String, fields: Field[_]*) extends HTMLable 
   override def toHTML: JQuery = {
     val form = jQuery(
       s"""
-        |<form id="$id" method="post" action"$action">
+        |<form id="$id" method="post" action="$action">
         |</form>
       """.stripMargin)
     fields.foreach{field =>
