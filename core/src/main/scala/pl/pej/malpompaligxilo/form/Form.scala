@@ -1,13 +1,13 @@
 package pl.pej.malpompaligxilo.form
 
-import pl.pej.malpompaligxilo.util.HTMLable
+import pl.pej.malpompaligxilo.util.ToJQueryable
 import org.scalajs.jquery.{JQuery, jQuery}
 
 /**
  * describas a pl.pej.malpompaaligxilo.form
  * @param fields
  */
-case class Form(id: String, action: String, fieldFormatter: FieldFormatter, fields: Field[_]*) extends HTMLable {
+case class Form(id: String, action: String, formElementFormatter: FormElementFormatter)(elements: FormElement*) extends ToJQueryable {
   def getFieldValue(name: String): Any = jQuery(s"#$id [name=$name]").`val`()
 
   override def toJQuery: JQuery = {
@@ -16,10 +16,10 @@ case class Form(id: String, action: String, fieldFormatter: FieldFormatter, fiel
         |<form id="$id" method="post" action="$action">
         |</form>
       """.stripMargin)
-    fields.foreach{field =>
-      form.append(fieldFormatter(field))
+    elements.foreach{element =>
+      form.append(formElementFormatter(element))
     }
-    form.append("""<input type="submit" value="sendu" />""")
+    form.append("""<input type="submit" value="sendu" name="send" />""")
     form
   }
 }
