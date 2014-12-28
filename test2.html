@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Malpompa Aliĝilo - testo</title>
+    <link rel="stylesheet" href="playBackend/public/jquery-ui-1.11.2.custom/jquery-ui.min.css" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<!-- Include Scala.js compiled code -->
+<script type="text/javascript" src="frontgenerator-jsdeps.js"></script>
+<script type="text/javascript" src="playBackend/public/jquery-ui-1.11.2.custom/jquery-ui.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('input[type=text].formDate').datepicker();
+    })
+</script>
+
+<script type="text/javascript" src="frontgenerator-fastopt.js"></script>
+<!-- Run tutorial.webapp.TutorialApp -->
+<script type="text/javascript">
+    pl.pej.malpompaligxilo.generator.Generator().main();
+</script>
+</body>
+</html>

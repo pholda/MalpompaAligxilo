@@ -5,15 +5,15 @@ import pl.pej.malpompaligxilo.form.field.{EnumOption, SelectField}
 import pl.pej.malpompaligxilo.util.I18nString
 
 
-package object generator {
+package object jes2015 {
   implicit def tuple22enumOption(tuple2: (String, I18nString)): EnumOption =
     EnumOption(tuple2._1, tuple2._2)
 
-  lazy val countryField = Field[String](
-    name = FieldName("lando"),
+  lazy val countryField = Field[EnumOption](
+    name = "lando",
     caption = I18nString(
-      "eo" -> "lando",
-      "pl" -> "kraj"
+      "eo" -> "Lando",
+      "pl" -> "Kraj"
     ),
     required = true,
     `type` = SelectField(

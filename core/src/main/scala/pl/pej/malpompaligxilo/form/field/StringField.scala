@@ -14,21 +14,6 @@ case class StringField(textarea: Boolean = false) extends FieldType[String] {
       s"""<input type="text" name="${field.name}" placeholder="${field.placeholder.map(_("eo")).getOrElse("")}" />"""
     }
   }
+
+  override def parse(values: Seq[String]): Option[String] = values.headOption
 }
-//case class StringField(
-//  name: String,
-//  placeholder: Option[I18nableString] = None,
-//  required: Boolean = false,
-//  textarea: Boolean = false,
-//  visible: FormExpr[Boolean] = true
-//                        ) extends Field[String] {
-////  override def validate: (String) => Option[ErrorMsg] = ???
-//
-//  override def toJQuery: JQuery = {
-//    if (textarea) {
-//      s"""<textarea name="$name" placeholder="${placeholder.map(_("eo")).getOrElse("")}" ></textarea>"""
-//    } else {
-//      s"""<input type="text" name="$name" placeholder="${placeholder.map(_("eo")).getOrElse("")}" />"""
-//    }
-//  }
-//}

@@ -14,4 +14,7 @@ case class Field[T](
   validate: T => Boolean = {a: T => true}
                      ) extends FormElement with ToJQueryable {
   override def toJQuery: JQuery = `type`toJQuery(this)
+
+  def parse(values: Seq[String]): Option[T] = `type`.parse(values)
+
 }

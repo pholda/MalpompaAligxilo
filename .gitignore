@@ -32,4 +32,7 @@ project/boot/
 .history
 .cache
 
-
+playBackend/logs
+playBackend/tmp
+playBackend/dist
+playBackend/.cache

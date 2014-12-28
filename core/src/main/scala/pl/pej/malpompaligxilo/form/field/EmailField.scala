@@ -9,4 +9,6 @@ case object EmailField extends FieldType[String] {
 
   override def toJQuery(field: Field[String]): JQuery =
   s"""<input name="${field.name}" type="email" placeholder="${field.placeholder.map(_("eo")).getOrElse("")}" />"""
+
+  override def parse(values: Seq[String]): Option[String] = values.headOption
 }

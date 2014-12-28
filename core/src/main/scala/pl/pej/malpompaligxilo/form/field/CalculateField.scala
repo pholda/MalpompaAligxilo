@@ -18,4 +18,5 @@ case class CalculateField[T](
     jq
   }
 
+  override def parse(values: Seq[String]): Option[T] = None
 }

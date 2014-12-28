@@ -9,6 +9,8 @@ case object DateField extends FieldType[String]{
 
 
   override def toJQuery(field: Field[String]): JQuery = {
-    s"""<input type="text" class="formDate" name="${field.name}" placeholder="${field.placeholder.map(_("eo")).getOrElse("")}"/>"""
+    s"""<input type="text" placeholder="jjjj-mm-tt" class="formDate" name="${field.name}" placeholder="${field.placeholder.map(_("eo")).getOrElse("")}"/>"""
   }
+
+  override def parse(values: Seq[String]): Option[String] = values.headOption
 }

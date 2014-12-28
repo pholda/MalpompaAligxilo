@@ -1,4 +1,4 @@
-package pl.pej.malpompaligxilo.generator
+package pl.pej.malpompaligxilo.jes2015
 
 import org.scalajs.jquery.{JQuery, jQuery}
 import pl.pej.malpompaligxilo.form.{Header, FormElement, Field, FormElementFormatter}

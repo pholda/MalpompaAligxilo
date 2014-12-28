@@ -3,6 +3,8 @@ package pl.pej.malpompaligxilo.form.field
 import org.scalajs.jquery.JQuery
 import pl.pej.malpompaligxilo.form.{Field, FieldType}
 
+import scala.util.Try
+
 
 case class IntField(min: Option[Int] = None, max: Option[Int] = None, step: Option[Int] = None) extends FieldType[Int] {
   import pl.pej.malpompaligxilo.util.ToJQueryable.string2jQuery
@@ -24,4 +26,6 @@ case class IntField(min: Option[Int] = None, max: Option[Int] = None, step: Opti
         case _ => ""
       }
     }placeholder="${field.placeholder.map(_("eo")).getOrElse("")}" />"""
+
+  override def parse(values: Seq[String]): Option[Int] = values.headOption.flatMap(s => Try{s.toInt}.toOption)
 }

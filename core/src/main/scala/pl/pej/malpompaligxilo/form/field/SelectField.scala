@@ -7,13 +7,16 @@ import pl.pej.malpompaligxilo.util._
 case class SelectField(
   options: List[EnumOption],
   size: Int = 1
-                        ) extends FieldType[String] {
+                        ) extends FieldType[EnumOption] {
 
-  override def toJQuery(field: Field[String]): JQuery = {
+  override def toJQuery(field: Field[EnumOption]): JQuery = {
     val select = jQuery(s"""<select name="${field.name}" size="${size}"></select>""")
     for (option <- options) {
       select.append(option.toJQuery)
     }
     select
   }
+
+  override def parse(values: Seq[String]): Option[EnumOption] =
+    values.headOption.flatMap(v => options.find(_.value == v))
 }
