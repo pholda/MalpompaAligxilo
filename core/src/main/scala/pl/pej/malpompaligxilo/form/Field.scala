@@ -12,17 +12,23 @@ case class Field[T](
   placeholder: Option[I18nableString] = None,
   visible: FormExpr[Boolean] = _ => true,
   required: Boolean = false,
-  customValidate: T => Option[FormError] = {_:T => None}
+  customValidate: T => Option[FormError] = {_:T => None},
+  store: Boolean = true
                      ) extends FormElement with ToJQueryable {
   override def toJQuery: JQuery = `type`toJQuery(this)
 
   def parse(values: Seq[String]): Option[T] = `type`.parse(values)
 
-  def validate(value: Option[Any]): Option[FormError] = {
+  def validate(value: Option[Any], form: Form): Option[FormError] = {
     value match {
       case None if required => Some(RequiredError)
       case Some(v:T) =>
-        customValidate(v)
+        `type`.validate(v).orElse{
+          visible(form) match {
+            case true => customValidate(v)
+            case _ => None
+          }
+        }
       case _ => None
     }
   }

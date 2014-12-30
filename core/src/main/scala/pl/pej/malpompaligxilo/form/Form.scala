@@ -1,6 +1,9 @@
 package pl.pej.malpompaligxilo.form
 
+import pl.pej.malpompaligxilo.form.field.CalculateField
 import pl.pej.util.Dates
+
+import scala.util.Try
 
 case class Form(
   id: String,
@@ -14,14 +17,14 @@ lazy val fields = {
     Map(fields:_*)
   }
 
-  def getFieldValue: FieldName => Option[Any] = {field =>
-    fields(field).parse(getRawFieldValue(field))
+  def getFieldValue(fieldName: FieldName): Option[Any] = {
+    fields(fieldName).parse(getRawFieldValue(fieldName))
   }
 
   def validate(data: Map[String, Option[Any]]): ValidationResult = {
     val errors = elements.collect{
       case f: Field[_] =>
-        f -> f.validate(data(f.name))
+        f -> f.validate(data(f.name), this)
     }.collect{
       case (f, Some(error)) => f -> error
     }
@@ -39,6 +42,8 @@ lazy val fields = {
     }.toMap
 
     elements.collect{
+      case Field(name: String, _, cf: CalculateField[_], _, _, _, _, _, _) =>
+        name -> Try(cf.formula(this)).toOption
       case f: Field[_] =>
         f.name -> f.parse(post2.getOrElse(f.name, Seq.empty))
     }.toMap

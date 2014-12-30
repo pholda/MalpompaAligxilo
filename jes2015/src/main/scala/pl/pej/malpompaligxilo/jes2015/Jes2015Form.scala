@@ -3,6 +3,7 @@ package pl.pej.malpompaligxilo.jes2015
 import org.scalajs.dom
 import org.scalajs.dom.Element
 import org.scalajs.jquery.{JQueryEventObject, jQuery}
+import pl.pej.malpompaligxilo.form.errors.OtherError
 import pl.pej.malpompaligxilo.form.field._
 import pl.pej.malpompaligxilo.form._
 import pl.pej.malpompaligxilo.util.{NoI18nString, I18nString}
@@ -55,7 +56,7 @@ object Jes2015Form extends JSApp {
 
       val tuttempe: Boolean = f.getFieldValue("cxeesto").get.asInstanceOf[EnumOption].value == "cxiun"
 
-      val cxeesto: Set[String] = f.getFieldValue("cxeesto-elekto").get.asInstanceOf[Set[(TableCheckBoxRow, TableCheckBoxCol)]].map{
+      val cxeesto: Set[String] = f.getFieldValue("cxeestoElekto").get.asInstanceOf[Set[(TableCheckBoxRow, TableCheckBoxCol)]].map{
         case (row, col) => row.id
       }.toSet
 
@@ -137,7 +138,27 @@ object Jes2015Form extends JSApp {
           "pl" -> "Data urodzenia"
         ),
         required = true,
-        `type` = DateField
+        `type` = DateField(
+          minDate = Some("1900-01-01"),
+          maxDate = Some("2014-12-31"),
+          yearRange = Some("1900:2014")
+        )
+      ),
+      Field(
+        name = "sub18",
+        caption = NoI18nString(""),
+        visible = {form =>
+          form.getFieldValue("naskigxdato") match {
+            case Some(str: String) =>
+              val unuantagon18jaroj = form.dates.str2millis("1997-12-27")
+              unuantagon18jaroj < form.dates.str2millis(str)
+            case _ => false
+          }
+        },
+        store = false,
+        `type` = CalculateField[String]{form =>
+          "Vi estos sub 18 dum la JES, vi bezonas sendi gepatran permesilon pri via partopreno al la organizantoj."
+        }
       ),
       Field(
         name = "genro",
@@ -199,7 +220,7 @@ object Jes2015Form extends JSApp {
       countryField,
       Field(
         name = "studento",
-        caption = I18nString("eo" -> "Mi estas studento"),
+        caption = I18nString("eo" -> "Mi estas plentempa studento"),
         `type` = SelectField(
           options = List(
             EnumOption("ne", I18nString("eo" -> "ne")),
@@ -228,10 +249,10 @@ object Jes2015Form extends JSApp {
         name = "pasportovalideco",
         caption = I18nString("eo" -> "Valideco de pasporto"),
         visible = _.getFieldValue("invitilo").asInstanceOf[Option[EnumOption]].exists(_.value == "jes"),
-        `type` = DateField
+        `type` = DateField(yearRange = Some("2015:2035"))
       ),
       Field(
-        name = "invitilo-adreso",
+        name = "invitiloAdreso",
         caption = I18nString("eo" -> "Adreso"),
         description = Some(I18nString("eo" -> "Adreso por sendi la invitilon.")),
         visible = _.getFieldValue("invitilo").asInstanceOf[Option[EnumOption]].exists(_.value == "jes"),
@@ -286,7 +307,7 @@ object Jes2015Form extends JSApp {
         )
       ),
       Field(
-        name = "logxado-prefero",
+        name = "logxadoPrefero",
         caption = I18nString(
           "eo" -> "Mi preferas loĝi en … ĉambro."
         ),
@@ -300,7 +321,7 @@ object Jes2015Form extends JSApp {
         )
       ),
       Field(
-        name = "logxado-kun",
+        name = "logxadoKun",
         caption = I18nString(
           "eo" -> "Mi preferus loĝi kun…"
         ),
@@ -316,9 +337,9 @@ object Jes2015Form extends JSApp {
         ))
       ),
       Field(
-        name = "cxeesto-elekto",
+        name = "cxeestoElekto",
         caption = I18nString("eo" -> ""),
-        description = Some(I18nString("eo" -> "Bv. indiki la tranoktojn kiam vi partoprenos.")),
+        description = Some(I18nString("eo" -> "Bv. indiki la TRANOKTOJN kiam vi partoprenos.")),
         visible = _.getFieldValue("cxeesto").asInstanceOf[Option[EnumOption]].exists(_.value == "elekto"),
         `type` = TableCheckBoxField(
           cols = List("jes" -> NoI18nString("jes")),
@@ -340,13 +361,29 @@ object Jes2015Form extends JSApp {
           "eo" -> "Mi mendas…"
         ),
         `type` = SelectField(List(
-          EnumOption("cxio", I18nString("eo" -> "ĉiujn manĝojn")),
+          EnumOption("cxio", I18nString("eo" -> "ĉiujn manĝojn (maten- tag- kaj verspermanĝojn)")),
           EnumOption("nenio", I18nString("eo" -> "neniujn manĝojn")),
           EnumOption("elekto", I18nString("eo" -> "unuopajn manĝojn"))
         ))
       ),
       Field(
-        name = "mangxado-elekto",
+        name = "mangxadoBalo",
+        caption = I18nString(
+          "eo" -> "Manĝtipo por la silvestra balo"
+        ),
+        description = Some(I18nString("eo" -> "Se vi estas memzorganto, ni bezonas scii vian kutiman manĝtipon por la silvestra balo.")),
+        visible = { form =>
+          form.getFieldValue("mangxado").asInstanceOf[Option[EnumOption]].exists(_.value == "nenio") && {
+            def x = form.getFieldValue("cxeestoElekto").asInstanceOf[Option[Set[(TableCheckBoxRow, TableCheckBoxCol)]]].getOrElse(Set.empty)
+
+            form.getFieldValue("cxeesto").asInstanceOf[Option[EnumOption]].exists(_.value == "cxiun") ||
+            x.exists(_._1.id == "31/1")
+          }
+        },
+        `type` = StringField()
+      ),
+      Field(
+        name = "mangxadoElekto",
         caption = I18nString(
           "eo" -> ""
         ),
@@ -379,10 +416,16 @@ object Jes2015Form extends JSApp {
             "tagmangxo" -> "3",
             "vespermangxo" -> "3"
           )
-        )
+        ),
+        customValidate = {selected: Set[(TableCheckBoxRow, TableCheckBoxCol)] =>
+          if (selected.isEmpty)
+            Some(OtherError(I18nString("eo" -> "se vi elektis unuopajn manĝojn, bv. elekti almenaŭ unu")))
+          else
+            None
+        }
       ),
       Field(
-        name = "matenmangx-prefero",
+        name = "matenmangxoPrefero",
         caption = I18nString(
           "eo" -> "Mi preferas matenmanĝi…"
         ),
@@ -409,10 +452,32 @@ object Jes2015Form extends JSApp {
         )
       ),
       Field(
-        name = "mangxtipo-klarigo",
+        name = "mangxiAlergio",
+        caption = I18nString("eo" -> "Mi havas alergion"),
+        visible = { form =>
+          form.getFieldValue("mangxado").asInstanceOf[Option[EnumOption]].forall(_.value != "nenio") &&
+          form.getFieldValue("mangxtipo").asInstanceOf[Option[EnumOption]].forall(_.value != "speciala")
+        },
+        `type` = SelectField(List(
+          EnumOption("ne", I18nString("eo" -> "ne")),
+          EnumOption("jes", I18nString("eo" -> "jes"))
+        ))
+      ),
+      Field(
+        name = "mangxiAlergio-kia",
+        caption = I18nString("eo" -> "Bv. skribi kian"),
+        visible = {form =>
+          form.fields("mangxiAlergio").visible(form) &&
+            form.getFieldValue("mangxiAlergio").asInstanceOf[Option[EnumOption]].exists(_.value == "jes")
+        },
+        description = Some(I18nString("eo" -> "ekz. gluteno")),
+        `type` = StringField()
+      ),
+      Field(
+        name = "mangxtipoKlarigo",
         caption = NoI18nString(""),
         description = Some(I18nString("eo" -> "Bv klarigi kial vi volas specialan manĝon.")),
-        visible = {form =>
+        visible = {form: Form =>
           form.getFieldValue("mangxtipo").asInstanceOf[Option[EnumOption]].exists(_.value == "speciala") &&
             form.getFieldValue("mangxado").asInstanceOf[Option[EnumOption]].forall(_.value != "nenio")
         },
@@ -421,6 +486,7 @@ object Jes2015Form extends JSApp {
       Field(
         name = "mangxtipo2",
         caption = I18nString("eo" -> "Mi volas havi…"),
+        description = Some(I18nString("eo" -> "Ni planas la menuon laŭ la respondoj, tio estas nur por informiĝi, vi ne nepre ricevos laŭ via elekto")),
         visible = { form =>
           form.getFieldValue("mangxtipo").asInstanceOf[Option[EnumOption]].exists(_.value == "viande") &&
             form.getFieldValue("mangxado").asInstanceOf[Option[EnumOption]].forall(_.value != "nenio")
@@ -434,8 +500,8 @@ object Jes2015Form extends JSApp {
       ),
       Header(I18nString("eo" -> "Dum la aranĝo"), Some(I18nString("eo" -> "JES estas renkontiĝo, kie ricevas centran rolon la kontribuoj de la partoprenantoj.\nTiu ĉi renkontiĝo estas por vi. La organizantoj donas la strukturon de la programoj, kaj\nla partoprenantoj kontribuas al la programeroj dum la semajno ne nur per la ĉeestado.\nNi petas vin pripensi kiel vi povas mojosigi la etoson!"))),
       Field(
-        name = "gxenerala-kontribuo",
-        caption = I18nString("eo" -> "Mi kontribuos al la programo per"),
+        name = "ludejoKontribuo",
+        caption = I18nString("eo" -> "Mi kontribuos al la ludejo per"),
         `type` = TableCheckBoxField(
           rows = List(
             TableCheckBoxRow(
@@ -452,7 +518,7 @@ object Jes2015Form extends JSApp {
       ),
 //      Header(I18nString("eo" -> "Etoso")),
       Field(
-        name = "ludi-muzikilon",
+        name = "ludiMuzikilon",
         caption = I18nString("eo" -> "Ĉu vi kantas, aŭ ludas iun muzikilon, kiun vi volonte kunportus?"),
         `type` = SelectField(List(
           EnumOption("jes", I18nString("eo" -> "jes")),
@@ -462,7 +528,7 @@ object Jes2015Form extends JSApp {
       Field(
         name = "kiel-ludos",
         caption = I18nString("eo" -> "Kiel vi volonte uzus vian kantkapablon / muzikilon?"),
-        visible = _.getFieldValue("ludi-muzikilon").asInstanceOf[Option[EnumOption]].exists(_.value == "jes"),
+        visible = _.getFieldValue("ludiMuzikilon").asInstanceOf[Option[EnumOption]].exists(_.value == "jes"),
         `type` = TableCheckBoxField(
           cols = List("jes" -> NoI18nString("jes")),
           rows = List(
@@ -475,9 +541,9 @@ object Jes2015Form extends JSApp {
         )
       ),
       Field(
-        name = "mi-kunportos",
+        name = "miKunportos",
         caption = I18nString("eo" -> "Kiun muzikilon vi kunportos"),
-        visible = _.getFieldValue("ludi-muzikilon").asInstanceOf[Option[EnumOption]].exists(_.value == "jes"),
+        visible = _.getFieldValue("ludiMuzikilon").asInstanceOf[Option[EnumOption]].exists(_.value == "jes"),
         `type` = TableCheckBoxField(
           cols = List("jes" -> NoI18nString("jes")),
           rows = List(
@@ -491,21 +557,39 @@ object Jes2015Form extends JSApp {
         )
       ),
       Field(
-        name = "helpopropono",
-        caption = I18nString("eo" -> "Helpopropono"),
+        name = "dejxoriHelpo",
+        caption = I18nString("eo" -> "Mi proponas"),
+        `type` = TableCheckBoxField(
+          rows = List(
+            TableCheckBoxRow(
+              "dejxori-gufujo",
+              I18nString("eo" -> "deĵori en la gufujo")
+            ),
+            TableCheckBoxRow(
+              "dejxori-trinkejo",
+              I18nString("eo" -> "deĵori en la trinkejo")
+            )
+          ),
+          cols = List(TableCheckBoxCol("jes", NoI18nString("jes")))
+        )
+      ),
+      Field(
+        name = "gxeneralaHelpado",
+        caption = I18nString("eo" -> "Ĝenarala helpado"),
         description = Some(I18nString("eo" -> "Se vi volonte helpos al ni pri ĝeneralaj taskoj bv. ĉi tie indiki (ekzemple per pakado de tabloj por ejo, gvidado de la grupo al la ekstera halo).")),
         `type` = StringField(textarea = true)
       ),
       Field(
         name = "programkontribuo",
         caption = I18nString("eo" -> "Programkontribuo"),
-        description = Some(I18nString("eo" -> "Se vi ŝatus fari programeron, bv. skribu ĉi tien mallonge vian proponon!")),
+        description = Some(I18nString("eo" -> "Se vi ŝatus fari programeron, bv. skribu ĉi tien mallonge vian proponon! Vi ricevos retleteron de la organizantoj responde al via propono.")),
         `type` = StringField(textarea = true)
       ),
       Header(I18nString("eo" -> "Pagado")),
       Field(
         name = "pagado",
         caption = I18nString("eo" -> "Pagado"),
+        required = true,
         `type` = SelectField(List(
           EnumOption("uea", I18nString("eo" -> "UEA-konto")),
           EnumOption("hungara", I18nString("eo" -> "la hungara konto")),
@@ -513,14 +597,14 @@ object Jes2015Form extends JSApp {
         ))
       ),
       Field(
-        name = "donaco-kvoto",
+        name = "donacoKvoto",
         caption = I18nString("eo" -> "Mi ŝatus donaci al JES 2015…"),
-        placeholder = Some(I18nString("eo" -> "entajpu kvoton (eŭroj)")),
+        placeholder = Some(I18nString("eo" -> "entajpu sumon (en eŭroj)")),
         description = Some(I18nString("eo" -> "Se vi ŝatus subteni la eventon per iom da mono, ĝi certe bonvenas. :) Vi eĉ povas indiki, por kia celo ni elspezu ĝin!")),
         `type` = IntField(min = Some(0))
       ),
       Field(
-        name = "donaco-kialo",
+        name = "donacoKialo",
         caption = I18nString("eo" -> "Mi ŝatus donaci por"),
         `type` = SelectField(List(
           EnumOption("subteni-partoprenantojn", I18nString("eo" -> "subteni malriĉajn junajn partoprenantojn")),
@@ -529,29 +613,38 @@ object Jes2015Form extends JSApp {
         ))
       ),
       Field(
-        name = "donaco-kialo-klarigo",
+        name = "donacoKialoKlarigo",
         caption = NoI18nString(""),
         description = Some(I18nString("eo" -> "Bv klarigi.")),
-        visible = _.getFieldValue("donaco-kialo").asInstanceOf[Option[EnumOption]].exists(_.value == "alia"),
+        visible = _.getFieldValue("donacoKialo").asInstanceOf[Option[EnumOption]].exists(_.value == "alia"),
         `type` = StringField()
       ),
       Field(
         name = "kotizo",
         caption = I18nString("eo" -> "Kalkulita kotizo"),
+        description = Some(I18nString("eo" -> "En eŭroj")),
         `type` = CalculateField[Double](
           formula = kotizoExpr
         )
       ),
       Field(
-        name = "mi-pagos-gxis",
-        caption = I18nString("eo" -> "Mi pagos ĝis…"),
-        `type` = DateField
+        name = "miPagos",
+        caption = I18nString("eo" -> "Mi pagos"),
+        description = Some(I18nString("eo" -> "Kiom, en eŭroj.")),
+        required = true,
+        `type` = SelectField(List(
+          EnumOption("tuton", I18nString("eo" -> "tutan sumon")),
+          EnumOption("duonon", I18nString("eo" -> "duonon de la sumo"))
+        ))
       ),
       Field(
-        name = "mi-volas-pagi",
-        caption = I18nString("eo" -> "Mi volas pagi…"),
-        description = Some(I18nString("eo" -> "Kiom da, en eŭroj.")),
-        `type` = IntField(min = Some(0))
+        name = "miPagosGxis",
+        caption = I18nString("eo" -> "Mi pagos ĝis…"),
+        required = true,
+        `type` = DateField(
+          minDate = Some("2015-01-01"),
+          maxDate = Some("2015-12-01")
+        )
       )
 
 
@@ -596,7 +689,10 @@ object Jes2015Form extends JSApp {
     def refresh() {
       jqForm.find(".formExpression").each(new Function2[js.Any, dom.Element, js.Any]{
         override def apply(v1: js.Any, element: Element): js.Any = {
-          jQuery(element).html(jQuery(element).data("expression").asInstanceOf[js.Function1[Form, js.Any]].apply(form).toString)
+          jQuery(element).html(jQuery(element).data("expression").asInstanceOf[js.Function1[Form, js.Any]].apply(form) match {
+            case d: js.prim.Number => d.toFixed(2)
+            case x => x.toString
+          })
         }})
 
       jqForm.find(".row").each(new Function2[js.Any, dom.Element, js.Any] {

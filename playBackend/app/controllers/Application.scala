@@ -1,8 +1,11 @@
 package controllers
 
+import java.text.DecimalFormat
+
 import com.mongodb.casbah.MongoClient
 import com.mongodb.casbah.commons.MongoDBObject
 import com.mongodb.casbah.query.dsl.BSONType.DBList
+import org.joda.time.DateTime
 import pl.pej.malpompaligxilo.form.field._
 import pl.pej.malpompaligxilo.form._
 import pl.pej.malpompaligxilo.jes2015.Jes2015Form
@@ -21,13 +24,14 @@ object Application extends Controller {
 
   def submit = Action(parse.tolerantFormUrlEncoded) { implicit request =>
     val post = request.body
-    val form = Jes2015Form.jesForm(field => post.getOrElse(field, Nil), DatesScala)
+    println(post)
+    val form = Jes2015Form.jesForm(field => post.getOrElse(field, post.getOrElse(field+"[]", Nil)), DatesScala)
 
     val parsed = form.parse(post)
 
     form.validate(parsed) match {
       case SuccessValidation =>
-//        sendMail(form, parsed)
+        sendMail(form, parsed)
         mongoInsert(parsed)
         Ok(buildMessage(form, parsed))
       case FailureValidation(errors) =>
@@ -39,13 +43,15 @@ object Application extends Controller {
 
   private def mongoInsert(parsed: Map[String, Option[Any]]): Unit = {
     val mongoClient = MongoClient()
-    val parsedMapped = parsed.mapValues{
+    val parsedMapped = parsed.mapValues {
       case Some(EnumOption(name, _)) => Some(name)
-      case Some(s: Set[(TableCheckBoxRow, TableCheckBoxCol)]) => Some(s.map{
+      case Some(s: Set[(TableCheckBoxRow, TableCheckBoxCol)]) => Some(s.map {
         case (r, c) => r.id -> c.id
       })
       case x => x
-    }
+    } ++ List(
+      "aligxDato" -> Option(DateTime.now().toString("yyyy-mm-dd"))
+    )
     val mongoObj = MongoDBObject[String, Option[Any]](parsedMapped.toList)
     val db = mongoClient.getDB("malpompaaligxilo")
     db("aligxintoj").insert(mongoObj)
@@ -59,9 +65,12 @@ object Application extends Controller {
       |Amike,
       |la teamo de JES
       |""".stripMargin + form.elements.collect{
-      case Field(_, caption, cf:CalculateField[_], _, _, _, _, _) =>
-        s"${caption("eo")}: ${cf.formula(form).toString}"
-      case f: Field[_] if f.visible(form) =>
+      case Field(_, caption, cf:CalculateField[_], _, _, visible, _, _, _) if visible(form) =>
+        s"${caption("eo")}: ${cf.formula(form) match {
+          case d: Double => new DecimalFormat("#.##").format(d)
+          case x => x.toString
+        }}"
+      case f: Field[_] if f.visible(form) && f.store =>
         val v = parsed(f.name).getOrElse("") match {
           case s: String => s
           case EnumOption(_, caption) => caption("eo")
@@ -74,6 +83,7 @@ object Application extends Controller {
               }.mkString(", ")
             }
           }
+          case d: Double => "d:"+d.toString
           case _ => ""
         }
 
@@ -85,14 +95,15 @@ object Application extends Controller {
 
   private def sendMail(form: Form, parsed: Map[String, Option[Any]]): Unit = {
     val email = Email(
-      subject = "Aliĝo al JES 2015 en Eger, Hungario",
+      subject = s"Aliĝo al JES 2015 en Eger, Hungario - ${parsed("personaNomo").get} ${parsed("familiaNomo").get}",
       from = "JES-teamo <jes@pej.pl>",
       to = Seq(
         s"${parsed("personaNomo").get} ${parsed("familiaNomo").get} <${parsed("retposxtadreso").get}>"
       ),
       bcc = Seq(
-        //        "jes@pej.pl",
-        "holda.piotr@gmail.com"
+        "<hej.estraro@gmail.com>",
+        "<tomasz.szymula@pej.pl>",
+        "<piotr.holda@pej.pl>"
       ),
       bodyText = Some(buildMessage(form, parsed))
       //      bodyHtml = Some("<html><body><p>An <b>html</b> message</p></body></html>")

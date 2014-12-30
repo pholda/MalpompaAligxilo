@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Malpompa Aliĝilo - testo</title>
+        <title>JES 2015 Aliĝilo</title>
         <link rel="stylesheet" href="@routes.Assets.at("jquery-ui-1.11.2.custom/jquery-ui.min.css")" />
         <link rel="stylesheet" href="@routes.Assets.at("stylesheets/style.css")" />
     </head>
@@ -12,11 +12,17 @@
         <script type="text/javascript" src="@routes.Assets.at("jquery-ui-1.11.2.custom/jquery-ui.min.js")"></script>
         <script type="text/javascript">
         $(function(){
-        $('input[type=text].formDate').datepicker({
+        $('input[type=text].formDate' ).each(function() {
+            $(this).datepicker({
             "dateFormat": "yy-mm-dd",
             changeMonth: true,
-            changeYear: true});
-        })
+            changeYear: true,
+            minDate: $(this).data("mindate"),
+            maxDate: $(this).data("maxdate"),
+            yearRange: $(this).data("yearrange")
+            });
+        })})
+
         </script>
 
         <script type="text/javascript" src="@routes.Assets.at("javascripts/jes2015-fastopt.js")"></script>
