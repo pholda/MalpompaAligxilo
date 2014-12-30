@@ -1,8 +1,7 @@
 package pl.pej.malpompaligxilo.form.field
 
-import org.scalajs.jquery.{JQuery, jQuery}
+import org.scalajs.jquery.JQuery
 import pl.pej.malpompaligxilo.form._
-import pl.pej.malpompaligxilo.util.I18nString
 
 case object DateField extends FieldType[String]{
   import pl.pej.malpompaligxilo.util.ToJQueryable.string2jQuery

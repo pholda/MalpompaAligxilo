@@ -22,8 +22,13 @@ object SimpleFormElementFormatter extends FormElementFormatter {
 
         div.data("visibleExpression", field.visible)
         div
-      case Header(header) =>
-        jQuery(s"""<div class="row"><h1>${header("eo")}</h1></div>""")
+      case Header(header, description) =>
+        jQuery(s"""<div class="row"><h1>${header("eo")}</h1>${
+          description match {
+            case Some(d) => s"<h2>${d("eo")}</h2>"
+            case _ => ""
+          }
+        }</div>""")
     }
   }
 }

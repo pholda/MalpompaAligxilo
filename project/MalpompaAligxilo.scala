@@ -23,7 +23,8 @@ object MalpompaAligxilo extends Build {
       name := "jes2015",
       libraryDependencies ++= Seq(
         "org.scala-lang.modules.scalajs" %%% "scalajs-jquery" % "0.6",
-        "joda-time" % "joda-time" % "2.0"
+        "joda-time" % "joda-time" % "2.0",
+        "com.github.nscala-time" %% "nscala-time" % "1.6.0"
       ),
       skip in ScalaJSKeys.packageJSDependencies := false
     )
@@ -35,7 +36,8 @@ object MalpompaAligxilo extends Build {
       name := "core",
       libraryDependencies ++= Seq(
         "org.scala-lang.modules.scalajs" %%% "scalajs-jquery" % "0.6",
-        "joda-time" % "joda-time" % "2.0"
+        "joda-time" % "joda-time" % "2.0",
+        "com.github.nscala-time" %% "nscala-time" % "1.6.0"
       ),
       skip in ScalaJSKeys.packageJSDependencies := false
     )
@@ -49,7 +51,8 @@ object MalpompaAligxilo extends Build {
       libraryDependencies ++= Seq(
         "com.typesafe.play.plugins" %% "play-plugins-mailer" % "2.3.6-SNAPSHOT",
         "org.mongodb" %% "casbah" % "2.7.4",
-        "joda-time" % "joda-time" % "2.0"
+        "joda-time" % "joda-time" % "2.0",
+        "com.github.nscala-time" %% "nscala-time" % "1.6.0"
       )
     )
   ).dependsOn(core, jes2015).enablePlugins(play.PlayScala)

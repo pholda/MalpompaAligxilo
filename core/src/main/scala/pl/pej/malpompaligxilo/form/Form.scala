@@ -1,9 +1,22 @@
 package pl.pej.malpompaligxilo.form
 
+import pl.pej.util.Dates
+
 case class Form(
   id: String,
-  getFieldValue: FieldName => Any,
+  getRawFieldValue: FieldName => Seq[String],
+  dates: Dates,
   elements: FormElement*) {
+lazy val fields = {
+    val fields = elements.collect{
+      case f: Field[_] => f
+    }.map(f => f.name -> f)
+    Map(fields:_*)
+  }
+
+  def getFieldValue: FieldName => Option[Any] = {field =>
+    fields(field).parse(getRawFieldValue(field))
+  }
 
   def validate(data: Map[String, Option[Any]]): ValidationResult = {
     val errors = elements.collect{

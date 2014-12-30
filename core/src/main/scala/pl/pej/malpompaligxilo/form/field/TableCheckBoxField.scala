@@ -46,9 +46,15 @@ case class TableCheckBoxField(
   }
 
   override def parse(values: Seq[String]): Option[Set[(TableCheckBoxRow, TableCheckBoxCol)]] = {
-    val l = for (row <- rows; col <- cols if values contains s"${row.id}-${col.id}") yield
-      row -> col
-    Some(l.toSet)
+    if (cols.size == 1 ) {
+      val l = for (row <- rows if values contains s"${row.id}") yield
+        row -> cols.head
+      Some(l.toSet)
+    } else {
+      val l = for (row <- rows; col <- cols if values contains s"${row.id}-${col.id}") yield
+        row -> col
+      Some(l.toSet)
+    }
   }
 }
 
