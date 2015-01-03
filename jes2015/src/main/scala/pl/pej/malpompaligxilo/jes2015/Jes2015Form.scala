@@ -157,7 +157,7 @@ object Jes2015Form extends JSApp {
         },
         store = false,
         `type` = CalculateField[String]{form =>
-          "Vi estos sub 18 dum la JES, vi bezonas sendi gepatran permesilon pri via partopreno al la organizantoj."
+          "Vi estos sub 18 dum la JES, vi bezonas sendi skanitan gepatran permesilon al la organizantoj pri via partopreno, se vi venos sole al la renkontiĝo."
         }
       ),
       Field(
@@ -218,6 +218,12 @@ object Jes2015Form extends JSApp {
         `type` = StringField()
       ),
       countryField,
+      Field(
+        name = "adreso",
+        caption = I18nString("eo" -> "Adreso"),
+        description = Some(I18nString("eo" -> "por adresaro.")),
+        `type` = StringField(textarea = true)
+      ),
       Field(
         name = "studento",
         caption = I18nString("eo" -> "Mi estas plentempa studento"),
@@ -333,7 +339,8 @@ object Jes2015Form extends JSApp {
         caption = I18nString("eo" -> "Ĉeesto"),
         `type` = SelectField(List(
           EnumOption("cxiun", I18nString("eo" -> "ĉiun tagon")),
-          EnumOption("elekto", I18nString("eo" -> "partatempe"))
+          EnumOption("elekto", I18nString("eo" -> "partatempe")),
+          EnumOption("balo", I18nString("eo" -> "nur silvestra balo"))
         ))
       ),
       Field(
@@ -446,8 +453,7 @@ object Jes2015Form extends JSApp {
           options = List(
             EnumOption("viande", I18nString("eo" -> "viande")),
             EnumOption("vegetare", I18nString("eo" -> "vegetare")),
-            EnumOption("vegane", I18nString("eo" -> "vegane")),
-            EnumOption("speciala", I18nString("eo" -> "specialan manĝon"))
+            EnumOption("vegane", I18nString("eo" -> "vegane"))
           )
         )
       ),
@@ -455,8 +461,7 @@ object Jes2015Form extends JSApp {
         name = "mangxiAlergio",
         caption = I18nString("eo" -> "Mi havas alergion"),
         visible = { form =>
-          form.getFieldValue("mangxado").asInstanceOf[Option[EnumOption]].forall(_.value != "nenio") &&
-          form.getFieldValue("mangxtipo").asInstanceOf[Option[EnumOption]].forall(_.value != "speciala")
+          form.getFieldValue("mangxado").asInstanceOf[Option[EnumOption]].forall(_.value != "nenio")
         },
         `type` = SelectField(List(
           EnumOption("ne", I18nString("eo" -> "ne")),
@@ -478,8 +483,7 @@ object Jes2015Form extends JSApp {
         caption = NoI18nString(""),
         description = Some(I18nString("eo" -> "Bv klarigi kial vi volas specialan manĝon.")),
         visible = {form: Form =>
-          form.getFieldValue("mangxtipo").asInstanceOf[Option[EnumOption]].exists(_.value == "speciala") &&
-            form.getFieldValue("mangxado").asInstanceOf[Option[EnumOption]].forall(_.value != "nenio")
+          form.getFieldValue("mangxado").asInstanceOf[Option[EnumOption]].forall(_.value != "nenio")
         },
         `type` = StringField()
       ),
@@ -608,7 +612,7 @@ object Jes2015Form extends JSApp {
         caption = I18nString("eo" -> "Mi ŝatus donaci por"),
         `type` = SelectField(List(
           EnumOption("subteni-partoprenantojn", I18nString("eo" -> "subteni malriĉajn junajn partoprenantojn")),
-          EnumOption("ricxa-programo", I18nString("eo" -> "pli riĉan programon")),
+          EnumOption("ricxa-programo", I18nString("eo" -> "pli riĉigan programon")),
           EnumOption("alia", I18nString("eo" -> "alia"))
         ))
       ),
