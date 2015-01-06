@@ -4,44 +4,44 @@ import java.text.DecimalFormat
 
 import com.mongodb.casbah.MongoClient
 import com.mongodb.casbah.commons.MongoDBObject
-import com.mongodb.casbah.query.dsl.BSONType.DBList
 import org.joda.time.DateTime
-import pl.pej.malpompaligxilo.form.field._
 import pl.pej.malpompaligxilo.form._
-import pl.pej.malpompaligxilo.jes2015.Jes2015Form
+import pl.pej.malpompaligxilo.form.field._
+import pl.pej.malpompaligxilo.jes2015.Jes2015Aligxilo
 import pl.pej.util.DatesScala
+import play.api.Play.current
 import play.api.libs.mailer.{Email, MailerPlugin}
 import play.api.mvc._
 import views._
-import play.api.Play.current
 
 object Application extends Controller {
 
   
   def index = Action {
-    Ok(html.index())
+    val form = new Jes2015Aligxilo(DatesScala, field => Seq.empty)
+    Ok(html.jes2015aligxilo(form))
   }
 
   def submit = Action(parse.tolerantFormUrlEncoded) { implicit request =>
     val post = request.body
-    println(post)
-    val form = Jes2015Form.jesForm(field => post.getOrElse(field, post.getOrElse(field+"[]", Nil)), DatesScala)
+    val form = new Jes2015Aligxilo(DatesScala, {field =>
+      post.getOrElse(field, post.getOrElse(field+"[]", Nil))
+    })
 
     val parsed = form.parse(post)
 
     form.validate(parsed) match {
       case SuccessValidation =>
-        sendMail(form, parsed)
-        mongoInsert(parsed)
-        Ok(buildMessage(form, parsed))
-      case FailureValidation(errors) =>
-        Ok(s"okazis eraroj:\n${errors.map{
-          case (f, e) => f.caption("eo") + ": " + e.message("eo")
-        }.mkString("\n")}")
+        val msg = html.jes2015_aligxilo_mesagxo(form)
+        sendMail( s"${parsed("personaNomo").get} ${parsed("familiaNomo").get}", parsed("retposxtadreso").get.toString, msg.body)
+        mongoInsert(parsed, form)
+        Ok(html.jes2015_aligxilo_mesagxo(form))
+      case f:FailureValidation =>
+        Ok(html.jes2015aligxilo_eraroj(f))
     }
   }
 
-  private def mongoInsert(parsed: Map[String, Option[Any]]): Unit = {
+  private def mongoInsert(parsed: Map[String, Option[Any]], form: Jes2015Aligxilo): Unit = {
     val mongoClient = MongoClient()
     val parsedMapped = parsed.mapValues {
       case Some(EnumOption(name, _)) => Some(name)
@@ -52,61 +52,26 @@ object Application extends Controller {
     } ++ List(
       "aligxDato" -> Option(DateTime.now().toString("yyyy-mm-dd"))
     )
+    println(parsedMapped)
     val mongoObj = MongoDBObject[String, Option[Any]](parsedMapped.toList)
     val db = mongoClient.getDB("malpompaaligxilo")
     db("aligxintoj").insert(mongoObj)
     mongoClient.close()
   }
 
-  private def buildMessage(form: Form, parsed: Map[String, Option[Any]]): String = {
-    """Saluton! Dankon por via aliĝo al JES en Eger, Hungario!
-      |Sube vi vidas viajn datumojn. Bv. relegi kaj nepre skribu al jes@pej.pl se io ne ĝustas, aŭ intertempe ŝanĝiĝas viaj mendoj.
-      |Tion vi povas fari ĝis la 1-a de decembro.
-      |Amike,
-      |la teamo de JES
-      |""".stripMargin + form.elements.collect{
-      case Field(_, caption, cf:CalculateField[_], _, _, visible, _, _, _) if visible(form) =>
-        s"${caption("eo")}: ${cf.formula(form) match {
-          case d: Double => new DecimalFormat("#.##").format(d)
-          case x => x.toString
-        }}"
-      case f: Field[_] if f.visible(form) && f.store =>
-        val v = parsed(f.name).getOrElse("") match {
-          case s: String => s
-          case EnumOption(_, caption) => caption("eo")
-          case s:Set[(TableCheckBoxRow, TableCheckBoxCol)] => {
-            if (s.isEmpty) {
-              "[nenio]"
-            } else {
-              s.map{
-                case (r, c) => r.caption("eo") + " " + c.caption("eo")
-              }.mkString(", ")
-            }
-          }
-          case d: Double => "d:"+d.toString
-          case _ => ""
-        }
-
-        s"${f.caption("eo")}: $v"
-      case h: Header =>
-        s"\n\t${h.text("eo")}:"
-    }.mkString("\n")
-  }
-
-  private def sendMail(form: Form, parsed: Map[String, Option[Any]]): Unit = {
+  private def sendMail(name: String, mail: String, text: String): Unit = {
     val email = Email(
-      subject = s"Aliĝo al JES 2015 en Eger, Hungario - ${parsed("personaNomo").get} ${parsed("familiaNomo").get}",
+      subject = s"Aliĝo al JES 2015 en Eger, Hungario - $name",
       from = "JES-teamo <jes@pej.pl>",
       to = Seq(
-        s"${parsed("personaNomo").get} ${parsed("familiaNomo").get} <${parsed("retposxtadreso").get}>"
+        s"$name <$mail>"
       ),
       bcc = Seq(
         "<hej.estraro@gmail.com>",
         "<tomasz.szymula@pej.pl>",
         "<piotr.holda@pej.pl>"
       ),
-      bodyText = Some(buildMessage(form, parsed))
-      //      bodyHtml = Some("<html><body><p>An <b>html</b> message</p></body></html>")
+      bodyHtml = Some(text)
     )
     MailerPlugin.send(email)
   }

@@ -1,0 +1,14 @@
+@(result: pl.pej.malpompaligxilo.form.FailureValidation)
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>JES 2015 Aliĝilo</title>
+    </head>
+    <body>
+        En via aliĝo okazis eraroj:<br>
+        @{result.errors.map{
+            case (f, e) => Html(f.caption("eo") + " - " + e.message("eo")+"<br>")
+        }}
+    </body>
+</html>

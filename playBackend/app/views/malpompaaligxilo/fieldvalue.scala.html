@@ -1,0 +1,34 @@
+@(form: pl.pej.malpompaligxilo.jes2015.Jes2015Aligxilo, field: pl.pej.malpompaligxilo.form.Field[_])
+@import pl.pej.malpompaligxilo.form.Field
+@import pl.pej.malpompaligxilo.form.field.CalculateField
+@import java.text.DecimalFormat
+@import pl.pej.malpompaligxilo.form.field.TableCheckBoxCol
+@import pl.pej.malpompaligxilo.form.field.TableCheckBoxRow
+@import pl.pej.malpompaligxilo.form.field.EnumOption
+
+@if(field.visible(form)) {
+    <strong>@field.caption("eo")</strong>: @{field match {
+        case Field(_, _, CalculateField(formula), _, _, _, _, _, _) =>
+            formula(form) match {
+                case d: Double => new DecimalFormat("#.##").format(d)
+                case x => x.toString
+            }
+        case _ => form.getFieldValue(field).getOrElse("") match {
+            case d: Double => new DecimalFormat("#.##").format(d)
+            case true => "jes"
+            case false => "ne"
+            case EnumOption(_, caption) => caption("eo")
+            case s:Set[(TableCheckBoxRow, TableCheckBoxCol)] => {
+                if (s.isEmpty) {
+                    "[nenio]"
+                } else {
+                    s.map{
+                        case (r, c) => r.caption("eo") + " " + c.caption("eo")
+                    }.mkString(", ")
+                }
+            }
+            case x => x.toString
+        }
+    }}
+    <br/>
+}

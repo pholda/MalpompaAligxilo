@@ -9,7 +9,7 @@ case class StringField(textarea: Boolean = false) extends FieldType[String] {
 
   override def toJQuery(field: Field[String]): JQuery = {
     if (textarea) {
-      s"""<textarea name="${field.name}" placeholder="${field.placeholder.map(_("eo")).getOrElse("")}" ></textarea>"""
+      s"""<textarea name="${field.name}" /*placeholder="${field.placeholder.map(_("eo")).getOrElse("")}" */></textarea>"""
     } else {
       s"""<input type="text" name="${field.name}" placeholder="${field.placeholder.map(_("eo")).getOrElse("")}" />"""
     }

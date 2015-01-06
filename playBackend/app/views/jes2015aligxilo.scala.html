@@ -1,0 +1,112 @@
+@(form: pl.pej.malpompaligxilo.jes2015.Jes2015Aligxilo)
+@import views.html.malpompaaligxilo.field
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>JES 2015 Aliĝilo</title>
+        <link rel="stylesheet" href="@routes.Assets.at("jquery-ui-1.11.2.custom/jquery-ui.min.css")" />
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/style.css")" />
+    </head>
+    <body>
+            <!-- Include Scala.js compiled code -->
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/jes2015-jsdeps.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("jquery-ui-1.11.2.custom/jquery-ui.min.js")"></script>
+        <script type="text/javascript">
+        $(function(){
+        $('input[type=text].formDate' ).each(function() {
+        $(this).datepicker({
+        "dateFormat": "yy-mm-dd",
+        changeMonth: true,
+        changeYear: true,
+        minDate: $(this).data("mindate"),
+        maxDate: $(this).data("maxdate"),
+        yearRange: $(this).data("yearrange")
+        });
+        })})
+
+        </script>
+
+        <script type="text/javascript" src="/assets/javascripts/jes2015-fastopt.js"></script>
+        <form id="aligxilo" action="submit" method="post">
+            <div class="row">
+                <h1>Personaj datumoj</h1>
+            </div>
+            @field(form.personaNomo)
+            @field(form.familiaNomo)
+            @field(form.kromnomo)
+
+            @field(form.naskigxdato)
+            @field(form.sub18)
+            @field(form.genro)
+            @field(form.retposxtadreso)
+            @field(form.tujmesagxilo)
+
+            @field(form.telefonnumero)
+            @field(form.lando)
+            @field(form.adreso)
+            @field(form.studento)
+            @field(form.studento2)
+            @field(form.studentoFako)
+            @field(form.studentoNumero)
+            @field(form.invitilo)
+            @field(form.pasportnumero)
+            @field(form.pasportovalideco)
+            @field(form.invitiloAdreso)
+
+            @field(form.adresaro)
+            <div class="row">
+                <h1>Loĝado</h1>
+            </div>
+            @field(form.logxado)
+            @field(form.logxadoGea)
+            @field(form.logxadoPrefero)
+            @field(form.logxadoKun)
+            @field(form.cxeesto)
+            @field(form.cxeestoElekto)
+            <div class="row">
+                <h1>Manĝado</h1>
+            </div>
+            @field(form.matenmangxoj)
+            @field(form.tagmangxoj)
+            @field(form.vespermangxoj)
+
+            @field(form.mangxadoBalo)
+            @field(form.matenmangxoPrefero)
+            @field(form.mangxtipo)
+            @field(form.mangxtipoKlarigo)
+
+            @field(form.mangxtipo2)
+            <div class="row">
+                <h1>Pagado</h1>
+            </div>
+            @field(form.pagado)
+            @field(form.donacoKvoto)
+            @field(form.donacoKialo)
+            @field(form.donacoKialoKlarigo)
+            @field(form.kotizo)
+            @field(form.miPagos)
+
+            @field(form.miPagosGxis)
+            @field(form.miPagosGxisAlt)
+            @field(form.komento)
+            <div class="row">
+                <h1>Dum la aranĝo</h1>
+                <h2>JES estas renkontiĝo, kie ricevas centran rolon la kontribuoj de la partoprenantoj. Tiu ĉi renkontiĝo estas por vi. La organizantoj donas la strukturon de la programoj, kaj la partoprenantoj kontribuas al la programeroj dum la semajno ne nur per la ĉeestado. Ni petas vin pripensi kiel vi povas mojosigi la etoson!</h2>
+            </div>
+            @field(form.ludejoKontribuo)
+            @field(form.ludiMuzikilon)
+            @field(form.kielLudos)
+            @field(form.muzikgrupoNomo)
+            @field(form.miKunportos)
+            @field(form.dejxoriHelpo)
+            @field(form.gxeneralaHelpado)
+
+            @field(form.programkontribuo)
+            <div class="row"><input type="submit" value="aliĝu!" name="sendu" /></div>
+        </form>
+        <script type="text/javascript">
+        pl.pej.malpompaligxilo.jes2015.Jes2015Form().main();
+        </script>
+    </body>
+</html>

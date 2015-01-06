@@ -1,7 +1,7 @@
 package pl.pej.malpompaligxilo.form.field
 
 import org.scalajs.jquery.{JQuery, jQuery}
-import pl.pej.malpompaligxilo.form.{FieldType, FormExpr, Field, Form}
+import pl.pej.malpompaligxilo.form.{FieldType, FormExpr, Field}
 import pl.pej.malpompaligxilo.util._
 
 case class CalculateField[T](

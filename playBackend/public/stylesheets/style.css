@@ -25,3 +25,7 @@
 .required {
     color: red
 }
+
+input[type=text],textarea,select {
+    width: 400px;
+}
