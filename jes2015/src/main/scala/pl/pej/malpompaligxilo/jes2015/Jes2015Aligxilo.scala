@@ -506,7 +506,7 @@ class Jes2015Aligxilo(val dates: Dates, val _getRawFieldValue: FieldName => Seq[
     name = "programkontribuo",
     caption = I18nString("eo" -> "Programkontribuo"),
     description = Some(I18nString("eo" -> "Se vi ŝatus fari programeron, bv. skribu ĉi tien mallonge vian proponon! Vi ricevos retleteron de la organizantoj responde al via propono.")),
-    `type` = CheckboxField()
+    `type` = StringField(textarea = true)
   )
   val pagado = Field(
     name = "pagado",
@@ -545,8 +545,8 @@ class Jes2015Aligxilo(val dates: Dates, val _getRawFieldValue: FieldName => Seq[
     name = "kotizo",
     caption = I18nString("eo" -> "Kalkulita kotizo"),
     description = Some(I18nString("eo" -> "En eŭroj")),
-    `type` = CalculateField[Double](
-      formula = {f => 0}
+    `type` = new CalculateField[Kotizo](
+      formula = {f => Jes2015Kotizo.kotizo(f.asInstanceOf[Jes2015Aligxilo])}
     )
   )
   val miPagos = Field(

@@ -1,13 +1,14 @@
-/*
 package pl.pej.malpompaligxilo.jes2015
 
 object Jes2015Kotizo {
   type Euroj = Double
 
+  implicit def bool2int(b:Boolean) = if (b) 1 else 0
+
   object Prezoj {
 
     val studentaRabato = 0.15
-    private val programo: Seq[Seq[Euroj]] = Seq(Seq(0,0,0),Seq(100,40,20),Seq(120,110,100))
+    val programo: Seq[Seq[Euroj]] = Seq(Seq(0,0,0),Seq(100,40,20),Seq(120,110,100))
 
     val matenmangxo: Euroj = 5
     val tagmangxo: Euroj = 8
@@ -20,28 +21,22 @@ object Jes2015Kotizo {
     val imposto: Euroj = 1.5
   }
 
-  def apply(form: Jes2015Aligxilo) = {
+  def kotizo(form: Jes2015Aligxilo) = {
     def rabataMultiplikanto: Double = {
       1 - frualigxaRabato - studentaRabato
     }
 
-    val invitletero: From => Map[String, Euroj] = { implicit f =>
-      val invitletero_?: Boolean = ???
-
-      Map(s"Invitletero" -> Prezoj.invitletero * invitletero_?)
-    }
-
     def frualigxaRabato: Double = {
 
-      if (invitletero_?) {
-        val pagoElekto: String = form.getFieldValue(form.miPagosGxis).get.asInstanceOf[EnumOption].value
+      if (form.getFieldValue(form.invitilo).exists(_.value == "jes")) {
+        val pagoElekto: String = form.getFieldValue(form.miPagosGxis).get.value
 
-        val currentDate = js.Date.now
+        val currentDate = form.dates.getNowMillis
 
-        val aligxkategorioRabato = if(currentDate < new js.Date("2015-01-30").getTime()) 0.3
-        else if (currentDate < new js.Date("2015-04-30").getTime()) 0.24
-        else if (currentDate < new js.Date("2015-07-30").getTime()) 0.18
-        else if (currentDate < new js.Date("2015-11.30").getTime()) 0.12
+        val aligxkategorioRabato = if(currentDate < form.dates.str2millis("2015-01-30")) 0.3
+        else if (currentDate < form.dates.str2millis("2015-04-30")) 0.24
+        else if (currentDate < form.dates.str2millis("2015-07-30")) 0.18
+        else if (currentDate < form.dates.str2millis("2015-11.30")) 0.12
         else 0
 
         pagoElekto match {
@@ -49,7 +44,7 @@ object Jes2015Kotizo {
           case "tutaPago" => aligxkategorioRabato
         }
       } else {
-        val pagoElekto: String = f.getFieldValue("miPagosGxis").get.asInstanceOf[EnumOption].value
+        val pagoElekto: String = form.getFieldValue(form.miPagosGxis).get.value
 
         pagoElekto match {
           case "rabato30" => 0.3
@@ -61,39 +56,35 @@ object Jes2015Kotizo {
       }
     }
 
-    private def studento_?: Boolean = {
-      ???
+    lazy val studento_? = form.getFieldValue(form.studento) == Some(true)
+
+    lazy val studentaRabato: Double = {
+      if(studento_?) Prezoj.studentaRabato  else 0
     }
 
-    private def studentaRabato: Double = {
-      if(studento_?(f)) Prezoj.studentaRabato  else 0
-    }
-
-    private val cxeesto: Set[String] = f.getFieldValue("cxeesto-elekto").get.asInstanceOf[Set[(TableCheckBoxRow, TableCheckBoxCol)]].map{
+    lazy val cxeesto: Set[String] = form.getFieldValue(form.cxeestoElekto).get.map{
       case (row, col) => row.id
     }.toSet
 
-    private def noktoj: Int = { f =>
+    lazy val noktoj: Int = {
 
-      implicit def bool2int(b:Boolean) = if (b) 1 else 0
-
-      if (tuttempe) {
+      if (form.getFieldValue(form.cxeesto).exists(_.value == "cxiun")) {
         7
       } else {
         cxeesto("27/28").toInt + cxeesto("28/29").toInt + cxeesto("29/30").toInt + cxeesto("30/31").toInt + cxeesto("31/1").toInt + cxeesto("1/2").toInt + cxeesto("2/3").toInt
       }
     }
 
-    val programo: From => Map[String, Euroj] = { implicit f =>
+    lazy val programo: Map[String, Euroj] = {
 
-      val naskiita = new js.Date(f.getFieldValue("naskigxdato").get.asInstanceOf[String]).getTime()
+      val naskiita = form.dates.str2millis(form.getFieldValue(form.naskigxdato).get)
 
-      val agxKategorio = if(naskiita > new js.Date("1999-12-26").getTime()) 0
-      else if(naskiita > new js.Date("1984-12-26").getTime()) 1
+      val agxKategorio = if(naskiita > form.dates.str2millis("1999-12-26")) 0
+      else if(naskiita > form.dates.str2millis("19`4-12-26")) 1
       else 2
 
 
-      val lando = f.getFieldValue("lando").get.asInstanceOf[EnumOption].value
+      val lando = form.getFieldValue(form.lando).get.value
 
       val aLandoj = Seq("ad", "at", "bh", "be", "gb", "dk", "fi", "fr", "de", "ie", "is", "il", "it", "jp", "ca", "qa", "kw", "li", "lu", "mc", "nl", "no", "om", "sm", "sa", "se", "ch", "ae", "us")
 
@@ -103,16 +94,16 @@ object Jes2015Kotizo {
       val landoKategorio = if(aLandoj.contains(lando)) 0 else if (bLandoj.contains(lando)) 1 else 2
 
 
-      val programo = Prezoj.programo(agxkategorio)(landoKategorio) * scala.math.min((1+noktoj),7).toDouble/7 * rabataMultiplikanto
+      val programo = Prezoj.programo(agxKategorio)(landoKategorio) * scala.math.min((1+noktoj),7).toDouble/7 * rabataMultiplikanto
 
       Map( s"Programkotizo" -> programo)
     }
 
-    val mangxado: From => Map[String, Euroj] = { implicit f =>
+    val mangxado: Map[String, Euroj] = {
 
-      val matenmangxo: Boolean = ???
-      val tagmangxo: Boolean = ???
-      val vespermangxo: Boolean = ???
+      val matenmangxo: Boolean = form.getFieldValue(form.matenmangxoj).getOrElse(false)
+      val tagmangxo: Boolean = form.getFieldValue(form.tagmangxoj).getOrElse(false)
+      val vespermangxo: Boolean = form.getFieldValue(form.vespermangxoj).getOrElse(false)
 
       val kiomMatenmangxoj = noktoj
       val kiomTagmangxoj = noktoj - 1
@@ -127,9 +118,9 @@ object Jes2015Kotizo {
         s"Vespermangxoj (${kiomVespermangxoj}x${prezoVespermangxo})" -> kiomVespermangxoj*prezoVespermangxo)
     }
 
-    val logxado: From => Map[String, Euroj] = { implicit f =>
+    val logxado: Map[String, Euroj] = {
 
-      val logxelekto = f.getFieldValue("logxado").get.asInstanceOf[EnumOption].value
+      val logxelekto = form.getFieldValue(form.logxado).get.value
 
       val prezoKundusxejo = Prezoj.tranokto(2) * rabataMultiplikanto
       val prezoSendusxejo = Prezoj.tranokto(1) * rabataMultiplikanto
@@ -137,7 +128,7 @@ object Jes2015Kotizo {
 
       val imposto: Euroj = if(studento_?) 0 else Prezoj.imposto
 
-      logxelekto match {
+      (logxelekto match {
         case "2-lita-cxambro" => Map(
           s"Cxambro kun propra dusxejo (${noktoj}x${prezoKundusxejo})" -> noktoj * prezoKundusxejo,
           "Dulita krompago" ->  Prezoj.dulitaKrompago
@@ -153,13 +144,14 @@ object Jes2015Kotizo {
         case _: String => Map(
           "Amasejo (${noktoj}x${prezoAmasejo})" -> noktoj * prezoAmasejo
         )
-      }.+(("Imposto por hungara " -> imposto))
+      }).updated("Imposto por hungara ", imposto).mapValues(_.asInstanceOf[Euroj])
 
 
     }
+
+    Kotizo(mangxado ++ logxado ++ programo) //++ invitletero
   }
 
 
 
 }
-*/
