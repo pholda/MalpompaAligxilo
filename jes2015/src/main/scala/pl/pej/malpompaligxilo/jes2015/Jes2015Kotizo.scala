@@ -15,14 +15,21 @@ object Jes2015Kotizo {
     val vespermangxo: Euroj = 5
 
 
-    val tranokto: Seq[Euroj] = Seq(6, 12, 16)
-    val dulitaKrompago: Euroj = 30
+    val tranoktoAmasejo: Euroj = 6
+    val tranoktoSendusxeja: Euroj = 9
+    val tranokto2persona: Euroj = 18
+    val tranokto4persona: Euroj = 15
+    val tranokto6persona: Euroj = 12
+
+    val dulitaKrompago: Euroj = 20
 
     val imposto: Euroj = 1.5
+
+    val invitletero = 5
   }
 
   def kotizo(form: Jes2015Aligxilo) = {
-    def rabataMultiplikanto: Double = {
+    lazy val rabataMultiplikanto: Double = {
       1 - frualigxaRabato - studentaRabato
     }
 
@@ -58,7 +65,7 @@ object Jes2015Kotizo {
 
     lazy val studento_? = form.getFieldValue(form.studento) == Some(true)
 
-    lazy val studentaRabato: Double = {
+    def studentaRabato: Double = {
       if(studento_?) Prezoj.studentaRabato  else 0
     }
 
@@ -94,7 +101,7 @@ object Jes2015Kotizo {
       val landoKategorio = if(aLandoj.contains(lando)) 0 else if (bLandoj.contains(lando)) 1 else 2
 
 
-      val programo = Prezoj.programo(agxKategorio)(landoKategorio) * scala.math.min((1+noktoj),7).toDouble/7 * rabataMultiplikanto
+      val programo = Prezoj.programo(agxKategorio)(landoKategorio) * scala.math.min(1+noktoj,7).toDouble/7 * rabataMultiplikanto
 
       Map( s"Programkotizo" -> programo)
     }
@@ -113,43 +120,54 @@ object Jes2015Kotizo {
       val prezoTagmangxo = Prezoj.vespermangxo * rabataMultiplikanto
       val prezoVespermangxo = Prezoj.vespermangxo * rabataMultiplikanto
 
-      Map(s"Matenmangxoj (${kiomMatenmangxoj}x${prezoMatenmangxo})" -> kiomMatenmangxoj*prezoMatenmangxo,
-        s"Tagmangxoj (${kiomTagmangxoj}x${prezoTagmangxo})" -> kiomTagmangxoj*prezoTagmangxo,
-        s"Vespermangxoj (${kiomVespermangxoj}x${prezoVespermangxo})" -> kiomVespermangxoj*prezoVespermangxo)
+      Map(s"Matenmanĝoj ($kiomMatenmangxoj foje %.2f)".format(prezoMatenmangxo) -> kiomMatenmangxoj*prezoMatenmangxo,
+        s"Tagmanĝoj ($kiomTagmangxoj foje %.2f)".format(prezoTagmangxo) -> kiomTagmangxoj*prezoTagmangxo,
+        s"Vespermanĝoj ($kiomVespermangxoj foje %.2f)".format(prezoVespermangxo) -> kiomVespermangxoj*prezoVespermangxo)
     }
 
     val logxado: Map[String, Euroj] = {
 
       val logxelekto = form.getFieldValue(form.logxado).get.value
 
-      val prezoKundusxejo = Prezoj.tranokto(2) * rabataMultiplikanto
-      val prezoSendusxejo = Prezoj.tranokto(1) * rabataMultiplikanto
-      val prezoAmasejo = Prezoj.tranokto(0) * rabataMultiplikanto
+      val prezoSendusxejo = Prezoj.tranoktoSendusxeja * rabataMultiplikanto
+      val prezoAmasejo = Prezoj.tranoktoAmasejo * rabataMultiplikanto
 
-      val imposto: Euroj = if(studento_?) 0 else Prezoj.imposto
+      val prezo2persona = Prezoj.tranokto2persona * rabataMultiplikanto
+      val prezo4persona = Prezoj.tranokto4persona * rabataMultiplikanto
+      val prezo6persona = Prezoj.tranokto6persona * rabataMultiplikanto
 
       (logxelekto match {
         case "2-lita-cxambro" => Map(
-          s"Cxambro kun propra dusxejo (${noktoj}x${prezoKundusxejo})" -> noktoj * prezoKundusxejo,
+          s"Ĉambro kun propra duŝejo ($noktoj foje %.2f)".format(prezo2persona) -> noktoj * prezo2persona,
           "Dulita krompago" ->  Prezoj.dulitaKrompago
         )
         case "4-5-lita-cxambro-dusxejo" => Map(
-          "Cxambro kun propra dusxejo (${noktoj}x${prezoKundusxejo})" -> noktoj * prezoKundusxejo
+          s"Ĉambro kun propra duŝejo ($noktoj foje %.2f)".format(prezo4persona) -> noktoj * prezo4persona
         )
-        case "4-5-lita-cxambro-sen-dusxejo" => Map(
-          "Cxambro kun koridora dusxejo (${noktoj}x${prezoSendusxejo})" -> noktoj * prezoSendusxejo
+        case "6-lita-cxambro-dusxejo" => Map(
+          s"Ĉambro kun propra duŝejo ($noktoj foje %.2f)".format(prezo6persona) -> noktoj * prezo6persona
         )
-        case "memzorge" => Map("Memzorga logxado" -> 0)
-
+        case "4/14-lita-cxambro-sen-dusxejo" => Map(
+          s"Ĉambro kun koridora duŝejo ($noktoj foje %.2f)".format(prezoSendusxejo) -> noktoj * prezoSendusxejo
+        )
         case _: String => Map(
-          "Amasejo (${noktoj}x${prezoAmasejo})" -> noktoj * prezoAmasejo
+          s"Amasejo ($noktoj foje %.2f)".format(prezoAmasejo) -> noktoj * prezoAmasejo
         )
-      }).updated("Imposto por hungara ", imposto).mapValues(_.asInstanceOf[Euroj])
+      }).updated(s"Imposto por hungara ŝtato ($noktoj foje )".format(Prezoj.imposto), Prezoj.imposto*noktoj).mapValues(_.asInstanceOf[Euroj])
 
 
     }
 
-    Kotizo(mangxado ++ logxado ++ programo) //++ invitletero
+    val invitletero: Map[String, Euroj] = {
+
+      val invitletero_? : Boolean = ??? // TODO sprawdzic z forma czy ma bŭc invitletero
+
+      Map(s"Invitletero" -> Prezoj.invitletero * (if(invitletero_?) 1 else 0))
+    }
+
+
+    val finaPrezo: Map[String, Euroj] = (mangxado ++ logxado ++ programo ++ invitletero).map{ case (kio, prezo) => (kio, math.ceil(prezo))}
+    Kotizo(finaPrezo)
   }
 
 
