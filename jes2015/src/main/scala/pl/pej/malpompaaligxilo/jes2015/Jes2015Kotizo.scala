@@ -1,5 +1,7 @@
 package pl.pej.malpompaligxilo.jes2015
 
+import scala.collection.immutable.ListMap
+
 object Jes2015Kotizo {
   type Euroj = Double
 
@@ -30,7 +32,7 @@ object Jes2015Kotizo {
 
   def kotizo(form: Jes2015Aligxilo) = {
     lazy val rabataMultiplikanto: Double = {
-      1 - frualigxaRabato - studentaRabato
+      (1 - frualigxaRabato) * (1 - studentaRabato)
     }
 
     def frualigxaRabato: Double = {
@@ -86,8 +88,8 @@ object Jes2015Kotizo {
 
       val naskiita = form.dates.str2millis(form.getFieldValue(form.naskigxdato).get)
 
-      val agxKategorio = if(naskiita > form.dates.str2millis("1999-12-26")) 0
-      else if(naskiita > form.dates.str2millis("19`4-12-26")) 1
+      val agxKategorio = if(naskiita > form.dates.str2millis("2000-12-26")) 0
+      else if(naskiita > form.dates.str2millis("1985-12-26")) 1
       else 2
 
 
@@ -113,12 +115,12 @@ object Jes2015Kotizo {
       val vespermangxo: Boolean = form.getFieldValue(form.vespermangxoj).getOrElse(false)
 
       val kiomMatenmangxoj = noktoj
-      val kiomTagmangxoj = noktoj - 1
+      val kiomTagmangxoj = math.max(0, noktoj - 1)
       val kiomVespermangxoj = noktoj - cxeesto("31/1").toInt // silvestre ne estas vespermangxo
 
-      val prezoMatenmangxo = Prezoj.matenmangxo * rabataMultiplikanto
-      val prezoTagmangxo = Prezoj.vespermangxo * rabataMultiplikanto
-      val prezoVespermangxo = Prezoj.vespermangxo * rabataMultiplikanto
+      val prezoMatenmangxo = Prezoj.matenmangxo * rabataMultiplikanto * matenmangxo.toInt
+      val prezoTagmangxo = Prezoj.tagmangxo * rabataMultiplikanto * tagmangxo.toInt
+      val prezoVespermangxo = Prezoj.vespermangxo * rabataMultiplikanto * vespermangxo.toInt
 
       Map(s"Matenmanĝoj ($kiomMatenmangxoj foje %.2f)".format(prezoMatenmangxo) -> kiomMatenmangxoj*prezoMatenmangxo,
         s"Tagmanĝoj ($kiomTagmangxoj foje %.2f)".format(prezoTagmangxo) -> kiomTagmangxoj*prezoTagmangxo,
@@ -136,10 +138,10 @@ object Jes2015Kotizo {
       val prezo4persona = Prezoj.tranokto4persona * rabataMultiplikanto
       val prezo6persona = Prezoj.tranokto6persona * rabataMultiplikanto
 
-      (logxelekto match {
+      logxelekto match {
         case "2-lita-cxambro" => Map(
           s"Ĉambro kun propra duŝejo ($noktoj foje %.2f)".format(prezo2persona) -> noktoj * prezo2persona,
-          "Dulita krompago" ->  Prezoj.dulitaKrompago
+          "Dulita krompago" -> Prezoj.dulitaKrompago
         )
         case "4-5-lita-cxambro-dusxejo" => Map(
           s"Ĉambro kun propra duŝejo ($noktoj foje %.2f)".format(prezo4persona) -> noktoj * prezo4persona
@@ -153,9 +155,7 @@ object Jes2015Kotizo {
         case _: String => Map(
           s"Amasejo ($noktoj foje %.2f)".format(prezoAmasejo) -> noktoj * prezoAmasejo
         )
-      }).updated(s"Imposto por hungara ŝtato ($noktoj foje )".format(Prezoj.imposto), Prezoj.imposto*noktoj).mapValues(_.asInstanceOf[Euroj])
-
-
+      }
     }
 
     val invitletero: Map[String, Euroj] = {
@@ -165,8 +165,18 @@ object Jes2015Kotizo {
       Map(s"Invitletero" -> Prezoj.invitletero * (if(invitletero_?) 1 else 0))
     }
 
+    val imposto: ListMap[String, Euroj] = {
 
-    val finaPrezo: Map[String, Euroj] = (mangxado ++ logxado ++ programo ++ invitletero).map{ case (kio, prezo) => (kio, math.ceil(prezo))}
+      val naskiita = form.dates.str2millis(form.getFieldValue(form.naskigxdato).get)
+
+      if(naskiita > form.dates.str2millis("1997-12-26"))
+        ListMap(
+          s"Imposto por hungara ŝtato ($noktoj foje %.2f)".format(Prezoj.imposto) ->  Prezoj.imposto*noktoj
+        )
+      else ListMap()
+    }
+
+    val finaPrezo: ListMap[String, Euroj] = ListMap() ++ mangxado ++ logxado ++ programo ++ invitletero
     Kotizo(finaPrezo)
   }
 
