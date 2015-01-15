@@ -176,7 +176,7 @@ object Jes2015Kotizo {
       else ListMap()
     }
 
-    val finaPrezo: ListMap[String, Euroj] = ListMap() ++ mangxado ++ logxado ++ programo ++ invitletero
+    val finaPrezo: ListMap[String, Euroj] = ListMap() ++ mangxado ++ logxado ++ imposto ++ programo ++ invitletero
     Kotizo(finaPrezo)
   }
 

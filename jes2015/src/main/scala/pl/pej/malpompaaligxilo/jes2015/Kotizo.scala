@@ -7,7 +7,7 @@ import scala.collection.immutable.ListMap
 case class Kotizo(kotizoj: ListMap[String, Euroj], sumo: Euroj) {
   override def toString: String = str
 
-  def str: String = (kotizoj map {
+  def str: String = (kotizoj.filterNot{case (priskribo, prezo) => prezo == 0} map {
     case (priskribo, prezo) =>
       s"$priskribo: $prezo"
   }).mkString("</br>") + s"</br><strong>Sume:</strong> %.2f".format(sumo)
