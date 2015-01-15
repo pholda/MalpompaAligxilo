@@ -1,0 +1,17 @@
+@(result: pl.pej.malpompaligxilo.form.FailureValidation)
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>PEJ-semajnfino Aliĝilo | Zapis na Weekend PEJowy</title>
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap.min.css")" />
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap-theme.min.css")" />
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/semajnfino.css")" />
+    </head>
+    <body>
+        W formularzu wystąpiły błędy | En via aliĝo okazis eraroj:<br>
+        @{result.errors.map{
+            case (f, e) => Html(f.caption("eo") + " | " + f.caption("pl") + " - " + e.message("eo") + " | " + e.message("pl")+"<br>")
+        }}
+    </body>
+</html>

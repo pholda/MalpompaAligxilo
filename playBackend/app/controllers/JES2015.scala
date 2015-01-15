@@ -14,7 +14,7 @@ import play.api.libs.mailer.{Email, MailerPlugin}
 import play.api.mvc._
 import views._
 
-object Application extends Controller {
+object JES2015 extends Controller {
 
   
   def index = Action {

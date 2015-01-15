@@ -10,4 +10,8 @@ package object malpompaaligxilo {
   val field: Field[_] => Html = {field: Field[_] =>
     views.html.malpompaaligxilo.field(field)
   }
+
+  val pleoField: Field[_] => Html = {field: Field[_] =>
+    views.html.malpompaaligxilo.pleoField(field)
+  }
 }

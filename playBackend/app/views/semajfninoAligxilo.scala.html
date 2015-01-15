@@ -1,0 +1,31 @@
+@(form: pl.pej.malpompaaligxilo.semajnfino.SemajnfinoAligxilo)
+@import views.html.malpompaaligxilo.pleoField
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>PEJ-semajnfino Aliĝilo | Zapis na Weekend PEJowy</title>
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap.min.css")" />
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap-theme.min.css")" />
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/semajnfino.css")" />
+    </head>
+    <body>
+        <form id="aligxilo" action="@routes.Semajnfino.submit" method="post" class="form-horizontal">
+            <div>Formularz zapisowy na Weekend PEJowy (16-18.01)</div>
+            <div>Aliĝilo por PEJ-semajnfino (16-18.01)</div>
+            @pleoField(form.personaNomo)
+            @pleoField(form.familiaNomo)
+            @pleoField(form.retposxtadreso)
+            @pleoField(form.telefonnumero)
+            @pleoField(form.urbo)
+            @pleoField(form.alveno)
+            @pleoField(form.esperanto)
+            @pleoField(form.komentoj)
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input type="submit" value="aliĝu! | zapisz się!" name="sendu" />
+                </div>
+            </div>
+        </form>
+    </body>
+</html>

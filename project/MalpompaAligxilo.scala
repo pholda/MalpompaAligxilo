@@ -15,12 +15,25 @@ object MalpompaAligxilo extends Build {
       name := "malpompaAligxilo",
       scalaVersion := "2.11.1"
     )
-  ).aggregate(jes2015, core, playBackend, simpleBack)
+  ).aggregate(jes2015, core, playBackend, semajnfino)
 
   lazy val jes2015 = Project(id = "jes2015",
     base = file("jes2015"),
     settings = defaults ++ scalaJSSettings ++ List(
       name := "jes2015",
+      libraryDependencies ++= Seq(
+        "org.scala-lang.modules.scalajs" %%% "scalajs-jquery" % "0.6",
+        "joda-time" % "joda-time" % "2.0",
+        "com.github.nscala-time" %% "nscala-time" % "1.6.0"
+      ),
+      skip in ScalaJSKeys.packageJSDependencies := false
+    )
+  ).dependsOn(core)
+
+  lazy val semajnfino = Project(id = "semajnfino",
+    base = file("semajnfino"),
+    settings = defaults ++ scalaJSSettings ++ List(
+      name := "semajnfino",
       libraryDependencies ++= Seq(
         "org.scala-lang.modules.scalajs" %%% "scalajs-jquery" % "0.6",
         "joda-time" % "joda-time" % "2.0",
@@ -55,10 +68,5 @@ object MalpompaAligxilo extends Build {
         "com.github.nscala-time" %% "nscala-time" % "1.6.0"
       )
     )
-  ).dependsOn(core, jes2015).enablePlugins(play.PlayScala)
-
-  lazy val simpleBack = Project(id = "SimpleBack",
-    base = file("simpleBack"),
-    settings = Defaults.defaultSettings
-  )
+  ).dependsOn(core, jes2015, semajnfino).enablePlugins(play.PlayScala)
 }
