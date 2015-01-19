@@ -17,7 +17,7 @@ class Jes2015Aligxilo(val dates: Dates, val _getRawFieldValue: FieldName => Seq[
 
   override def fields: List[Field[_]] =
     personaNomo :: familiaNomo :: kromnomo :: naskigxdato :: sub18 :: genro :: retposxtadreso :: tujmesagxilo ::
-      telefonnumero :: lando :: adreso :: studento :: studento2 :: studentoFako :: studentoNumero :: invitilo :: pasportnumero :: pasportovalideco :: invitiloAdreso ::
+      telefonnumero :: lando :: adreso :: studento :: studentoFako :: invitilo :: pasportnumero :: pasportovalideco :: invitiloAdreso ::
       adresaro :: logxado :: logxadoGea :: logxadoPrefero :: logxadoKun :: cxeesto :: cxeestoElekto ::
       mangxadoBalo :: matenmangxoj :: tagmangxoj :: vespermangxoj :: matenmangxoPrefero :: mangxtipo :: mangxtipoKlarigo ::
       mangxtipo2  :: ludejoKontribuo :: ludiMuzikilon :: kielLudos :: muzikgrupoNomo :: miKunportos :: dejxoriHelpo :: gxeneralaHelpado ::
@@ -154,15 +154,6 @@ class Jes2015Aligxilo(val dates: Dates, val _getRawFieldValue: FieldName => Seq[
     caption = I18nString("eo" -> "Mi estas plentempa studento"),
     `type` = CheckboxField(default = false)
   )
-  val studento2 = Field(
-    name = "studento2",
-    caption = I18nString("eo" -> "Dum la JES mi daŭre estos studento"),
-    `type` = CheckboxField(default = false),
-    visible = { f =>
-      val r = f.getFieldValue(studento)
-      r == Some(true)
-    }
-  )
   val studentoFako = Field(
     name = "studentoFako",
     caption = I18nString("eo" -> "Mi studas"),
@@ -171,18 +162,12 @@ class Jes2015Aligxilo(val dates: Dates, val _getRawFieldValue: FieldName => Seq[
       f.getFieldValue(studento) == Some(true)
     }
   )
-  val studentoNumero = Field(
-    name = "studentoNumero",
-    caption = I18nString("eo" -> "Studentkarto numero"),
-    `type` = StringField(),
-    visible = _.getFieldValue(studento) == Some(true)
-  )
 
 
   val invitilo = Field(
     name = "invitilo",
     caption = I18nString("eo" -> "Mi bezonas invitilon"),
-    description = Some(I18nString("eo" -> "Ŝtampita-subskribita invitletero.")),
+    description = Some(I18nString("eo" -> "Se vi bezonas invitilon, indiku ĉi tie plej malfrue ĝis la 1a de septembro. Se oni post tio ne kontaktus vin ene de unu semajno, bv. skribi al la respondeculo (Saci).")),
     `type` = SelectField(
       options = List(
         EnumOption("ne", I18nString("eo" -> "ne")),
@@ -234,9 +219,11 @@ class Jes2015Aligxilo(val dates: Dates, val _getRawFieldValue: FieldName => Seq[
     //2-lita, 4-5 lita, amasloĝejo sur matraco, amasloĝejo surplanke
     `type` = SelectField(
       options = List(
-        EnumOption("2-lita-cxambro", I18nString("eo" -> "2-lita ĉambro")),
-        EnumOption("4-5-lita-cxambro-dusxejo", I18nString("eo" -> "4-5-lita ĉambro kun duŝejo")),
-        EnumOption("4-5-lita-cxambro-sen-dusxejo", I18nString("eo" -> "4-5-lita ĉambro kun duŝejo fine de la koridoro")),
+        EnumOption("2-lita-cxambro", I18nString("eo" -> "2/3 lita kun duŝejo")),
+        EnumOption("4-5-lita-cxambro-dusxejo", I18nString("eo" -> "4/5 lita kun duŝejo")),
+        EnumOption("6-lita-cxambro-dusxejo", I18nString("eo" -> "6 lita kun duŝejo")),
+        EnumOption("4-lita-cxambro-sen-dusxejo", I18nString("eo" -> "4 lita sen duŝejo")),
+        EnumOption("14-lita-cxambro-sen-dusxejo", I18nString("eo" -> "14 lita kun duŝejo en apuda konstruaĵo")),
         EnumOption("amaslogxejo-matraco", I18nString("eo" -> "amasloĝejo sur matraco")),
         EnumOption("amaslogxejo-surplanke", I18nString("eo" -> "amasloĝejo surplanke"))
       )

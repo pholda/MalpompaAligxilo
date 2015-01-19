@@ -35,6 +35,8 @@ object Jes2015Kotizo {
       (1 - frualigxaRabato) * (1 - studentaRabato)
     }
 
+    import form._
+
     def frualigxaRabato: Double = {
 
       if (form.getFieldValue(form.invitilo).exists(_.value == "jes")) {
@@ -149,7 +151,10 @@ object Jes2015Kotizo {
         case "6-lita-cxambro-dusxejo" => Map(
           s"Ĉambro kun propra duŝejo ($noktoj foje %.2f)".format(prezo6persona) -> noktoj * prezo6persona
         )
-        case "4/14-lita-cxambro-sen-dusxejo" => Map(
+        case "4-lita-cxambro-sen-dusxejo" => Map(
+          s"Ĉambro kun koridora duŝejo ($noktoj foje %.2f)".format(prezoSendusxejo) -> noktoj * prezoSendusxejo
+        )
+        case "14-lita-cxambro-sen-dusxejo" => Map(
           s"Ĉambro kun koridora duŝejo ($noktoj foje %.2f)".format(prezoSendusxejo) -> noktoj * prezoSendusxejo
         )
         case _: String => Map(
@@ -160,7 +165,7 @@ object Jes2015Kotizo {
 
     val invitletero: Map[String, Euroj] = {
 
-      val invitletero_? : Boolean = ??? // TODO sprawdzic z forma czy ma bŭc invitletero
+      val invitletero_? : Boolean = getFieldValue(invitilo).exists(_.value == "jes")
 
       Map(s"Invitletero" -> Prezoj.invitletero * (if(invitletero_?) 1 else 0))
     }

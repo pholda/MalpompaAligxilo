@@ -29,3 +29,18 @@
 input[type=text],textarea,select {
     width: 400px;
 }
+
+#_kotizo {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 400px;
+
+}
+
+#_kotizo div {
+    display: inline-block;
+}
+#_kotizo div div {
+    width: auto;
+}
