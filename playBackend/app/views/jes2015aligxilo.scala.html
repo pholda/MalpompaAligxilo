@@ -5,8 +5,10 @@
     <head>
         <meta charset="UTF-8">
         <title>JES 2015 Aliĝilo</title>
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap.min.css")" />
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap-theme.min.css")" />
         <link rel="stylesheet" href="@routes.Assets.at("jquery-ui-1.11.2.custom/jquery-ui.min.css")" />
-        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/style.css")" />
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/jes2015.css")" />
     </head>
     <body>
             <!-- Include Scala.js compiled code -->
@@ -28,7 +30,15 @@
         </script>
 
         <script type="text/javascript" src="/assets/javascripts/jes2015-fastopt.js"></script>
-        <form id="aligxilo" action="@routes.JES2015.submit()" method="post">
+        <form id="aligxilo" action="@routes.JES2015.submit()" method="post" class="form-horizontal">
+            <div id="_kotizo">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <strong>Kalkulita kotizo:</strong>
+                        <span data-name="kotizo" class="formExpression"></span>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <h1>Personaj datumoj</h1>
             </div>
@@ -82,7 +92,6 @@
             @field(form.donacoKvoto)
             @field(form.donacoKialo)
             @field(form.donacoKialoKlarigo)
-            <div id="_kotizo">@field(form.kotizo)</div>
             @field(form.miPagos)
 
             @field(form.miPagosGxis)
@@ -101,8 +110,13 @@
             @field(form.gxeneralaHelpado)
 
             @field(form.programkontribuo)
-            <div class="row"><input type="submit" value="aliĝu!" name="sendu" /></div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input type="submit" value="aliĝu!" name="sendu" class="btn btn-default" />
+                </div>
+            </div>
         </form>
+        <div class="plendu">Aliĝilo starigita per&nbsp;<em>MalpompaAliĝilo</em>. Bv.&nbsp;sendi plendojn al piotr.holda&nbsp;ĈE&nbsp;pej.pl&nbsp;.</div>
         <script type="text/javascript">
         pl.pej.malpompaligxilo.jes2015.Jes2015Form().main();
         </script>

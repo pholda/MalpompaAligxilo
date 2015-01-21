@@ -9,8 +9,8 @@ case class Kotizo(kotizoj: ListMap[String, Euroj], sumo: Euroj) {
 
   def str: String = (kotizoj.filterNot{case (priskribo, prezo) => prezo == 0} map {
     case (priskribo, prezo) =>
-      s"$priskribo: $prezo"
-  }).mkString("</br>") + s"</br><strong>Sume:</strong> %.2f".format(sumo)
+      s"${priskribo}:&nbsp;%.2f€".format(prezo)
+  }).mkString(", ") + s"</br><strong>Sume:</strong>&nbsp;%.2f€".format(sumo)
 }
 
 object Kotizo {

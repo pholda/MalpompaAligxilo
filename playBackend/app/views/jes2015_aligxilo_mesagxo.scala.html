@@ -1,11 +1,17 @@
 @(form: pl.pej.malpompaligxilo.jes2015.Jes2015Aligxilo)
 @import views.html.malpompaaligxilo.fieldvalue
-
+<html>
+    <head>
+        <meta charset="UTF-8" />
+    </head>
+    <body>
+<h1>
 Saluton! Dankon por via aliĝo al JES en Eger, Hungario!
-Sube vi vidas viajn datumojn. Bv. relegi kaj nepre skribu al @Html("jes@pej.pl") se io ne ĝustas, aŭ intertempe ŝanĝiĝas viaj mendoj.
-Tion vi povas fari ĝis la 1-a de decembro.
-Amike,
-la teamo de JES
+</h1>
+<h3>Sube vi vidas viajn datumojn. Bv. relegi kaj nepre skribu al @Html("jes@pej.pl") se io ne ĝustas, aŭ intertempe ŝanĝiĝas viaj mendoj.
+Tion vi povas fari ĝis la 1-a de decembro.<br/>
+Amike,<br/>
+la teamo de JES</h3>
 
     <h1>Personaj datumoj</h1>
 @fieldvalue(form, form.personaNomo)
@@ -65,3 +71,5 @@ la teamo de JES
 @fieldvalue(form, form.dejxoriHelpo)
 @fieldvalue(form, form.gxeneralaHelpado)
 @fieldvalue(form, form.programkontribuo)
+    </body>
+</html>

@@ -11,7 +11,7 @@
         case Field(_, _, CalculateField(formula), _, _, _, _, _, _) =>
             formula(form) match {
                 case d: Double => new DecimalFormat("#.##").format(d)
-                case x => x.toString
+                case x => Html(x.toString)
             }
         case _ => form.getFieldValue(field).getOrElse("") match {
             case d: Double => new DecimalFormat("#.##").format(d)

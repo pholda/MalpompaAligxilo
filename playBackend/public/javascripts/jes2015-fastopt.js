@@ -2539,18 +2539,7 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Form$.prototype.init___ = (func
 ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Form$.prototype.calculableField$1__p1__sr_ObjectRef__sr_VolatileByteRef__sci_List = (function(calculableField$lzy$1, bitmap$0$1) {
   return (((bitmap$0$1.elem$1 & 1) === 0) ? this.calculableField$lzycompute$1__p1__sr_ObjectRef__sr_VolatileByteRef__sci_List(calculableField$lzy$1, bitmap$0$1) : ScalaJS.as.sci_List(calculableField$lzy$1.elem$1))
 });
-ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Form$.prototype.main__V = (function() {
-  var calculableField$lzy = new ScalaJS.c.sr_ObjectRef().init___O(null);
-  var bitmap$0 = new ScalaJS.c.sr_VolatileByteRef().init___B(0);
-  var jqForm = (0, ScalaJS.g["jQuery"])("#aligxilo");
-  jqForm["find"](":input")["change"]((function(jqForm$1, calculableField$lzy$1, bitmap$0$1) {
-    return (function(e$2) {
-      return (ScalaJS.m.Lpl_pej_malpompaligxilo_jes2015_Jes2015Form().pl$pej$malpompaligxilo$jes2015$Jes2015Form$$refresh$1__Lorg_scalajs_jquery_JQuery__sr_ObjectRef__sr_VolatileByteRef__V(jqForm$1, calculableField$lzy$1, bitmap$0$1), (void 0))
-    })
-  })(jqForm, calculableField$lzy, bitmap$0));
-  this.pl$pej$malpompaligxilo$jes2015$Jes2015Form$$refresh$1__Lorg_scalajs_jquery_JQuery__sr_ObjectRef__sr_VolatileByteRef__V(jqForm, calculableField$lzy, bitmap$0)
-});
-ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Form$.prototype.pl$pej$malpompaligxilo$jes2015$Jes2015Form$$refresh$1__Lorg_scalajs_jquery_JQuery__sr_ObjectRef__sr_VolatileByteRef__V = (function(jqForm$1, calculableField$lzy$1, bitmap$0$1) {
+ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Form$.prototype.pl$pej$malpompaligxilo$jes2015$Jes2015Form$$refresh$1__sr_ObjectRef__sr_VolatileByteRef__V = (function(calculableField$lzy$1, bitmap$0$1) {
   var this$1 = this.pl$pej$malpompaligxilo$jes2015$Jes2015Form$$form$1.fields__sci_List();
   var these = this$1;
   while ((!these.isEmpty__Z())) {
@@ -2558,7 +2547,7 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Form$.prototype.pl$pej$malpompa
     var f = ScalaJS.as.Lpl_pej_malpompaligxilo_form_Field(f$2);
     try {
       var v = ScalaJS.uZ(f.visible$2.apply__O__O(ScalaJS.m.Lpl_pej_malpompaligxilo_jes2015_Jes2015Form().pl$pej$malpompaligxilo$jes2015$Jes2015Form$$form$1));
-      var jsx$2 = jqForm$1["find"](new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["[name='", "'], [data-name=", "]"])).s__sc_Seq__T(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([f.name$2, f.name$2])))["parents"]("div.row");
+      var jsx$2 = (0, ScalaJS.g["jQuery"])(new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["[name='", "'], [data-name=", "]"])).s__sc_Seq__T(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([f.name$2, f.name$2])))["parents"]("div.form-group");
       if (v) {
         var jsx$1 = "block"
       } else if ((!v)) {
@@ -2594,14 +2583,15 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Form$.prototype.pl$pej$malpompa
           var x10 = ScalaJS.as.Lpl_pej_malpompaligxilo_form_field_CalculateField(p3);
           var formula = x10.formula$2;
           try {
-            var jsx$3 = jqForm$1["find"](new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([".formExpression[data-name='", "']"])).s__sc_Seq__T(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([name])));
+            var jsx$3 = (0, ScalaJS.g["jQuery"])(new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([".formExpression[data-name='", "']"])).s__sc_Seq__T(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([name])));
             var x1$2 = formula.apply__O__O(ScalaJS.m.Lpl_pej_malpompaligxilo_jes2015_Jes2015Form().pl$pej$malpompaligxilo$jes2015$Jes2015Form$$form$1);
             jsx$3["html"](((typeof(x1$2) === "number") ? ScalaJS.as.T(x1$2["toFixed"](2)) : ScalaJS.objectToString(x1$2)));
             break matchEnd12
           } catch (ex$1) {
             ex$1 = ScalaJS.wrapJavaScriptException(ex$1);
             if (ScalaJS.is.jl_Exception(ex$1)) {
-              var x$1 = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["erraro2 cxe ", ""])).s__sc_Seq__T(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([name]));
+              var e$1 = ex$1;
+              var x$1 = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["erraro2 cxe ", " ", ""])).s__sc_Seq__T(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([name, e$1.getMessage__T()]));
               var this$7 = ScalaJS.m.s_Console();
               var this$8 = this$7.outVar$2;
               ScalaJS.as.Ljava_io_PrintStream(this$8.tl$1.get__O()).println__O__V(x$1);
@@ -2616,6 +2606,16 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Form$.prototype.pl$pej$malpompa
     };
     these$1 = ScalaJS.as.sci_List(these$1.tail__O())
   }
+});
+ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Form$.prototype.main__V = (function() {
+  var calculableField$lzy = new ScalaJS.c.sr_ObjectRef().init___O(null);
+  var bitmap$0 = new ScalaJS.c.sr_VolatileByteRef().init___B(0);
+  (0, ScalaJS.g["jQuery"])(":input")["change"]((function(calculableField$lzy$1, bitmap$0$1) {
+    return (function(e$2) {
+      return (ScalaJS.m.Lpl_pej_malpompaligxilo_jes2015_Jes2015Form().pl$pej$malpompaligxilo$jes2015$Jes2015Form$$refresh$1__sr_ObjectRef__sr_VolatileByteRef__V(calculableField$lzy$1, bitmap$0$1), (void 0))
+    })
+  })(calculableField$lzy, bitmap$0));
+  this.pl$pej$malpompaligxilo$jes2015$Jes2015Form$$refresh$1__sr_ObjectRef__sr_VolatileByteRef__V(calculableField$lzy, bitmap$0)
 });
 ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Form$.prototype.$$js$exported$meth$main__O = (function() {
   return (this.main__V(), (void 0))
@@ -2686,7 +2686,7 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Kotizo$.prototype.frualigxaRaba
     var jsx$1 = false
   };
   if (jsx$1) {
-    var pagoElekto = ScalaJS.as.Lpl_pej_malpompaligxilo_form_field_EnumOption(form$1.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form$1.miPagosGxis$2).get__O()).value$1;
+    var pagoElekto = ScalaJS.as.Lpl_pej_malpompaligxilo_form_field_EnumOption(form$1.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form$1.miPagos$2).get__O()).value$1;
     var currentDate = form$1.dates$2.getNowMillis__J();
     var y = form$1.dates$2.str2millis__T__J("2015-01-30");
     if (y.$$greater__sjsr_RuntimeLong__Z(currentDate)) {
@@ -2709,9 +2709,9 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Kotizo$.prototype.frualigxaRaba
         }
       }
     };
-    if (ScalaJS.anyRefEqEq("nurAntaupago", pagoElekto)) {
+    if (ScalaJS.anyRefEqEq("duonon", pagoElekto)) {
       return 0.0
-    } else if (ScalaJS.anyRefEqEq("tutaPago", pagoElekto)) {
+    } else if (ScalaJS.anyRefEqEq("tuton", pagoElekto)) {
       return aligxkategorioRabato
     } else {
       throw new ScalaJS.c.s_MatchError().init___O(pagoElekto)
@@ -3365,19 +3365,19 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Kotizo$.prototype.kotizo__Lpl_p
   };
   var prezoVespermangxo = ((jsx$35 * jsx$32) * this.bool2int__Z__I(vespermangxo));
   var jsx$38 = ScalaJS.m.s_Predef().Map$2;
-  var x = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["Matenman\u011doj (", " foje %.2f)"])).s__sc_Seq__T(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([kiomMatenmangxoj]));
+  var x = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["Matenman\u011doj (", "&nbsp;foje&nbsp;%.2f)"])).s__sc_Seq__T(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([kiomMatenmangxoj]));
   var this$82 = new ScalaJS.c.sci_StringOps().init___T(x);
   var args = new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([prezoMatenmangxo]);
   var $$this = ScalaJS.i.sci_StringLike$class__format__sci_StringLike__sc_Seq__T(this$82, args);
   var y$1 = (kiomMatenmangxoj * prezoMatenmangxo);
   var jsx$37 = new ScalaJS.c.T2().init___O__O($$this, y$1);
-  var x$1 = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["Tagman\u011doj (", " foje %.2f)"])).s__sc_Seq__T(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([kiomTagmangxoj]));
+  var x$1 = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["Tagman\u011doj (", "&nbsp;foje&nbsp;%.2f)"])).s__sc_Seq__T(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([kiomTagmangxoj]));
   var this$86 = new ScalaJS.c.sci_StringOps().init___T(x$1);
   var args$1 = new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([prezoTagmangxo]);
   var $$this$1 = ScalaJS.i.sci_StringLike$class__format__sci_StringLike__sc_Seq__T(this$86, args$1);
   var y$2 = (kiomTagmangxoj * prezoTagmangxo);
   var jsx$36 = new ScalaJS.c.T2().init___O__O($$this$1, y$2);
-  var x$3 = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["Vesperman\u011doj (", " foje %.2f)"])).s__sc_Seq__T(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([kiomVespermangxoj]));
+  var x$3 = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["Vesperman\u011doj (", "&nbsp;foje&nbsp;%.2f)"])).s__sc_Seq__T(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([kiomVespermangxoj]));
   var this$90 = new ScalaJS.c.sci_StringOps().init___T(x$3);
   var args$2 = new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([prezoVespermangxo]);
   var $$this$2 = ScalaJS.i.sci_StringLike$class__format__sci_StringLike__sc_Seq__T(this$90, args$2);
@@ -3491,7 +3491,7 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Kotizo$.prototype.kotizo__Lpl_p
   var prezo6persona = (jsx$58 * jsx$55);
   if (ScalaJS.anyRefEqEq("2-lita-cxambro", logxelekto)) {
     var jsx$77 = ScalaJS.m.s_Predef().Map$2;
-    var jsx$68 = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["\u0108ambro kun propra du\u015dejo (", " foje %.2f)"]));
+    var jsx$68 = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["\u0108ambro kun propra du\u015dejo (", "&nbsp;foje&nbsp;%.2f)"]));
     if (((elem$1$5 & 8) === 0)) {
       if (((elem$1$5 & 8) === 0)) {
         var this$93 = form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.cxeesto$2);
@@ -3850,7 +3850,7 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Kotizo$.prototype.kotizo__Lpl_p
     var logxado = ScalaJS.as.sci_Map(jsx$77.apply__sc_Seq__sc_GenMap(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([jsx$59, new ScalaJS.c.T2().init___O__O("Dulita krompago", y$5)])))
   } else if (ScalaJS.anyRefEqEq("4-5-lita-cxambro-dusxejo", logxelekto)) {
     var jsx$95 = ScalaJS.m.s_Predef().Map$2;
-    var jsx$86 = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["\u0108ambro kun propra du\u015dejo (", " foje %.2f)"]));
+    var jsx$86 = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["\u0108ambro kun propra du\u015dejo (", "&nbsp;foje&nbsp;%.2f)"]));
     if (((elem$1$5 & 8) === 0)) {
       if (((elem$1$5 & 8) === 0)) {
         var this$143 = form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.cxeesto$2);
@@ -4207,7 +4207,7 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Kotizo$.prototype.kotizo__Lpl_p
     var logxado = ScalaJS.as.sci_Map(jsx$95.apply__sc_Seq__sc_GenMap(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([new ScalaJS.c.T2().init___O__O($$this$4, y$6)])))
   } else if (ScalaJS.anyRefEqEq("6-lita-cxambro-dusxejo", logxelekto)) {
     var jsx$113 = ScalaJS.m.s_Predef().Map$2;
-    var jsx$104 = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["\u0108ambro kun propra du\u015dejo (", " foje %.2f)"]));
+    var jsx$104 = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["\u0108ambro kun propra du\u015dejo (", "&nbsp;foje&nbsp;%.2f)"]));
     if (((elem$1$5 & 8) === 0)) {
       if (((elem$1$5 & 8) === 0)) {
         var this$191 = form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.cxeesto$2);
@@ -4564,7 +4564,7 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Kotizo$.prototype.kotizo__Lpl_p
     var logxado = ScalaJS.as.sci_Map(jsx$113.apply__sc_Seq__sc_GenMap(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([new ScalaJS.c.T2().init___O__O($$this$5, y$7)])))
   } else if (ScalaJS.anyRefEqEq("4-lita-cxambro-sen-dusxejo", logxelekto)) {
     var jsx$131 = ScalaJS.m.s_Predef().Map$2;
-    var jsx$122 = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["\u0108ambro kun koridora du\u015dejo (", " foje %.2f)"]));
+    var jsx$122 = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["\u0108ambro kun koridora du\u015dejo (", "&nbsp;foje&nbsp;%.2f)"]));
     if (((elem$1$5 & 8) === 0)) {
       if (((elem$1$5 & 8) === 0)) {
         var this$239 = form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.cxeesto$2);
@@ -4921,7 +4921,7 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Kotizo$.prototype.kotizo__Lpl_p
     var logxado = ScalaJS.as.sci_Map(jsx$131.apply__sc_Seq__sc_GenMap(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([new ScalaJS.c.T2().init___O__O($$this$6, y$8)])))
   } else if (ScalaJS.anyRefEqEq("14-lita-cxambro-sen-dusxejo", logxelekto)) {
     var jsx$149 = ScalaJS.m.s_Predef().Map$2;
-    var jsx$140 = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["\u0108ambro kun koridora du\u015dejo (", " foje %.2f)"]));
+    var jsx$140 = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["\u0108ambro kun koridora du\u015dejo (", "&nbsp;foje&nbsp;%.2f)"]));
     if (((elem$1$5 & 8) === 0)) {
       if (((elem$1$5 & 8) === 0)) {
         var this$287 = form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.cxeesto$2);
@@ -5278,7 +5278,7 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Kotizo$.prototype.kotizo__Lpl_p
     var logxado = ScalaJS.as.sci_Map(jsx$149.apply__sc_Seq__sc_GenMap(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([new ScalaJS.c.T2().init___O__O($$this$7, y$9)])))
   } else if ((logxelekto !== null)) {
     var jsx$167 = ScalaJS.m.s_Predef().Map$2;
-    var jsx$158 = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["Amasejo (", " foje %.2f)"]));
+    var jsx$158 = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["Amasejo (", "&nbsp;foje&nbsp;%.2f)"]));
     if (((elem$1$5 & 8) === 0)) {
       if (((elem$1$5 & 8) === 0)) {
         var this$335 = form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.cxeesto$2);
@@ -5652,7 +5652,7 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Kotizo$.prototype.kotizo__Lpl_p
   var naskiita = form.dates$2.str2millis__T__J(ScalaJS.as.T(form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.naskigxdato$2).get__O()));
   if (naskiita.$$greater__sjsr_RuntimeLong__Z(form.dates$2.str2millis__T__J("1997-12-26"))) {
     var jsx$187 = ScalaJS.m.sci_ListMap();
-    var jsx$177 = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["Imposto por hungara \u015dtato (", " foje %.2f)"]));
+    var jsx$177 = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["Imposto por hungara \u015dtato (", "&nbsp;foje&nbsp;%.2f)"]));
     if (((elem$1$5 & 8) === 0)) {
       if (((elem$1$5 & 8) === 0)) {
         var this$386 = form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.cxeesto$2);
@@ -6011,32 +6011,50 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Kotizo$.prototype.kotizo__Lpl_p
   } else {
     var imposto = ScalaJS.as.sci_ListMap(ScalaJS.m.sci_ListMap().apply__sc_Seq__sc_GenMap(ScalaJS.m.sci_Nil()))
   };
-  var jsx$202 = ScalaJS.as.sci_ListMap(ScalaJS.m.sci_ListMap().apply__sc_Seq__sc_GenMap(ScalaJS.m.sci_Nil())).$$plus$plus__sc_GenTraversableOnce__sci_ListMap(mangxado).$$plus$plus__sc_GenTraversableOnce__sci_ListMap(logxado).$$plus$plus__sc_GenTraversableOnce__sci_ListMap(imposto);
+  var this$434 = form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.donacoKvoto$2);
+  var kvoto = ScalaJS.uI((this$434.isEmpty__Z() ? 0 : this$434.get__O()));
+  switch (kvoto) {
+    default:
+      if ((kvoto > 0)) {
+        var jsx$188 = ScalaJS.m.sci_ListMap();
+        var $$this$11 = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["Donaco al JES 2015"])).s__sc_Seq__T(ScalaJS.m.sci_Nil());
+        var donaco = ScalaJS.as.sci_ListMap(jsx$188.apply__sc_Seq__sc_GenMap(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([new ScalaJS.c.T2().init___O__O($$this$11, kvoto)])))
+      } else {
+        var donaco = ScalaJS.m.sci_ListMap$EmptyListMap()
+      };
+  };
+  var jsx$203 = ScalaJS.as.sci_ListMap(ScalaJS.m.sci_ListMap().apply__sc_Seq__sc_GenMap(ScalaJS.m.sci_Nil())).$$plus$plus__sc_GenTraversableOnce__sci_ListMap(mangxado).$$plus$plus__sc_GenTraversableOnce__sci_ListMap(logxado).$$plus$plus__sc_GenTraversableOnce__sci_ListMap(imposto);
   if (((elem$1$5 & 16) === 0)) {
     if (((elem$1$5 & 16) === 0)) {
       var naskiita$1 = form.dates$2.str2millis__T__J(ScalaJS.as.T(form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.naskigxdato$2).get__O()));
       var agxKategorio = (naskiita$1.$$greater__sjsr_RuntimeLong__Z(form.dates$2.str2millis__T__J("2000-12-26")) ? 0 : (naskiita$1.$$greater__sjsr_RuntimeLong__Z(form.dates$2.str2millis__T__J("1985-12-26")) ? 1 : 2));
       var lando = ScalaJS.as.Lpl_pej_malpompaligxilo_form_field_EnumOption(form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.lando$2).get__O()).value$1;
+      var this$439 = ScalaJS.m.s_Console();
+      var this$440 = this$439.outVar$2;
+      ScalaJS.as.Ljava_io_PrintStream(this$440.tl$1.get__O()).println__O__V(lando);
       var aLandoj = ScalaJS.as.sc_Seq(ScalaJS.m.sc_Seq().apply__sc_Seq__sc_GenTraversable(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["ad", "at", "bh", "be", "gb", "dk", "fi", "fr", "de", "ie", "is", "il", "it", "jp", "ca", "qa", "kw", "li", "lu", "mc", "nl", "no", "om", "sm", "sa", "se", "ch", "ae", "us"])));
       var bLandoj = ScalaJS.as.sc_Seq(ScalaJS.m.sc_Seq().apply__sc_Seq__sc_GenTraversable(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["al", "au", "ba", "bn", "bg", "cz", "ee", "gr", "es", "hu", "cy", "hr", "lt", "lv", "mk", "mt", "me", "nz", "pl", "pt", "ru", "rs", "sg", "sk", "si", "kr", "tw", "tr"])));
       var landoKategorio = (aLandoj.contains__O__Z(lando) ? 0 : (bLandoj.contains__O__Z(lando) ? 1 : 2));
-      var jsx$200 = ScalaJS.as.sc_SeqLike(ScalaJS.m.Lpl_pej_malpompaligxilo_jes2015_Jes2015Kotizo$Prezoj().programo$1.apply__I__O(agxKategorio)).apply__I__O(landoKategorio);
+      var this$442 = ScalaJS.m.s_Console();
+      var this$443 = this$442.outVar$2;
+      ScalaJS.as.Ljava_io_PrintStream(this$443.tl$1.get__O()).println__O__V(landoKategorio);
+      var jsx$201 = ScalaJS.as.sc_SeqLike(ScalaJS.m.Lpl_pej_malpompaligxilo_jes2015_Jes2015Kotizo$Prezoj().programo$1.apply__I__O(agxKategorio)).apply__I__O(landoKategorio);
       if (((elem$1$5 & 8) === 0)) {
         if (((elem$1$5 & 8) === 0)) {
-          var this$434 = form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.cxeesto$2);
-          if ((!this$434.isEmpty__Z())) {
-            var x$2$2$17 = this$434.get__O();
+          var this$444 = form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.cxeesto$2);
+          if ((!this$444.isEmpty__Z())) {
+            var x$2$2$17 = this$444.get__O();
             var x$2$18 = ScalaJS.as.Lpl_pej_malpompaligxilo_form_field_EnumOption(x$2$2$17);
-            var jsx$193 = ScalaJS.anyRefEqEq(x$2$18.value$1, "cxiun")
+            var jsx$194 = ScalaJS.anyRefEqEq(x$2$18.value$1, "cxiun")
           } else {
-            var jsx$193 = false
+            var jsx$194 = false
           };
-          if (jsx$193) {
+          if (jsx$194) {
             elem$1$3 = 7
           } else {
             if (((elem$1$5 & 4) === 0)) {
               if (((elem$1$5 & 4) === 0)) {
-                var this$436 = ScalaJS.as.sc_SetLike(form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.cxeestoElekto$2).get__O());
+                var this$446 = ScalaJS.as.sc_SetLike(form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.cxeestoElekto$2).get__O());
                 var f$120 = new ScalaJS.c.sjsr_AnonFunction1().init___sjs_js_Function1((function(x0$1$2$120) {
                   var x0$1$121 = ScalaJS.as.T2(x0$1$2$120);
                   if ((x0$1$121 !== null)) {
@@ -6046,19 +6064,19 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Kotizo$.prototype.kotizo__Lpl_p
                     throw new ScalaJS.c.s_MatchError().init___O(x0$1$121)
                   }
                 }));
-                var this$435 = ScalaJS.m.sci_Set();
-                var bf$120 = new ScalaJS.c.scg_GenSetFactory$$anon$1().init___scg_GenSetFactory(this$435);
-                elem$1$2 = ScalaJS.as.sci_Set(ScalaJS.i.sc_TraversableLike$class__map__sc_TraversableLike__F1__scg_CanBuildFrom__O(this$436, f$120, bf$120)).toSet__sci_Set();
+                var this$445 = ScalaJS.m.sci_Set();
+                var bf$120 = new ScalaJS.c.scg_GenSetFactory$$anon$1().init___scg_GenSetFactory(this$445);
+                elem$1$2 = ScalaJS.as.sci_Set(ScalaJS.i.sc_TraversableLike$class__map__sc_TraversableLike__F1__scg_CanBuildFrom__O(this$446, f$120, bf$120)).toSet__sci_Set();
                 elem$1$5 = (elem$1$5 | 4)
               };
-              var this$437 = ScalaJS.as.sci_Set(elem$1$2)
+              var this$447 = ScalaJS.as.sci_Set(elem$1$2)
             } else {
-              var this$437 = ScalaJS.as.sci_Set(elem$1$2)
+              var this$447 = ScalaJS.as.sci_Set(elem$1$2)
             };
-            var jsx$199 = this.bool2int__Z__I(this$437.contains__O__Z("27/28"));
+            var jsx$200 = this.bool2int__Z__I(this$447.contains__O__Z("27/28"));
             if (((elem$1$5 & 4) === 0)) {
               if (((elem$1$5 & 4) === 0)) {
-                var this$439 = ScalaJS.as.sc_SetLike(form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.cxeestoElekto$2).get__O());
+                var this$449 = ScalaJS.as.sc_SetLike(form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.cxeestoElekto$2).get__O());
                 var f$121 = new ScalaJS.c.sjsr_AnonFunction1().init___sjs_js_Function1((function(x0$1$2$121) {
                   var x0$1$122 = ScalaJS.as.T2(x0$1$2$121);
                   if ((x0$1$122 !== null)) {
@@ -6068,19 +6086,19 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Kotizo$.prototype.kotizo__Lpl_p
                     throw new ScalaJS.c.s_MatchError().init___O(x0$1$122)
                   }
                 }));
-                var this$438 = ScalaJS.m.sci_Set();
-                var bf$121 = new ScalaJS.c.scg_GenSetFactory$$anon$1().init___scg_GenSetFactory(this$438);
-                elem$1$2 = ScalaJS.as.sci_Set(ScalaJS.i.sc_TraversableLike$class__map__sc_TraversableLike__F1__scg_CanBuildFrom__O(this$439, f$121, bf$121)).toSet__sci_Set();
+                var this$448 = ScalaJS.m.sci_Set();
+                var bf$121 = new ScalaJS.c.scg_GenSetFactory$$anon$1().init___scg_GenSetFactory(this$448);
+                elem$1$2 = ScalaJS.as.sci_Set(ScalaJS.i.sc_TraversableLike$class__map__sc_TraversableLike__F1__scg_CanBuildFrom__O(this$449, f$121, bf$121)).toSet__sci_Set();
                 elem$1$5 = (elem$1$5 | 4)
               };
-              var this$440 = ScalaJS.as.sci_Set(elem$1$2)
+              var this$450 = ScalaJS.as.sci_Set(elem$1$2)
             } else {
-              var this$440 = ScalaJS.as.sci_Set(elem$1$2)
+              var this$450 = ScalaJS.as.sci_Set(elem$1$2)
             };
-            var jsx$198 = this.bool2int__Z__I(this$440.contains__O__Z("28/29"));
+            var jsx$199 = this.bool2int__Z__I(this$450.contains__O__Z("28/29"));
             if (((elem$1$5 & 4) === 0)) {
               if (((elem$1$5 & 4) === 0)) {
-                var this$442 = ScalaJS.as.sc_SetLike(form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.cxeestoElekto$2).get__O());
+                var this$452 = ScalaJS.as.sc_SetLike(form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.cxeestoElekto$2).get__O());
                 var f$122 = new ScalaJS.c.sjsr_AnonFunction1().init___sjs_js_Function1((function(x0$1$2$122) {
                   var x0$1$123 = ScalaJS.as.T2(x0$1$2$122);
                   if ((x0$1$123 !== null)) {
@@ -6090,19 +6108,19 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Kotizo$.prototype.kotizo__Lpl_p
                     throw new ScalaJS.c.s_MatchError().init___O(x0$1$123)
                   }
                 }));
-                var this$441 = ScalaJS.m.sci_Set();
-                var bf$122 = new ScalaJS.c.scg_GenSetFactory$$anon$1().init___scg_GenSetFactory(this$441);
-                elem$1$2 = ScalaJS.as.sci_Set(ScalaJS.i.sc_TraversableLike$class__map__sc_TraversableLike__F1__scg_CanBuildFrom__O(this$442, f$122, bf$122)).toSet__sci_Set();
+                var this$451 = ScalaJS.m.sci_Set();
+                var bf$122 = new ScalaJS.c.scg_GenSetFactory$$anon$1().init___scg_GenSetFactory(this$451);
+                elem$1$2 = ScalaJS.as.sci_Set(ScalaJS.i.sc_TraversableLike$class__map__sc_TraversableLike__F1__scg_CanBuildFrom__O(this$452, f$122, bf$122)).toSet__sci_Set();
                 elem$1$5 = (elem$1$5 | 4)
               };
-              var this$443 = ScalaJS.as.sci_Set(elem$1$2)
+              var this$453 = ScalaJS.as.sci_Set(elem$1$2)
             } else {
-              var this$443 = ScalaJS.as.sci_Set(elem$1$2)
+              var this$453 = ScalaJS.as.sci_Set(elem$1$2)
             };
-            var jsx$197 = this.bool2int__Z__I(this$443.contains__O__Z("29/30"));
+            var jsx$198 = this.bool2int__Z__I(this$453.contains__O__Z("29/30"));
             if (((elem$1$5 & 4) === 0)) {
               if (((elem$1$5 & 4) === 0)) {
-                var this$445 = ScalaJS.as.sc_SetLike(form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.cxeestoElekto$2).get__O());
+                var this$455 = ScalaJS.as.sc_SetLike(form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.cxeestoElekto$2).get__O());
                 var f$123 = new ScalaJS.c.sjsr_AnonFunction1().init___sjs_js_Function1((function(x0$1$2$123) {
                   var x0$1$124 = ScalaJS.as.T2(x0$1$2$123);
                   if ((x0$1$124 !== null)) {
@@ -6112,19 +6130,19 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Kotizo$.prototype.kotizo__Lpl_p
                     throw new ScalaJS.c.s_MatchError().init___O(x0$1$124)
                   }
                 }));
-                var this$444 = ScalaJS.m.sci_Set();
-                var bf$123 = new ScalaJS.c.scg_GenSetFactory$$anon$1().init___scg_GenSetFactory(this$444);
-                elem$1$2 = ScalaJS.as.sci_Set(ScalaJS.i.sc_TraversableLike$class__map__sc_TraversableLike__F1__scg_CanBuildFrom__O(this$445, f$123, bf$123)).toSet__sci_Set();
+                var this$454 = ScalaJS.m.sci_Set();
+                var bf$123 = new ScalaJS.c.scg_GenSetFactory$$anon$1().init___scg_GenSetFactory(this$454);
+                elem$1$2 = ScalaJS.as.sci_Set(ScalaJS.i.sc_TraversableLike$class__map__sc_TraversableLike__F1__scg_CanBuildFrom__O(this$455, f$123, bf$123)).toSet__sci_Set();
                 elem$1$5 = (elem$1$5 | 4)
               };
-              var this$446 = ScalaJS.as.sci_Set(elem$1$2)
+              var this$456 = ScalaJS.as.sci_Set(elem$1$2)
             } else {
-              var this$446 = ScalaJS.as.sci_Set(elem$1$2)
+              var this$456 = ScalaJS.as.sci_Set(elem$1$2)
             };
-            var jsx$196 = this.bool2int__Z__I(this$446.contains__O__Z("30/31"));
+            var jsx$197 = this.bool2int__Z__I(this$456.contains__O__Z("30/31"));
             if (((elem$1$5 & 4) === 0)) {
               if (((elem$1$5 & 4) === 0)) {
-                var this$448 = ScalaJS.as.sc_SetLike(form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.cxeestoElekto$2).get__O());
+                var this$458 = ScalaJS.as.sc_SetLike(form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.cxeestoElekto$2).get__O());
                 var f$124 = new ScalaJS.c.sjsr_AnonFunction1().init___sjs_js_Function1((function(x0$1$2$124) {
                   var x0$1$125 = ScalaJS.as.T2(x0$1$2$124);
                   if ((x0$1$125 !== null)) {
@@ -6134,19 +6152,19 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Kotizo$.prototype.kotizo__Lpl_p
                     throw new ScalaJS.c.s_MatchError().init___O(x0$1$125)
                   }
                 }));
-                var this$447 = ScalaJS.m.sci_Set();
-                var bf$124 = new ScalaJS.c.scg_GenSetFactory$$anon$1().init___scg_GenSetFactory(this$447);
-                elem$1$2 = ScalaJS.as.sci_Set(ScalaJS.i.sc_TraversableLike$class__map__sc_TraversableLike__F1__scg_CanBuildFrom__O(this$448, f$124, bf$124)).toSet__sci_Set();
+                var this$457 = ScalaJS.m.sci_Set();
+                var bf$124 = new ScalaJS.c.scg_GenSetFactory$$anon$1().init___scg_GenSetFactory(this$457);
+                elem$1$2 = ScalaJS.as.sci_Set(ScalaJS.i.sc_TraversableLike$class__map__sc_TraversableLike__F1__scg_CanBuildFrom__O(this$458, f$124, bf$124)).toSet__sci_Set();
                 elem$1$5 = (elem$1$5 | 4)
               };
-              var this$449 = ScalaJS.as.sci_Set(elem$1$2)
+              var this$459 = ScalaJS.as.sci_Set(elem$1$2)
             } else {
-              var this$449 = ScalaJS.as.sci_Set(elem$1$2)
+              var this$459 = ScalaJS.as.sci_Set(elem$1$2)
             };
-            var jsx$195 = this.bool2int__Z__I(this$449.contains__O__Z("31/1"));
+            var jsx$196 = this.bool2int__Z__I(this$459.contains__O__Z("31/1"));
             if (((elem$1$5 & 4) === 0)) {
               if (((elem$1$5 & 4) === 0)) {
-                var this$451 = ScalaJS.as.sc_SetLike(form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.cxeestoElekto$2).get__O());
+                var this$461 = ScalaJS.as.sc_SetLike(form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.cxeestoElekto$2).get__O());
                 var f$125 = new ScalaJS.c.sjsr_AnonFunction1().init___sjs_js_Function1((function(x0$1$2$125) {
                   var x0$1$126 = ScalaJS.as.T2(x0$1$2$125);
                   if ((x0$1$126 !== null)) {
@@ -6156,19 +6174,19 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Kotizo$.prototype.kotizo__Lpl_p
                     throw new ScalaJS.c.s_MatchError().init___O(x0$1$126)
                   }
                 }));
-                var this$450 = ScalaJS.m.sci_Set();
-                var bf$125 = new ScalaJS.c.scg_GenSetFactory$$anon$1().init___scg_GenSetFactory(this$450);
-                elem$1$2 = ScalaJS.as.sci_Set(ScalaJS.i.sc_TraversableLike$class__map__sc_TraversableLike__F1__scg_CanBuildFrom__O(this$451, f$125, bf$125)).toSet__sci_Set();
+                var this$460 = ScalaJS.m.sci_Set();
+                var bf$125 = new ScalaJS.c.scg_GenSetFactory$$anon$1().init___scg_GenSetFactory(this$460);
+                elem$1$2 = ScalaJS.as.sci_Set(ScalaJS.i.sc_TraversableLike$class__map__sc_TraversableLike__F1__scg_CanBuildFrom__O(this$461, f$125, bf$125)).toSet__sci_Set();
                 elem$1$5 = (elem$1$5 | 4)
               };
-              var this$452 = ScalaJS.as.sci_Set(elem$1$2)
+              var this$462 = ScalaJS.as.sci_Set(elem$1$2)
             } else {
-              var this$452 = ScalaJS.as.sci_Set(elem$1$2)
+              var this$462 = ScalaJS.as.sci_Set(elem$1$2)
             };
-            var jsx$194 = this.bool2int__Z__I(this$452.contains__O__Z("1/2"));
+            var jsx$195 = this.bool2int__Z__I(this$462.contains__O__Z("1/2"));
             if (((elem$1$5 & 4) === 0)) {
               if (((elem$1$5 & 4) === 0)) {
-                var this$454 = ScalaJS.as.sc_SetLike(form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.cxeestoElekto$2).get__O());
+                var this$464 = ScalaJS.as.sc_SetLike(form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.cxeestoElekto$2).get__O());
                 var f$126 = new ScalaJS.c.sjsr_AnonFunction1().init___sjs_js_Function1((function(x0$1$2$126) {
                   var x0$1$127 = ScalaJS.as.T2(x0$1$2$126);
                   if ((x0$1$127 !== null)) {
@@ -6178,54 +6196,54 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Kotizo$.prototype.kotizo__Lpl_p
                     throw new ScalaJS.c.s_MatchError().init___O(x0$1$127)
                   }
                 }));
-                var this$453 = ScalaJS.m.sci_Set();
-                var bf$126 = new ScalaJS.c.scg_GenSetFactory$$anon$1().init___scg_GenSetFactory(this$453);
-                elem$1$2 = ScalaJS.as.sci_Set(ScalaJS.i.sc_TraversableLike$class__map__sc_TraversableLike__F1__scg_CanBuildFrom__O(this$454, f$126, bf$126)).toSet__sci_Set();
+                var this$463 = ScalaJS.m.sci_Set();
+                var bf$126 = new ScalaJS.c.scg_GenSetFactory$$anon$1().init___scg_GenSetFactory(this$463);
+                elem$1$2 = ScalaJS.as.sci_Set(ScalaJS.i.sc_TraversableLike$class__map__sc_TraversableLike__F1__scg_CanBuildFrom__O(this$464, f$126, bf$126)).toSet__sci_Set();
                 elem$1$5 = (elem$1$5 | 4)
               };
-              var this$455 = ScalaJS.as.sci_Set(elem$1$2)
+              var this$465 = ScalaJS.as.sci_Set(elem$1$2)
             } else {
-              var this$455 = ScalaJS.as.sci_Set(elem$1$2)
+              var this$465 = ScalaJS.as.sci_Set(elem$1$2)
             };
-            elem$1$3 = ((((((((((((jsx$199 + jsx$198) | 0) + jsx$197) | 0) + jsx$196) | 0) + jsx$195) | 0) + jsx$194) | 0) + this.bool2int__Z__I(this$455.contains__O__Z("2/3"))) | 0)
+            elem$1$3 = ((((((((((((jsx$200 + jsx$199) | 0) + jsx$198) | 0) + jsx$197) | 0) + jsx$196) | 0) + jsx$195) | 0) + this.bool2int__Z__I(this$465.contains__O__Z("2/3"))) | 0)
           };
           elem$1$5 = (elem$1$5 | 8)
         };
-        var jsx$192 = elem$1$3
+        var jsx$193 = elem$1$3
       } else {
-        var jsx$192 = elem$1$3
+        var jsx$193 = elem$1$3
       };
-      var x$11 = ((1 + jsx$192) | 0);
+      var x$11 = ((1 + jsx$193) | 0);
       if (((elem$1$5 & 1) === 0)) {
         if (((elem$1$5 & 1) === 0)) {
-          var jsx$191 = this.frualigxaRabato$1__p1__Lpl_pej_malpompaligxilo_jes2015_Jes2015Aligxilo__D(form);
+          var jsx$192 = this.frualigxaRabato$1__p1__Lpl_pej_malpompaligxilo_jes2015_Jes2015Aligxilo__D(form);
           if (((elem$1$5 & 2) === 0)) {
             if (((elem$1$5 & 2) === 0)) {
               elem$1$1 = ScalaJS.anyRefEqEq(form.getFieldValue__Lpl_pej_malpompaligxilo_form_Field__s_Option(form.studento$2), new ScalaJS.c.s_Some().init___O(true));
               elem$1$5 = (elem$1$5 | 2)
             };
-            var jsx$190 = elem$1$1
+            var jsx$191 = elem$1$1
           } else {
-            var jsx$190 = elem$1$1
+            var jsx$191 = elem$1$1
           };
-          elem$1 = ((1 - jsx$191) * (1 - (jsx$190 ? ScalaJS.m.Lpl_pej_malpompaligxilo_jes2015_Jes2015Kotizo$Prezoj().studentaRabato$1 : 0.0)));
+          elem$1 = ((1 - jsx$192) * (1 - (jsx$191 ? ScalaJS.m.Lpl_pej_malpompaligxilo_jes2015_Jes2015Kotizo$Prezoj().studentaRabato$1 : 0.0)));
           elem$1$5 = (elem$1$5 | 1)
         };
-        var jsx$189 = elem$1
+        var jsx$190 = elem$1
       } else {
-        var jsx$189 = elem$1
+        var jsx$190 = elem$1
       };
-      var programo = (((ScalaJS.uD(jsx$200) * ((x$11 < 7) ? x$11 : 7)) / 7) * jsx$189);
-      var jsx$201 = ScalaJS.m.s_Predef().Map$2;
-      var $$this$11 = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["Programkotizo"])).s__sc_Seq__T(ScalaJS.m.sci_Nil());
-      elem$1$4 = ScalaJS.as.sci_Map(jsx$201.apply__sc_Seq__sc_GenMap(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([new ScalaJS.c.T2().init___O__O($$this$11, programo)])));
+      var programo = (((ScalaJS.uD(jsx$201) * ((x$11 < 7) ? x$11 : 7)) / 7) * jsx$190);
+      var jsx$202 = ScalaJS.m.s_Predef().Map$2;
+      var $$this$12 = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["Programkotizo"])).s__sc_Seq__T(ScalaJS.m.sci_Nil());
+      elem$1$4 = ScalaJS.as.sci_Map(jsx$202.apply__sc_Seq__sc_GenMap(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([new ScalaJS.c.T2().init___O__O($$this$12, programo)])));
       elem$1$5 = (elem$1$5 | 16)
     };
-    var jsx$188 = ScalaJS.as.sci_Map(elem$1$4)
+    var jsx$189 = ScalaJS.as.sci_Map(elem$1$4)
   } else {
-    var jsx$188 = ScalaJS.as.sci_Map(elem$1$4)
+    var jsx$189 = ScalaJS.as.sci_Map(elem$1$4)
   };
-  var finaPrezo = jsx$202.$$plus$plus__sc_GenTraversableOnce__sci_ListMap(jsx$188).$$plus$plus__sc_GenTraversableOnce__sci_ListMap(invitletero);
+  var finaPrezo = jsx$203.$$plus$plus__sc_GenTraversableOnce__sci_ListMap(jsx$189).$$plus$plus__sc_GenTraversableOnce__sci_ListMap(invitletero).$$plus$plus__sc_GenTraversableOnce__sci_ListMap(donaco);
   return ScalaJS.m.Lpl_pej_malpompaligxilo_jes2015_Kotizo().apply__sci_ListMap__Lpl_pej_malpompaligxilo_jes2015_Kotizo(finaPrezo)
 });
 ScalaJS.is.Lpl_pej_malpompaligxilo_jes2015_Jes2015Kotizo$ = (function(obj) {
@@ -6393,24 +6411,27 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Kotizo.prototype.str__T = (function() 
       elem$1 = ScalaJS.as.sc_Map(elem$1).$$minus__O__sc_Map(kv.$$und1$f)
     }
   };
-  var this$5 = ScalaJS.as.sc_Map(elem$1);
+  var this$7 = ScalaJS.as.sc_Map(elem$1);
   var f = new ScalaJS.c.sjsr_AnonFunction1().init___sjs_js_Function1((function(x0$2$2) {
     var x0$2 = ScalaJS.as.T2(x0$2$2);
     if ((x0$2 !== null)) {
       var priskribo = ScalaJS.as.T(x0$2.$$und1$f);
       var prezo$1 = ScalaJS.uD(x0$2.$$und2$f);
-      return new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["", ": ", ""])).s__sc_Seq__T(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([priskribo, prezo$1]))
+      var x = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["", ":&nbsp;%.2f\u20ac"])).s__sc_Seq__T(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([priskribo]));
+      var this$5 = new ScalaJS.c.sci_StringOps().init___T(x);
+      var args = new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([prezo$1]);
+      return ScalaJS.i.sci_StringLike$class__format__sci_StringLike__sc_Seq__T(this$5, args)
     } else {
       throw new ScalaJS.c.s_MatchError().init___O(x0$2)
     }
   }));
-  var this$4 = ScalaJS.m.sci_Iterable();
-  var bf = this$4.ReusableCBFInstance$2;
-  var jsx$1 = ScalaJS.as.sc_TraversableOnce(ScalaJS.i.sc_TraversableLike$class__map__sc_TraversableLike__F1__scg_CanBuildFrom__O(this$5, f, bf)).mkString__T__T("</br>");
-  var x = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["</br><strong>Sume:</strong> %.2f"])).s__sc_Seq__T(ScalaJS.m.sci_Nil());
-  var this$7 = new ScalaJS.c.sci_StringOps().init___T(x);
-  var args = new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([this.sumo$1]);
-  return (("" + jsx$1) + ScalaJS.i.sci_StringLike$class__format__sci_StringLike__sc_Seq__T(this$7, args))
+  var this$6 = ScalaJS.m.sci_Iterable();
+  var bf = this$6.ReusableCBFInstance$2;
+  var jsx$1 = ScalaJS.as.sc_TraversableOnce(ScalaJS.i.sc_TraversableLike$class__map__sc_TraversableLike__F1__scg_CanBuildFrom__O(this$7, f, bf)).mkString__T__T(", ");
+  var x$1 = new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["</br><strong>Sume:</strong>&nbsp;%.2f\u20ac"])).s__sc_Seq__T(ScalaJS.m.sci_Nil());
+  var this$9 = new ScalaJS.c.sci_StringOps().init___T(x$1);
+  var args$1 = new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([this.sumo$1]);
+  return (("" + jsx$1) + ScalaJS.i.sci_StringLike$class__format__sci_StringLike__sc_Seq__T(this$9, args$1))
 });
 ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Kotizo.prototype.hashCode__I = (function() {
   var acc = (-889275714);
@@ -17095,8 +17116,8 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Form$$anonfun$1.prototype.apply
 });
 ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Form$$anonfun$1.prototype.apply__T__sc_Seq = (function(field) {
   try {
-    if (ScalaJS.uZ((0, ScalaJS.g["jQuery"])(new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["#aligxilo [name=", "]"])).s__sc_Seq__T(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([field])))["is"]("[type=checkbox]"))) {
-      var x1 = ScalaJS.uZ((0, ScalaJS.g["jQuery"])(new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["#aligxilo [name=", "]"])).s__sc_Seq__T(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([field])))["is"](":checked"));
+    if (ScalaJS.uZ((0, ScalaJS.g["jQuery"])(new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["[name=", "]"])).s__sc_Seq__T(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([field])))["is"]("[type=checkbox]"))) {
+      var x1 = ScalaJS.uZ((0, ScalaJS.g["jQuery"])(new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["[name=", "]"])).s__sc_Seq__T(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([field])))["is"](":checked"));
       if (x1) {
         var jsx$2 = ScalaJS.as.sc_Seq(ScalaJS.m.sc_Seq().apply__sc_Seq__sc_GenTraversable(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["jes"])))
       } else if ((!x1)) {
@@ -17108,7 +17129,7 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Form$$anonfun$1.prototype.apply
         throw new ScalaJS.c.s_MatchError().init___O(x1)
       }
     } else {
-      var jsx$2 = ScalaJS.as.sc_Seq(ScalaJS.m.sc_Seq().apply__sc_Seq__sc_GenTraversable(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([ScalaJS.as.T((0, ScalaJS.g["jQuery"])(new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["#aligxilo [name=", "]"])).s__sc_Seq__T(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([field])))["val"]())])))
+      var jsx$2 = ScalaJS.as.sc_Seq(ScalaJS.m.sc_Seq().apply__sc_Seq__sc_GenTraversable(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([ScalaJS.as.T((0, ScalaJS.g["jQuery"])(new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["[name=", "]"])).s__sc_Seq__T(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([field])))["val"]())])))
     };
     var jsx$1 = new ScalaJS.c.s_util_Success().init___O(jsx$2)
   } catch (ex) {
@@ -17174,7 +17195,7 @@ ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Form$$anonfun$1$$anonfun$apply$
 ScalaJS.c.Lpl_pej_malpompaligxilo_jes2015_Jes2015Form$$anonfun$1$$anonfun$apply$2.prototype.apply__sc_Seq = (function() {
   try {
     var checked = new ScalaJS.c.scm_ListBuffer().init___();
-    (0, ScalaJS.g["jQuery"])(new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["#aligxilo [name='", "[]']:checked"])).s__sc_Seq__T(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([this.field$1$f])))["each"]((function(checked$1) {
+    (0, ScalaJS.g["jQuery"])(new ScalaJS.c.s_StringContext().init___sc_Seq(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array(["[name='", "[]']:checked"])).s__sc_Seq__T(new ScalaJS.c.sjs_js_WrappedArray().init___sjs_js_Array([this.field$1$f])))["each"]((function(checked$1) {
       return (function(a$2, e$2) {
         var a = a$2;
         var e = e$2;

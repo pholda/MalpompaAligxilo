@@ -1,0 +1,33 @@
+#aligxilo {
+    margin: 100px auto 30px;
+    width: 80%;
+    min-width: 400px;
+}
+
+#aligxilo dd {
+    font-weight: normal;
+}
+
+#aligxilo input[type=checkbox] {
+    width: auto;
+}
+
+#_kotizo {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 95px;
+    padding: 5px;
+    background-color: #f5f5f5;
+    z-index: 1000;
+}
+
+#_aligxilo {
+    overflow: auto;
+}
+
+.plendu {
+    padding: 5px;
+    text-align: right;
+}

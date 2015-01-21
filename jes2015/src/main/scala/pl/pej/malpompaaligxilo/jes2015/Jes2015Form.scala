@@ -16,18 +16,18 @@ import scala.util.Try
 object Jes2015Form extends JSApp {
   private val form = new Jes2015Aligxilo(DatesJS, {field =>
     Try{
-      if (jQuery(s"#aligxilo [name=$field]").is("[type=checkbox]")) {
-        jQuery(s"#aligxilo [name=$field]").is(":checked") match {
+      if (jQuery(s"[name=$field]").is("[type=checkbox]")) {
+        jQuery(s"[name=$field]").is(":checked") match {
           case true => Seq("jes")
           case false => Seq.empty
         }
       } else {
-        Seq(jQuery(s"#aligxilo [name=$field]").`val`().asInstanceOf[String])
+        Seq(jQuery(s"[name=$field]").`val`().asInstanceOf[String])
       }
     }.getOrElse{
       Try{
         val checked = new ListBuffer[String]
-        jQuery(s"#aligxilo [name='$field[]']:checked").each{(a: js.Any, e: Element) =>
+        jQuery(s"[name='$field[]']:checked").each{(a: js.Any, e: Element) =>
           checked.append(jQuery(e).`val`().asInstanceOf[String])
           a
         }
@@ -39,7 +39,6 @@ object Jes2015Form extends JSApp {
 
   @JSExport
   def main(): Unit = {
-    val jqForm = jQuery("#aligxilo")
 
     lazy val calculableField = form.fields.collect{
       case f@Field(_, _, CalculateField(_), _, _, _, _, _, _) => f
@@ -49,7 +48,7 @@ object Jes2015Form extends JSApp {
       form.fields.foreach{f: Field[_] =>
         try {
           val v = f.visible(form)
-          jqForm.find(s"[name='${f.name}'], [data-name=${f.name}]").parents("div.row").css("display", v match {
+          jQuery(s"[name='${f.name}'], [data-name=${f.name}]").parents("div.form-group").css("display", v match {
             case true => "block"
             case false => "none"
           })
@@ -62,18 +61,18 @@ object Jes2015Form extends JSApp {
       calculableField.foreach{
         case Field(name, _, CalculateField(formula), _, _, _, _, _, _) =>
           try {
-            jqForm.find(s".formExpression[data-name='$name']").html(formula(form) match {
+            jQuery(s".formExpression[data-name='$name']").html(formula(form) match {
               case d: js.prim.Number => d.toFixed(2)
               case x => x.toString
             })
           } catch {
-            case e: Exception => println(s"erraro2 cxe $name")
+            case e: Exception => println(s"erraro2 cxe $name ${e.getMessage}")
           }
 
       }
     }
 
-    jqForm.find(":input").change{e: dom.Element =>
+    jQuery(":input").change{e: dom.Element =>
       refresh()
     }
     refresh()

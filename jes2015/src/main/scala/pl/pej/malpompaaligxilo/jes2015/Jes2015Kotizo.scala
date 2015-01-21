@@ -40,7 +40,7 @@ object Jes2015Kotizo {
     def frualigxaRabato: Double = {
 
       if (form.getFieldValue(form.invitilo).exists(_.value == "jes")) {
-        val pagoElekto: String = form.getFieldValue(form.miPagosGxis).get.value
+        val pagoElekto: String = form.getFieldValue(form.miPagos).get.value
 
         val currentDate = form.dates.getNowMillis
 
@@ -51,8 +51,8 @@ object Jes2015Kotizo {
         else 0
 
         pagoElekto match {
-          case "nurAntaupago" => 0
-          case "tutaPago" => aligxkategorioRabato
+          case "duonon" => 0
+          case "tuton" => aligxkategorioRabato
         }
       } else {
         val pagoElekto: String = form.getFieldValue(form.miPagosGxis).get.value
@@ -104,7 +104,6 @@ object Jes2015Kotizo {
 
       val landoKategorio = if(aLandoj.contains(lando)) 0 else if (bLandoj.contains(lando)) 1 else 2
 
-
       val programo = Prezoj.programo(agxKategorio)(landoKategorio) * scala.math.min(1+noktoj,7).toDouble/7 * rabataMultiplikanto
 
       Map( s"Programkotizo" -> programo)
@@ -124,9 +123,9 @@ object Jes2015Kotizo {
       val prezoTagmangxo = Prezoj.tagmangxo * rabataMultiplikanto * tagmangxo.toInt
       val prezoVespermangxo = Prezoj.vespermangxo * rabataMultiplikanto * vespermangxo.toInt
 
-      Map(s"Matenmanĝoj ($kiomMatenmangxoj foje %.2f)".format(prezoMatenmangxo) -> kiomMatenmangxoj*prezoMatenmangxo,
-        s"Tagmanĝoj ($kiomTagmangxoj foje %.2f)".format(prezoTagmangxo) -> kiomTagmangxoj*prezoTagmangxo,
-        s"Vespermanĝoj ($kiomVespermangxoj foje %.2f)".format(prezoVespermangxo) -> kiomVespermangxoj*prezoVespermangxo)
+      Map(s"Matenmanĝoj ($kiomMatenmangxoj&nbsp;foje&nbsp;%.2f)".format(prezoMatenmangxo) -> kiomMatenmangxoj*prezoMatenmangxo,
+        s"Tagmanĝoj ($kiomTagmangxoj&nbsp;foje&nbsp;%.2f)".format(prezoTagmangxo) -> kiomTagmangxoj*prezoTagmangxo,
+        s"Vespermanĝoj ($kiomVespermangxoj&nbsp;foje&nbsp;%.2f)".format(prezoVespermangxo) -> kiomVespermangxoj*prezoVespermangxo)
     }
 
     val logxado: Map[String, Euroj] = {
@@ -142,23 +141,23 @@ object Jes2015Kotizo {
 
       logxelekto match {
         case "2-lita-cxambro" => Map(
-          s"Ĉambro kun propra duŝejo ($noktoj foje %.2f)".format(prezo2persona) -> noktoj * prezo2persona,
+          s"Ĉambro kun propra duŝejo ($noktoj&nbsp;foje&nbsp;%.2f)".format(prezo2persona) -> noktoj * prezo2persona,
           "Dulita krompago" -> Prezoj.dulitaKrompago
         )
         case "4-5-lita-cxambro-dusxejo" => Map(
-          s"Ĉambro kun propra duŝejo ($noktoj foje %.2f)".format(prezo4persona) -> noktoj * prezo4persona
+          s"Ĉambro kun propra duŝejo ($noktoj&nbsp;foje&nbsp;%.2f)".format(prezo4persona) -> noktoj * prezo4persona
         )
         case "6-lita-cxambro-dusxejo" => Map(
-          s"Ĉambro kun propra duŝejo ($noktoj foje %.2f)".format(prezo6persona) -> noktoj * prezo6persona
+          s"Ĉambro kun propra duŝejo ($noktoj&nbsp;foje&nbsp;%.2f)".format(prezo6persona) -> noktoj * prezo6persona
         )
         case "4-lita-cxambro-sen-dusxejo" => Map(
-          s"Ĉambro kun koridora duŝejo ($noktoj foje %.2f)".format(prezoSendusxejo) -> noktoj * prezoSendusxejo
+          s"Ĉambro kun koridora duŝejo ($noktoj&nbsp;foje&nbsp;%.2f)".format(prezoSendusxejo) -> noktoj * prezoSendusxejo
         )
         case "14-lita-cxambro-sen-dusxejo" => Map(
-          s"Ĉambro kun koridora duŝejo ($noktoj foje %.2f)".format(prezoSendusxejo) -> noktoj * prezoSendusxejo
+          s"Ĉambro kun koridora duŝejo ($noktoj&nbsp;foje&nbsp;%.2f)".format(prezoSendusxejo) -> noktoj * prezoSendusxejo
         )
         case _: String => Map(
-          s"Amasejo ($noktoj foje %.2f)".format(prezoAmasejo) -> noktoj * prezoAmasejo
+          s"Amasejo ($noktoj&nbsp;foje&nbsp;%.2f)".format(prezoAmasejo) -> noktoj * prezoAmasejo
         )
       }
     }
@@ -176,12 +175,23 @@ object Jes2015Kotizo {
 
       if(naskiita > form.dates.str2millis("1997-12-26"))
         ListMap(
-          s"Imposto por hungara ŝtato ($noktoj foje %.2f)".format(Prezoj.imposto) ->  Prezoj.imposto*noktoj
+          s"Imposto por hungara ŝtato ($noktoj&nbsp;foje&nbsp;%.2f)".format(Prezoj.imposto) ->  Prezoj.imposto*noktoj
         )
       else ListMap()
     }
 
-    val finaPrezo: ListMap[String, Euroj] = ListMap() ++ mangxado ++ logxado ++ imposto ++ programo ++ invitletero
+    val donaco: ListMap[String, Euroj] = {
+      val kvoto = getFieldValue(donacoKvoto).getOrElse(0)
+      kvoto match {
+        case s if s > 0 =>
+          ListMap(
+            s"Donaco al JES 2015" -> s
+          )
+        case s => ListMap.empty
+      }
+    }
+
+    val finaPrezo: ListMap[String, Euroj] = ListMap() ++ mangxado ++ logxado ++ imposto ++ programo ++ invitletero ++ donaco
     Kotizo(finaPrezo)
   }
 

@@ -10,29 +10,33 @@
 @import pl.pej.malpompaligxilo.form.field.IntField
 @import pl.pej.malpompaligxilo.form.field.StringField
 
-
-<div class="row">
-    <div class="field1">
-        <div class="fieldName">@field.caption("eo")@if(field.required){<span class="required">*</span>}@if(field.caption("eo").nonEmpty){:}</div>
-        @if(field.description.nonEmpty){
-            <div class="fieldDesc">@field.description.get.apply("eo")</div>
-        }
-    </div>
-    <div class="field2">
+<div class="form-group">
+    <label for="@field.name" class="col-sm-4 control-label">
+        <dl>
+            <dt>@field.caption("eo")@if(field.required){<span class="required"> *</span>}@if(field.caption("eo").nonEmpty){:}</dt>
+            <dd>@if(field.description.nonEmpty){
+                <div class="fieldDesc">@field.description.get.apply("eo")</div>
+            }</dd>
+        </dl>
+    </label>
+    <div class="col-sm-8">
 @{
     field.`type` match {
         case StringField(false) =>
             <input type="text"
                 name={field.name}
+                class="form-control"
                 placeholder={field.placeholder.map(_("eo")) orNull}
                 />
         case StringField(true) =>
             <textarea
                 name={field.name}
+            class="form-control"
                 placeholder={field.placeholder.map(_("eo")) orNull}></textarea>
         case IntField(min, max, step) =>
             <input type="number"
                 name={field.name}
+                class="form-control"
                 placeholder={field.placeholder.map(_("eo")) orNull}
                 min={min.map(_.toString) orNull}
                 max={max.map(_.toString) orNull}
@@ -41,35 +45,44 @@
         case DateField(minDate, maxDate, yearRange) =>
             <input type="text"
                 name={field.name}
+                class="form-control formDate"
                 data-mindate={minDate orNull}
                 data-maxdate={maxDate orNull}
                 data-yearrange={yearRange orNull}
-                class="formDate"
                 placeholder={field.placeholder.map(_("eo")) orNull}
             />
         case CalculateField(formula) =>
             <span class="formExpression" data-name={field.name}></span>
         case SelectField(options, size) =>
-            <select name={field.name} size={size.toString}>{
+            <select name={field.name} size={size.toString}
+            class="form-control">{
             options.map{ option =>
                 <option value={option.value}>{option.caption("eo")}</option>
             }.toSeq
             }</select>
         case EmailField =>
-            <input type="email" name={field.name} placeholder={field.placeholder.map(_("eo")) orNull} />
+            <input type="email" name={field.name} placeholder={field.placeholder.map(_("eo")) orNull}
+                class="form-control"/>
         case TableCheckBoxField(rows, cols, disabled, default) if cols.size == 1 =>
             <table data-name={field.name}>{
                 rows.map { row =>
                     <tr><td>
-                        <label for={row.id}>{row.caption("eo")}</label>
+                        <label for={field.name + "-" + row.id}>{row.caption("eo")}</label>
                     </td><td>
                         <input type="checkbox"
-                            name={row.id} />
+                            class="form-control"
+                            checked={if (default) "checked" else null}
+                            id={field.name + "-" + row.id}
+                            name={field.name+"[]"}
+                            value={row.id}
+                            />
                     </td></tr>
                 }
             }</table>
         case CheckboxField(default) =>
-            <input type="checkbox" name={field.name} checked={if (default) "checked" else null}/>
+            <input type="checkbox" name={field.name} checked={if (default) "checked" else null}
+                class="form-control"
+                id={field.name}/>
 
         case x => Html(s"unrecognized field $x")
     }

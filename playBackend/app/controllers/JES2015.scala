@@ -52,9 +52,8 @@ object JES2015 extends Controller {
     } ++ List(
       "aligxDato" -> Option(DateTime.now().toString("yyyy-mm-dd"))
     )
-    println(parsedMapped)
     val mongoObj = MongoDBObject[String, Option[Any]](parsedMapped.toList)
-    val db = mongoClient.getDB("malpompaaligxilo")
+    val db = mongoClient.getDB("jes2015")
     db("aligxintoj").insert(mongoObj)
     mongoClient.close()
   }
@@ -73,6 +72,19 @@ object JES2015 extends Controller {
       ),
       bodyHtml = Some(text)
     )
+
     MailerPlugin.send(email)
+
+    val email2 = Email(
+      subject = s"Homo aliĝis al JES 2015 en Eger, Hungario - $name",
+      from = "JES-teamo <jes@pej.pl>",
+      to = Seq(
+        "<hej.estraro@gmail.com>",
+        "<holda.piotr@gmail.com>"
+      ),
+      bodyHtml = Some(text)
+    )
+
+    MailerPlugin.send(email2)
   }
 }
