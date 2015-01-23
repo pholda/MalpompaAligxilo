@@ -1,4 +1,7 @@
-@(form: pl.pej.malpompaligxilo.jes2015.Jes2015Aligxilo)
+@(
+        form: pl.pej.malpompaaligxilo.jes2015.Jes2015Aligxilo)(implicit field2filledField: pl.pej.malpompaaligxilo.form.Field[_] => pl.pej.malpompaaligxilo.form.FilledField[_]
+        )
+@import pl.pej.malpompaaligxilo.form.FilledField
 @import views.html.malpompaaligxilo.field
 <!DOCTYPE html>
 <html>
@@ -99,7 +102,7 @@
             @field(form.komento)
             <div class="row">
                 <h1>Dum la aranĝo</h1>
-                <h2>JES estas renkontiĝo, kie ricevas centran rolon la kontribuoj de la partoprenantoj. Tiu ĉi renkontiĝo estas por vi. La organizantoj donas la strukturon de la programoj, kaj la partoprenantoj kontribuas al la programeroj dum la semajno ne nur per la ĉeestado. Ni petas vin pripensi kiel vi povas mojosigi la etoson!</h2>
+                <h4>JES estas renkontiĝo, kie ricevas centran rolon la kontribuoj de la partoprenantoj. Tiu ĉi renkontiĝo estas por vi. La organizantoj donas la strukturon de la programoj, kaj la partoprenantoj kontribuas al la programeroj dum la semajno ne nur per la ĉeestado. Ni petas vin pripensi kiel vi povas mojosigi la etoson!</h4>
             </div>
             @field(form.ludejoKontribuo)
             @field(form.ludiMuzikilon)
@@ -110,6 +113,12 @@
             @field(form.gxeneralaHelpado)
 
             @field(form.programkontribuo)
+            @field(form.programkontribuo)
+            <div class="row">
+                <h1>Regularo</h1>
+                <h4>Bv. akcepti la regularon [ligilo?]</h4>
+            </div>
+            @field(form.regularo)
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <input type="submit" value="aliĝu!" name="sendu" class="btn btn-default" />
@@ -118,7 +127,7 @@
         </form>
         <div class="plendu">Aliĝilo starigita per&nbsp;<em>MalpompaAliĝilo</em>. Bv.&nbsp;sendi plendojn al piotr.holda&nbsp;ĈE&nbsp;pej.pl&nbsp;.</div>
         <script type="text/javascript">
-        pl.pej.malpompaligxilo.jes2015.Jes2015Form().main();
+        pl.pej.malpompaaligxilo.jes2015.Jes2015Form().main();
         </script>
     </body>
 </html>

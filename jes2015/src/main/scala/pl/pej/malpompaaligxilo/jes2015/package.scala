@@ -1,8 +1,8 @@
-package pl.pej.malpompaligxilo
+package pl.pej.malpompaaligxilo
 
-import pl.pej.malpompaligxilo.form.{FieldName, Field}
-import pl.pej.malpompaligxilo.form.field.{EnumOption, SelectField}
-import pl.pej.malpompaligxilo.util.I18nString
+import pl.pej.malpompaaligxilo.form.{FieldName, Field}
+import pl.pej.malpompaaligxilo.form.field.{EnumOption, SelectField}
+import pl.pej.malpompaaligxilo.util.I18nString
 
 
 package object jes2015 {
@@ -213,7 +213,8 @@ package object jes2015 {
         "gq" -> I18nString("eo" -> "Ekvatora Gvineo"),
         "gr" -> I18nString("eo" -> "Grekio"),
         "ss" -> I18nString("eo" -> "Sud-Sudano")
-      ).sortBy(_.caption("eo"))(pl.pej.util.Esperanto.ordering)
+      ).sortBy(_.caption("eo"))(pl.pej.util.Esperanto.ordering),
+      notSelected = Some(EnumOption("nenio", I18nString("eo" -> "bv. elekti landon")))
     )
   )
 

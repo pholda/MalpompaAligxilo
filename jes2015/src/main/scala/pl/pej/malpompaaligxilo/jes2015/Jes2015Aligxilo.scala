@@ -1,9 +1,9 @@
-package pl.pej.malpompaligxilo.jes2015
+package pl.pej.malpompaaligxilo.jes2015
 
-import pl.pej.malpompaligxilo.form._
-import pl.pej.malpompaligxilo.form.errors.OtherError
-import pl.pej.malpompaligxilo.form.field._
-import pl.pej.malpompaligxilo.util.{NoI18nString, I18nString}
+import pl.pej.malpompaaligxilo.form._
+import pl.pej.malpompaaligxilo.form.errors.OtherError
+import pl.pej.malpompaaligxilo.form.field._
+import pl.pej.malpompaaligxilo.util.{NoI18nString, I18nString}
 import pl.pej.util.Dates
 
 import scala.util.Try
@@ -22,7 +22,7 @@ class Jes2015Aligxilo(val dates: Dates, val _getRawFieldValue: FieldName => Seq[
       mangxadoBalo :: matenmangxoj :: tagmangxoj :: vespermangxoj :: matenmangxoPrefero :: mangxtipo :: mangxtipoKlarigo ::
       mangxtipo2  :: ludejoKontribuo :: ludiMuzikilon :: kielLudos :: muzikgrupoNomo :: miKunportos :: dejxoriHelpo :: gxeneralaHelpado ::
       programkontribuo :: pagado :: donacoKvoto :: donacoKialo :: donacoKialoKlarigo :: kotizo :: miPagos ::
-      miPagosGxis :: miPagosGxisAlt :: komento :: Nil
+      miPagosGxis :: miPagosGxisAlt :: komento :: regularo :: Nil
 
   val personaNomo = Field(
     name = "personaNomo",
@@ -223,7 +223,7 @@ class Jes2015Aligxilo(val dates: Dates, val _getRawFieldValue: FieldName => Seq[
         EnumOption("4-5-lita-cxambro-dusxejo", I18nString("eo" -> "4/5 lita kun duŝejo")),
         EnumOption("6-lita-cxambro-dusxejo", I18nString("eo" -> "6 lita kun duŝejo")),
         EnumOption("4-lita-cxambro-sen-dusxejo", I18nString("eo" -> "4 lita sen duŝejo")),
-        EnumOption("14-lita-cxambro-sen-dusxejo", I18nString("eo" -> "14 lita kun duŝejo en apuda konstruaĵo")),
+//        EnumOption("14-lita-cxambro-sen-dusxejo", I18nString("eo" -> "14 lita kun duŝejo en apuda konstruaĵo")),
         EnumOption("amaslogxejo-matraco", I18nString("eo" -> "amasloĝejo sur matraco")),
         EnumOption("amaslogxejo-surplanke", I18nString("eo" -> "amasloĝejo surplanke"))
       )
@@ -551,7 +551,7 @@ class Jes2015Aligxilo(val dates: Dates, val _getRawFieldValue: FieldName => Seq[
     description = Some(I18nString("eo" -> "* - studentoj povas pagi duonon da sumo poste, la dua dato tion indikas.")),
     required = true,
     `type` = SelectField(List(
-      EnumOption("rabato30", I18nString("eo" -> "antaŭpago ĝis 30.1, pago* ĝis 30.04 (30% rabato)")),
+      EnumOption("rabato30", I18nString("eo" -> "antaŭpago ĝis 30.2, pago* ĝis 30.04 (30% rabato)")),
       EnumOption("rabato24", I18nString("eo" -> "antaŭpago ĝis 30.4, pago* ĝis 30.07 (24% rabato)")),
       EnumOption("rabato18", I18nString("eo" -> "antaŭpago ĝis 30.8, pago* ĝis 30.08 (18% rabato)")),
       EnumOption("rabato12", I18nString("eo" -> "antaŭpago ĝis 30.11, pago* ĝis 30.11 (12% rabato)")),
@@ -575,5 +575,17 @@ class Jes2015Aligxilo(val dates: Dates, val _getRawFieldValue: FieldName => Seq[
     caption = I18nString("eo" -> "Komento"),
     description = Some(I18nString("eo" -> "Ĉi tie vi povas lasi mesaĝon al la organizantoj aŭ aldoni komentojn al via aliĝo! Dankon!")),
     `type` = StringField(textarea = true)
+  )
+  val regularo = Field(
+    name = "regularo",
+    caption = I18nString("eo" -> "Mi akceptas regulojn de la aranĝo"),
+    required = true,
+    `type` = CheckboxField(),
+    customValidate = {v: Boolean =>
+      if (!v)
+        Some(OtherError(I18nString("eo" -> "vi devas akcepti la regularon!")))
+      else
+        None
+    }
   )
 }

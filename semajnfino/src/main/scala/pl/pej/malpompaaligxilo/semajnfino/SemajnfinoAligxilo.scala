@@ -1,8 +1,8 @@
 package pl.pej.malpompaaligxilo.semajnfino
 
-import pl.pej.malpompaligxilo.form._
-import pl.pej.malpompaligxilo.form.field.{EnumOption, SelectField, EmailField, StringField}
-import pl.pej.malpompaligxilo.util.I18nString
+import pl.pej.malpompaaligxilo.form._
+import pl.pej.malpompaaligxilo.form.field.{EnumOption, SelectField, EmailField, StringField}
+import pl.pej.malpompaaligxilo.util.I18nString
 import pl.pej.util.Dates
 
 class SemajnfinoAligxilo(val dates: Dates, val _getRawFieldValue: FieldName => Seq[String]) extends Form {

@@ -1,6 +1,6 @@
-package pl.pej.malpompaligxilo.jes2015
+package pl.pej.malpompaaligxilo.jes2015
 
-import pl.pej.malpompaligxilo.jes2015.Jes2015Kotizo.Euroj
+import pl.pej.malpompaaligxilo.jes2015.Jes2015Kotizo.Euroj
 
 import scala.collection.immutable.ListMap
 

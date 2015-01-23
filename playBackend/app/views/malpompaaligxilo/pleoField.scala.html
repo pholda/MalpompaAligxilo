@@ -1,14 +1,14 @@
-@(field: pl.pej.malpompaligxilo.form.Field[_])
-@import pl.pej.malpompaligxilo.form.field.CheckboxField
-@import pl.pej.malpompaligxilo.form.field.TableCheckBoxField
-@import pl.pej.malpompaligxilo.form.field.TableCheckBoxField
-@import pl.pej.malpompaligxilo.form.field.EmailField
-@import pl.pej.malpompaligxilo.form.field.EmailField
-@import pl.pej.malpompaligxilo.form.field.SelectField
-@import pl.pej.malpompaligxilo.form.field.CalculateField
-@import pl.pej.malpompaligxilo.form.field.DateField
-@import pl.pej.malpompaligxilo.form.field.IntField
-@import pl.pej.malpompaligxilo.form.field.StringField
+@(field: pl.pej.malpompaaligxilo.form.Field[_])
+@import pl.pej.malpompaaligxilo.form.field.CheckboxField
+@import pl.pej.malpompaaligxilo.form.field.TableCheckBoxField
+@import pl.pej.malpompaaligxilo.form.field.TableCheckBoxField
+@import pl.pej.malpompaaligxilo.form.field.EmailField
+@import pl.pej.malpompaaligxilo.form.field.EmailField
+@import pl.pej.malpompaaligxilo.form.field.SelectField
+@import pl.pej.malpompaaligxilo.form.field.CalculateField
+@import pl.pej.malpompaaligxilo.form.field.DateField
+@import pl.pej.malpompaaligxilo.form.field.IntField
+@import pl.pej.malpompaaligxilo.form.field.StringField
 
 <div class="form-group">
     <label for="@field.name" class="col-sm-4 control-label">
@@ -57,7 +57,7 @@
             />
         case CalculateField(formula) =>
             <span class="formExpression" data-name={field.name}></span>
-        case SelectField(options, size) =>
+        case SelectField(options, size,_) =>
             <select name={field.name} size={size.toString}>{
             options.map{ option =>
                 <option value={option.value}>{option.caption("eo")} | {option.caption("pl")}</option>

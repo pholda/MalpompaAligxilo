@@ -1,14 +1,18 @@
-@(field: pl.pej.malpompaligxilo.form.Field[_])
-@import pl.pej.malpompaligxilo.form.field.CheckboxField
-@import pl.pej.malpompaligxilo.form.field.TableCheckBoxField
-@import pl.pej.malpompaligxilo.form.field.TableCheckBoxField
-@import pl.pej.malpompaligxilo.form.field.EmailField
-@import pl.pej.malpompaligxilo.form.field.EmailField
-@import pl.pej.malpompaligxilo.form.field.SelectField
-@import pl.pej.malpompaligxilo.form.field.CalculateField
-@import pl.pej.malpompaligxilo.form.field.DateField
-@import pl.pej.malpompaligxilo.form.field.IntField
-@import pl.pej.malpompaligxilo.form.field.StringField
+@(field: pl.pej.malpompaaligxilo.form.FilledField[_])
+@import pl.pej.malpompaaligxilo.form.field.TableCheckBoxCol
+@import pl.pej.malpompaaligxilo.form.field.TableCheckBoxRow
+@import pl.pej.malpompaaligxilo.form.field.EnumOption
+@import pl.pej.malpompaaligxilo.form.field.CheckboxField
+@import pl.pej.malpompaaligxilo.form.field.TableCheckBoxField
+@import pl.pej.malpompaaligxilo.form.field.TableCheckBoxField
+@import pl.pej.malpompaaligxilo.form.field.EmailField
+@import pl.pej.malpompaaligxilo.form.field.EmailField
+@import pl.pej.malpompaaligxilo.form.field.SelectField
+@import pl.pej.malpompaaligxilo.form.field.CalculateField
+@import pl.pej.malpompaaligxilo.form.field.DateField
+@import pl.pej.malpompaaligxilo.form.field.IntField
+@import pl.pej.malpompaaligxilo.form.field.StringField
+@import pl.pej.malpompaaligxilo.form.FilledField.filledField2field
 
 <div class="form-group">
     <label for="@field.name" class="col-sm-4 control-label">
@@ -17,6 +21,11 @@
             <dd>@if(field.description.nonEmpty){
                 <div class="fieldDesc">@field.description.get.apply("eo")</div>
             }</dd>
+            @if(field.error.nonEmpty){
+                <dd class="error">
+                    @field.error.map(_.message("eo")).getOrElse("undefined")
+                </dd>
+            }
         </dl>
     </label>
     <div class="col-sm-8">
@@ -27,12 +36,13 @@
                 name={field.name}
                 class="form-control"
                 placeholder={field.placeholder.map(_("eo")) orNull}
+                value={field.value.map(_.toString).orNull}
                 />
         case StringField(true) =>
             <textarea
                 name={field.name}
             class="form-control"
-                placeholder={field.placeholder.map(_("eo")) orNull}></textarea>
+                placeholder={field.placeholder.map(_("eo")) orNull}>{field.value.map(_.toString).orNull}</textarea>
         case IntField(min, max, step) =>
             <input type="number"
                 name={field.name}
@@ -41,6 +51,7 @@
                 min={min.map(_.toString) orNull}
                 max={max.map(_.toString) orNull}
                 step={step.map(_.toString) orNull}
+                value={field.value.map(_.toString).orNull}
             />
         case DateField(minDate, maxDate, yearRange) =>
             <input type="text"
@@ -50,19 +61,31 @@
                 data-maxdate={maxDate orNull}
                 data-yearrange={yearRange orNull}
                 placeholder={field.placeholder.map(_("eo")) orNull}
+                value={field.value.map(_.toString).orNull}
             />
         case CalculateField(formula) =>
             <span class="formExpression" data-name={field.name}></span>
-        case SelectField(options, size) =>
+        case s@SelectField(_, size, _) =>
             <select name={field.name} size={size.toString}
             class="form-control">{
-            options.map{ option =>
-                <option value={option.value}>{option.caption("eo")}</option>
+            s.allOptions.map{ option =>
+                <option
+                    value={option.value}
+                    selected={
+                        field.value match {
+                            case Some(EnumOption(fval, _)) if fval == option.value => "selected"
+                            case _ => null
+                        }
+                    }
+                >{option.caption("eo")}</option>
             }.toSeq
             }</select>
         case EmailField =>
-            <input type="email" name={field.name} placeholder={field.placeholder.map(_("eo")) orNull}
-                class="form-control"/>
+            <input type="email"
+                name={field.name}
+                placeholder={field.placeholder.map(_("eo")) orNull}
+                class="form-control"
+                value={field.value.map(_.toString).orNull}/>
         case TableCheckBoxField(rows, cols, disabled, default) if cols.size == 1 =>
             <table data-name={field.name}>{
                 rows.map { row =>
@@ -71,16 +94,31 @@
                     </td><td>
                         <input type="checkbox"
                             class="form-control"
-                            checked={if (default) "checked" else null}
                             id={field.name + "-" + row.id}
                             name={field.name+"[]"}
                             value={row.id}
+                            checked={
+                                field.value match {
+                                    case Some(s: Set[(TableCheckBoxRow, TableCheckBoxCol)])
+                                        if s.contains((row, cols.head)) => "checked"
+                                    case None if default => "checked"
+                                    case _ => null
+                                }
+                            }
                             />
                     </td></tr>
                 }
             }</table>
         case CheckboxField(default) =>
-            <input type="checkbox" name={field.name} checked={if (default) "checked" else null}
+            <input type="checkbox"
+                name={field.name}
+                checked={
+                    field.value match {
+                        case None if default => "checked"
+                        case Some(true) => "checked"
+                        case _ => null
+                    }
+                }
                 class="form-control"
                 id={field.name}/>
 

@@ -1,10 +1,10 @@
-package pl.pej.malpompaligxilo.jes2015
+package pl.pej.malpompaaligxilo.jes2015
 
 import org.scalajs.dom
 import org.scalajs.dom.Element
 import org.scalajs.jquery.jQuery
-import pl.pej.malpompaligxilo.form.Field
-import pl.pej.malpompaligxilo.form.field.CalculateField
+import pl.pej.malpompaaligxilo.form.Field
+import pl.pej.malpompaaligxilo.form.field.CalculateField
 import pl.pej.util.DatesJS
 
 import scala.collection.mutable.ListBuffer

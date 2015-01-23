@@ -1,10 +1,10 @@
-@(form: pl.pej.malpompaligxilo.form.Form, field: pl.pej.malpompaligxilo.form.Field[_])
-@import pl.pej.malpompaligxilo.form.Field
-@import pl.pej.malpompaligxilo.form.field.CalculateField
+@(form: pl.pej.malpompaaligxilo.form.Form, field: pl.pej.malpompaaligxilo.form.Field[_])
+@import pl.pej.malpompaaligxilo.form.Field
+@import pl.pej.malpompaaligxilo.form.field.CalculateField
 @import java.text.DecimalFormat
-@import pl.pej.malpompaligxilo.form.field.TableCheckBoxCol
-@import pl.pej.malpompaligxilo.form.field.TableCheckBoxRow
-@import pl.pej.malpompaligxilo.form.field.EnumOption
+@import pl.pej.malpompaaligxilo.form.field.TableCheckBoxCol
+@import pl.pej.malpompaaligxilo.form.field.TableCheckBoxRow
+@import pl.pej.malpompaaligxilo.form.field.EnumOption
 
 @if(field.visible(form)) {
     <strong>@field.caption("eo")</strong>: @{field match {

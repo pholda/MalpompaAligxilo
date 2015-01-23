@@ -5,9 +5,9 @@ import java.text.DecimalFormat
 import com.mongodb.casbah.MongoClient
 import com.mongodb.casbah.commons.MongoDBObject
 import org.joda.time.DateTime
-import pl.pej.malpompaligxilo.form._
-import pl.pej.malpompaligxilo.form.field._
-import pl.pej.malpompaligxilo.jes2015.Jes2015Aligxilo
+import pl.pej.malpompaaligxilo.form._
+import pl.pej.malpompaaligxilo.form.field._
+import pl.pej.malpompaaligxilo.jes2015.Jes2015Aligxilo
 import pl.pej.util.DatesScala
 import play.api.Play.current
 import play.api.libs.mailer.{Email, MailerPlugin}
@@ -19,7 +19,7 @@ object JES2015 extends Controller {
   
   def index = Action {
     val form = new Jes2015Aligxilo(DatesScala, field => Seq.empty)
-    Ok(html.jes2015aligxilo(form))
+    Ok(html.jes2015aligxilo(form)(f => FilledField(f, None, None)))
   }
 
   def submit = Action(parse.tolerantFormUrlEncoded) { implicit request =>
@@ -30,14 +30,15 @@ object JES2015 extends Controller {
 
     val parsed = form.parse(post)
 
-    form.validate(parsed) match {
+    parsed.validate match {
       case SuccessValidation =>
         val msg = html.jes2015_aligxilo_mesagxo(form)
-        sendMail( s"${parsed("personaNomo").get} ${parsed("familiaNomo").get}", parsed("retposxtadreso").get.toString, msg.body)
-        mongoInsert(parsed, form)
-        Ok(html.jes2015_aligxilo_mesagxo(form))
+        sendMail( s"${parsed.fields(form.personaNomo).value.get} ${parsed.fields(form.familiaNomo).value.get}",
+          parsed.fields(form.retposxtadreso).value.get.toString, msg.body)
+        mongoInsert(parsed.data.map{field => field.name -> field.value}.toMap, form)
+        Ok(html.jes2015_aligxilo_sukceso(form))
       case f:FailureValidation =>
-        Ok(html.jes2015aligxilo_eraroj(f))
+        Ok(html.jes2015aligxilo(form)(field => parsed.fields(field)))
     }
   }
 

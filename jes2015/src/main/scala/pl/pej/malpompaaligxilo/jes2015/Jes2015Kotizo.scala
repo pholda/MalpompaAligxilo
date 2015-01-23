@@ -1,4 +1,4 @@
-package pl.pej.malpompaligxilo.jes2015
+package pl.pej.malpompaaligxilo.jes2015
 
 import scala.collection.immutable.ListMap
 
@@ -41,6 +41,7 @@ object Jes2015Kotizo {
 
       if (form.getFieldValue(form.invitilo).exists(_.value == "jes")) {
         val pagoElekto: String = form.getFieldValue(form.miPagos).get.value
+        println(pagoElekto)
 
         val currentDate = form.dates.getNowMillis
 
