@@ -5,7 +5,7 @@ import scalajs.sbtplugin.ScalaJSPlugin._
 object MalpompaAligxilo extends Build {
   val defaults = Defaults.coreDefaultSettings ++ List(
     organization := "pl.pej.malpompaaligxilo",
-    version := "0.1-SNAPSHOT",
+    version := "0.1",
     scalaVersion := "2.11.1",
     libraryDependencies ++= List(
       "org.scalatest" % "scalatest_2.11" % "2.2.3" % "test"
@@ -15,22 +15,18 @@ object MalpompaAligxilo extends Build {
   lazy val root = Project(id = "malpompaAligxilo",
     base = file("."),
     settings = defaults ++ List(
-//      name := "malpompaaligxilo",
       publishArtifact := false
     )
   ).aggregate(core, scalaJS, googleAPI, examples)
 
   lazy val core = Project(id = "core",
     base = file("core"),
-    settings = defaults /*++ scalaJSSettings */++ List(
+    settings = defaults ++ List(
       name := "core",
       libraryDependencies ++= Seq(
         "org.scala-lang.modules" % "scala-parser-combinators_2.11" % "1.0.3",
-//        "org.scala-lang.modules.scalajs" %%% "scalajs-jquery" % "0.6",
-        "joda-time" % "joda-time" % "2.0"//,
-//        "com.github.nscala-time" %% "nscala-time" % "1.6.0"
-      )//,
-//      skip in ScalaJSKeys.packageJSDependencies := false
+        "joda-time" % "joda-time" % "2.0"
+      )
     )
   )
 
