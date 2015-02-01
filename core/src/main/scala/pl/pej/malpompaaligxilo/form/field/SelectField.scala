@@ -1,9 +1,7 @@
 package pl.pej.malpompaaligxilo.form.field
 
-import org.scalajs.jquery.{JQuery, jQuery}
 import pl.pej.malpompaaligxilo.form.errors.NothingSelectedError
-import pl.pej.malpompaaligxilo.form.{FormError, FieldType, FormExpr, Field}
-import pl.pej.malpompaaligxilo.util._
+import pl.pej.malpompaaligxilo.form.{FieldType, FormError}
 
 case class SelectField(
   options: List[EnumOption],
@@ -14,14 +12,6 @@ case class SelectField(
   lazy val allOptions = notSelected match {
     case Some(o) => o :: options
     case None => options
-  }
-
-  override def toJQuery(field: Field[EnumOption]): JQuery = {
-    val select = jQuery(s"""<select name="${field.name}" size="${size}"></select>""")
-    for (option <- allOptions) {
-      select.append(option.toJQuery)
-    }
-    select
   }
 
   override def parse(values: Seq[String]): Option[EnumOption] =

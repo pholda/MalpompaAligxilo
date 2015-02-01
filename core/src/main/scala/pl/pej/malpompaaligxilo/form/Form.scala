@@ -1,7 +1,7 @@
 package pl.pej.malpompaaligxilo.form
 
 import pl.pej.malpompaaligxilo.form.field.{TableCheckBoxField, CalculateField}
-import pl.pej.util.Dates
+import pl.pej.malpompaaligxilo.util.Dates
 
 import scala.collection.immutable.ListMap
 import scala.util.Try

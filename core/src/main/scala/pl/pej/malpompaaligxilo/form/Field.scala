@@ -1,6 +1,5 @@
 package pl.pej.malpompaaligxilo.form
 
-import org.scalajs.jquery.JQuery
 import pl.pej.malpompaaligxilo.form.errors.RequiredError
 import pl.pej.malpompaaligxilo.util._
 
@@ -14,8 +13,7 @@ case class Field[T](
   required: Boolean = false,
   customValidate: T => Option[FormError] = {_:T => None},
   store: Boolean = true
-                     ) extends FormElement with ToJQueryable {
-  override def toJQuery: JQuery = `type`toJQuery(this)
+                     ) extends FormElement {
 
   def parse(values: Seq[String]): Option[T] = `type`.parse(values)
 
