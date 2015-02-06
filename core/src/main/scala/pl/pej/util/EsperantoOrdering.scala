@@ -2,7 +2,7 @@ package pl.pej.util
 
 import scala.annotation.tailrec
 
-object Esperanto {
+object EsperantoOrdering {
   implicit lazy val ordering: Ordering[String] = new Ordering.StringOrdering {
     //TODO optimize, on the other hand it won't work correctly
 

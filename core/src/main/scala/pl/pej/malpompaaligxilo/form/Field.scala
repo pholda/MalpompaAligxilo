@@ -1,6 +1,7 @@
 package pl.pej.malpompaaligxilo.form
 
 import pl.pej.malpompaaligxilo.form.errors.RequiredError
+import pl.pej.malpompaaligxilo.form.field.CalculateField
 import pl.pej.malpompaaligxilo.util._
 
 case class Field[T](
@@ -9,15 +10,17 @@ case class Field[T](
   `type`: FieldType[T],
   description: Option[I18nableString] = None,
   placeholder: Option[I18nableString] = None,
-  visible: FormExpr[Boolean] = _ => true,
+  visible: FormExpr[Boolean] = true,
   required: Boolean = false,
   customValidate: T => Option[FormError] = {_:T => None},
   store: Boolean = true
                      ) extends FormElement {
+  final def isCalculate: Boolean = `type`.isInstanceOf[CalculateField[_]]
 
   def parse(values: Seq[String]): Option[T] = `type`.parse(values)
 
-  def validate(value: Option[Any], form: Form): Option[FormError] = {
+  def validate(implicit form: Form): Option[FormError] = {
+    val value = form.fieldValue(this)
     value match {
       case None if required => Some(RequiredError)
       case Some(v:T) =>
@@ -29,5 +32,9 @@ case class Field[T](
         }
       case _ => None
     }
+  }
+
+  def value(implicit form: Form): Option[T] = {
+    form.fieldValue(this)
   }
 }

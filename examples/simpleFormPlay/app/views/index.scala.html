@@ -1,0 +1,51 @@
+@(implicit form: pl.pej.malpompaaligxilo.examples.simple.SimpleForm)
+@import views.html.malpompaaligxilo.field
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>MalpompaAliĝilo - simple example</title>
+        @*<link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap.min.css")" />*@
+        @*<link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap-theme.min.css")" />*@
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.2/themes/ui-lightness/jquery-ui.css" />
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/style.css")" />
+    </head>
+    <body>
+            <!-- Include Scala.js compiled code -->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script type="text/javascript" src="https://code.jquery.com/ui/1.11.2/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/examples-simple-form-fastopt.js")"></script>
+        <script type="text/javascript">
+        $(function(){
+        $('input[type=text].formDate' ).each(function() {
+        $(this).datepicker({
+        "dateFormat": "yy-mm-dd",
+        changeMonth: true,
+        changeYear: true,
+        minDate: $(this).data("mindate"),
+        maxDate: $(this).data("maxdate"),
+        yearRange: $(this).data("yearrange")
+        });
+        })})
+        </script>
+        <form action="@routes.SimpleForm.submit()" method="post" class="form-horizontal">
+            <div class="row">
+                <h1>Personal data:</h1>
+            </div>
+            @field(form.name)
+            @field(form.surname)
+            @field(form.country)
+            @field(form.birthDate)
+            @field(form.age)
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input type="submit" value="Send!" name="sendu" class="btn btn-default" />
+                </div>
+            </div>
+        </form>
+        <script type="text/javascript">
+            pl.pej.malpompaaligxilo.examples.simple.SimpleFormJS().main();
+        </script>
+    </body>
+</html>

@@ -5,5 +5,5 @@ import pl.pej.malpompaaligxilo.util.{NoI18nString, I18nableString}
 
 
 case object RequiredError extends FormError {
-  override def message: I18nableString = NoI18nString("vi devas plenigi tiun ĉi kampon")
+  override def message: I18nableString = NoI18nString("This field is required")
 }

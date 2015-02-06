@@ -1,6 +1,6 @@
 package pl.pej.malpompaaligxilo.form
 
-@deprecated
 abstract class FormElement {
-
+  def name: FieldName
+  def visible: FormExpr[Boolean]
 }

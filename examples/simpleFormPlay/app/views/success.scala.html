@@ -1,0 +1,26 @@
+@(implicit form: pl.pej.malpompaaligxilo.examples.simple.SimpleForm)
+@import views.html.malpompaaligxilo.fieldvalue
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>MalpompaAliĝilo - simple example</title>
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap.min.css")" />
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap-theme.min.css")" />
+        <link rel="stylesheet" href="@routes.Assets.at("javascripts/jquery-ui-1.11.2.custom/jquery-ui.min.css")" />
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/jes2015.css")" />
+    </head>
+    <body style="margin: 15px;">
+            <!-- Include Scala.js compiled code -->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-ui-1.11.2.custom/jquery-ui.min.js")"></script>
+        <h1>Success!</h1>
+        <h2>Your data:</h2>
+        <h3>Personal Data:</h3>
+        @fieldvalue(form.name)
+        @fieldvalue(form.surname)
+        @fieldvalue(form.country)
+        @fieldvalue(form.birthDate)
+        @fieldvalue(form.age)
+    </body>
+</html>

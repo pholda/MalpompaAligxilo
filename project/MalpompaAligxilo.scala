@@ -1,12 +1,14 @@
+import sbt.Keys._
 import sbt._
-import Keys._
-import scalajs.sbtplugin.ScalaJSPlugin._
+import org.scalajs.sbtplugin.ScalaJSPlugin
+import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
+import com.typesafe.sbt.packager.universal.UniversalKeys
 
-object MalpompaAligxilo extends Build {
+object MalpompaAligxilo extends Build with UniversalKeys {
   val defaults = Defaults.coreDefaultSettings ++ List(
     organization := "pl.pej.malpompaaligxilo",
     version := "0.1",
-    scalaVersion := "2.11.1",
+    scalaVersion := "2.11.5",
     libraryDependencies ++= List(
       "org.scalatest" % "scalatest_2.11" % "2.2.3" % "test"
     )
@@ -17,7 +19,7 @@ object MalpompaAligxilo extends Build {
     settings = defaults ++ List(
       publishArtifact := false
     )
-  ).aggregate(core, scalaJS, googleAPI, examples)
+  ).aggregate(core, googleAPI, examples)
 
   lazy val core = Project(id = "core",
     base = file("core"),
@@ -28,18 +30,7 @@ object MalpompaAligxilo extends Build {
         "joda-time" % "joda-time" % "2.0"
       )
     )
-  )
-
-  lazy val scalaJS = Project(id = "scalajs",
-    base = file("scalajs"),
-    settings = defaults ++ scalaJSSettings ++ List(
-      name := "scalajs",
-      libraryDependencies ++= Seq(
-        "org.scala-lang.modules.scalajs" %%% "scalajs-jquery" % "0.6"
-      ),
-      skip in ScalaJSKeys.packageJSDependencies := false
-    )
-  ).dependsOn(core)
+  ).enablePlugins(ScalaJSPlugin)
 
   lazy val googleAPI = Project(id = "googleAPI",
     base = file("googleAPI"),
@@ -59,19 +50,20 @@ object MalpompaAligxilo extends Build {
     )
   ).aggregate(simpleForm, simpleFormPlay)
 
+  val scalajsOutputDir = Def.settingKey[File]("directory for javascript files output by scalajs")
+
   lazy val simpleForm = Project(id = "simpleForm",
     base = file("examples/simpleForm"),
-    settings = defaults ++ scalaJSSettings ++ List(
-      name := "first.form",
+    settings = defaults ++ List(
+      name := "examples.simple-form",
       libraryDependencies ++= Seq(
-        "org.scala-lang.modules.scalajs" %%% "scalajs-jquery" % "0.6",
         "joda-time" % "joda-time" % "2.0",
-        "com.github.nscala-time" %% "nscala-time" % "1.6.0"
+        "be.doeraene" %%% "scalajs-jquery" % "0.8.0"
       ),
-      skip in ScalaJSKeys.packageJSDependencies := false,
+      skip in packageJSDependencies := false,
       publishArtifact := false
     )
-  ).dependsOn(core, googleAPI)
+  ).dependsOn(core, googleAPI).enablePlugins(ScalaJSPlugin)
 
   lazy val simpleFormPlay = Project(id = "simpleFormPlay",
     base = file("examples/simpleFormPlay"),
@@ -79,12 +71,21 @@ object MalpompaAligxilo extends Build {
       name := "examples.simpleFormPlay",
       libraryDependencies ++= Seq(
         "com.typesafe.play.plugins" %% "play-plugins-mailer" % "2.3.6-SNAPSHOT",
-        "org.mongodb" %% "casbah" % "2.7.4",
-        "joda-time" % "joda-time" % "2.0",
-        "com.github.nscala-time" %% "nscala-time" % "1.6.0"
+        "org.mongodb" %% "casbah" % "2.7.4"
       ),
-      publishArtifact := false
-    )
-  ).dependsOn(simpleForm).enablePlugins(play.PlayScala)
+      publishArtifact := false,
+      scalajsOutputDir := (classDirectory in Compile).value / "public" / "javascripts",
+      /**
+       * copying scalajs output to public/javascript. It should be done better
+       */
+      compile in Compile <<= (compile in Compile) dependsOn (fastOptJS in (simpleForm, Compile)),
+      dist <<= dist dependsOn (fullOptJS in (simpleForm, Compile)),
+      stage <<= stage dependsOn (fullOptJS in (simpleForm, Compile))
+
+    ) ++ (
+      Seq(packageScalaJSLauncher, fastOptJS, fullOptJS) map { packageJSKey =>
+  crossTarget in (simpleForm, Compile, packageJSKey) := scalajsOutputDir.value
+      })
+  ).dependsOn(simpleForm, core).enablePlugins(play.PlayScala)
 
 }
