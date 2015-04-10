@@ -1,3 +1,4 @@
+import play.twirl.sbt.SbtTwirl
 import sbt.Keys._
 import sbt._
 import org.scalajs.sbtplugin.ScalaJSPlugin
@@ -10,8 +11,12 @@ object MalpompaAligxilo extends Build with UniversalKeys {
     version := "0.1.1-SNAPSHOT",
     scalaVersion := "2.11.5",
     libraryDependencies ++= List(
-      "org.scalatest" % "scalatest_2.11" % "2.2.3" % "test"
-    )
+//      "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test"
+      "org.monifu" %% "minitest" % "0.11" % "test"//,
+//      "org.monifu" %%% "minitest" % "0.11" % "test"
+    ),
+
+    testFrameworks += new TestFramework("minitest.runner.Framework")
   )
 
   lazy val root = Project(id = "malpompaAligxilo",
@@ -19,7 +24,7 @@ object MalpompaAligxilo extends Build with UniversalKeys {
     settings = defaults ++ List(
       publishArtifact := false
     )
-  ).aggregate(core, googleAPI, examples)
+  ).aggregate(core, coreTests, googleAPI, twirlTemplates, examples)
 
   lazy val core = Project(id = "core",
     base = file("core"),
@@ -32,16 +37,32 @@ object MalpompaAligxilo extends Build with UniversalKeys {
     )
   ).enablePlugins(ScalaJSPlugin)
 
+  lazy val coreTests = Project(id = "coreTests",
+    base = file("coreTests"),
+    settings = defaults ++ List(
+      name := "coreTests",
+      publishArtifact := false
+    )
+  ).dependsOn(core)
+
   lazy val googleAPI = Project(id = "googleAPI",
     base = file("googleAPI"),
     settings = defaults ++ List(
-      name := "googleAPI",
+      name := "google-api",
       libraryDependencies ++= Seq(
         "com.google.gdata" % "core" % "1.47.1",
         "com.google.api-client" % "google-api-client" % "1.19.1"
       )
     )
-  )
+  ).dependsOn(core)
+
+  lazy val twirlTemplates = Project(id = "twirlTemplates",
+    base = file("twirlTemplates"),
+    settings = defaults ++ List(
+      name := "twirl-templates"/*,
+      publishArtifact := false*/
+    )
+  ).dependsOn(core).enablePlugins(SbtTwirl)
 
   lazy val examples = Project(id = "examples",
     base = file("examples"),
@@ -86,6 +107,6 @@ object MalpompaAligxilo extends Build with UniversalKeys {
       Seq(packageScalaJSLauncher, fastOptJS, fullOptJS) map { packageJSKey =>
   crossTarget in (simpleForm, Compile, packageJSKey) := scalajsOutputDir.value
       })
-  ).dependsOn(simpleForm, core).enablePlugins(play.PlayScala)
+  ).dependsOn(simpleForm, core, twirlTemplates).enablePlugins(play.PlayScala)
 
 }

@@ -1,13 +1,13 @@
-@(field: pl.pej.malpompaaligxilo.form.Field[_])(implicit form: pl.pej.malpompaaligxilo.form.Form)
+@(field: pl.pej.malpompaaligxilo.form.Field[_])(implicit form: pl.pej.malpompaaligxilo.form.Form, lang: pl.pej.malpompaaligxilo.util.Lang = "en")
 @import pl.pej.malpompaaligxilo.form.Field
 @import pl.pej.malpompaaligxilo.form.field.CustomCalculateField
 @import java.text.DecimalFormat
-@import pl.pej.malpompaaligxilo.form.field.TableCheckBoxCol
-@import pl.pej.malpompaaligxilo.form.field.TableCheckBoxRow
+@import pl.pej.malpompaaligxilo.form.field.TableCheckboxCol
+@import pl.pej.malpompaaligxilo.form.field.TableCheckboxRow
 @import pl.pej.malpompaaligxilo.form.field.EnumOption
 
 @if(field.visible(form)) {
-    <strong>@field.caption("eo")</strong>: @{field match {
+    <strong>@field.caption(lang)</strong>: @{field match {
         case Field(_, _, CustomCalculateField(formula), _, _, _, _, _, _) =>
             formula(form) match {
 //                case d: Double => new DecimalFormat("#.##").format(d)
@@ -19,13 +19,13 @@
             case d: Double => new DecimalFormat("#.##").format(d)
             case true => "jes"
             case false => "ne"
-            case EnumOption(_, caption) => caption("eo")
-            case s:Set[(TableCheckBoxRow, TableCheckBoxCol)] => {
+            case EnumOption(_, caption) => caption(lang)
+            case s:Set[(TableCheckboxRow, TableCheckboxCol)] => {
                 if (s.isEmpty) {
                     "[nenio]"
                 } else {
                     s.map{
-                        case (r, c) => r.caption("eo") + " " + c.caption("eo")
+                        case (r, c) => r.caption(lang) + " " + c.caption(lang)
                     }.mkString(", ")
                 }
             }

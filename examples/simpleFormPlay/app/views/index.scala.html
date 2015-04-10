@@ -1,18 +1,15 @@
 @(implicit form: pl.pej.malpompaaligxilo.examples.simple.SimpleForm)
-@import views.html.malpompaaligxilo.field
+@import views.html.field
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
         <title>MalpompaAliĝilo - simple example</title>
-        @*<link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap.min.css")" />*@
-        @*<link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap-theme.min.css")" />*@
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.2/themes/ui-lightness/jquery-ui.css" />
         <link rel="stylesheet" href="@routes.Assets.at("stylesheets/style.css")" />
     </head>
     <body>
-            <!-- Include Scala.js compiled code -->
         <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
         <script type="text/javascript" src="https://code.jquery.com/ui/1.11.2/jquery-ui.min.js"></script>
         <script type="text/javascript" src="@routes.Assets.at("javascripts/examples-simple-form-fastopt.js")"></script>
@@ -38,6 +35,15 @@
             @field(form.country)
             @field(form.birthDate)
             @field(form.age)
+            <div class="row">
+                <h1>Other field-types:</h1>
+            </div>
+            @field(form.checkbox)
+            @field(form.email)
+            @field(form.int)
+            @field(form.tableCheckbox)
+            @field(form.tableCheckboxSimple)
+            @field(form.formProgress)
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <input type="submit" value="Send!" name="sendu" class="btn btn-default" />

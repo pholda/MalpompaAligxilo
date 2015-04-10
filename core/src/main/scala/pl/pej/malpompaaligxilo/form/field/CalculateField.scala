@@ -10,4 +10,6 @@ abstract class CalculateField[T] extends FieldType[T] {
   def evaluate(implicit form: Form): Option[T] = Try(formula(form)).toOption.flatten
 
   override def parse(values: Seq[String]): Option[T] = None
+
+  override val arrayValue: Boolean = false
 }

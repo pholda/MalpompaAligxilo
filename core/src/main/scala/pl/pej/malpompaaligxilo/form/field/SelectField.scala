@@ -23,4 +23,6 @@ case class SelectField(
       case _ => None
     }
   }
+
+  override val arrayValue: Boolean = false
 }

@@ -2,8 +2,9 @@ package pl.pej.malpompaaligxilo.examples.simple
 
 import org.scalajs.dom
 import org.scalajs.dom.Element
-import pl.pej.malpompaaligxilo.form.Field
-import pl.pej.malpompaaligxilo.form.field.CalculateField
+import pl.pej.malpompaaligxilo.form.{JSContext, Field}
+import pl.pej.malpompaaligxilo.form.field.{TableCheckboxField, CalculateField}
+import pl.pej.malpompaaligxilo.form.field.calculateField.ProgressField
 import pl.pej.malpompaaligxilo.util.DatesJS
 
 import scala.collection.mutable.ListBuffer
@@ -14,27 +15,28 @@ import scala.util.Try
 import org.scalajs.jquery.jQuery
 
 object SimpleFormJS extends JSApp {
+  implicit val context = JSContext
+
   val form = new SimpleForm({field =>
-    Try{
-      if (jQuery(s"[name=$field]").is("[type=checkbox]")) {
-        jQuery(s"[name=$field]").is(":checked") match {
-          case true => Seq("jes")
-          case false => Seq.empty
-        }
-      } else {
-        Seq(jQuery(s"[name=$field]").`val`().asInstanceOf[String])
-      }
-    }.getOrElse{
-      Try{
+    field.`type`.arrayValue match {
+      case true =>
         val checked = new ListBuffer[String]
         jQuery(s"[name='$field[]']:checked").each{(a: js.Any, e: Element) =>
           checked.append(jQuery(e).`val`().asInstanceOf[String])
           a
         }
         checked.toSeq
-      }.getOrElse(throw new Exception(s"cannot read field $field"))
+      case false =>
+        if (jQuery(s"[name=${field.name}]").is("[type=checkbox]")) {
+          jQuery(s"[name=${field.name}]").is(":checked") match {
+            case true => Seq("yes")
+            case false => Seq.empty
+          }
+        }
+        Seq(jQuery(s"[name=${field.name}]").`val`().asInstanceOf[String])
     }
-  })(DatesJS)
+
+  })
 
   @JSExport
   override def main(): Unit = {
@@ -57,6 +59,12 @@ object SimpleFormJS extends JSApp {
       }
 
       calculableField.foreach{
+        case Field(name, _, pf: ProgressField, _, _, _, _, _, _) =>
+          try {
+            jQuery(s"progress[data-name='$name']").attr("max", pf.max(form)).attr("value", pf.value(form))
+          } catch {
+            case e: Exception => println(s"erraro3 cxe $name ${e.getMessage}")
+          }
         case Field(name, _, cf: CalculateField[_], _, _, _, _, _, _) =>
           try {
             jQuery(s".formExpression[data-name='$name']").html(cf.evaluate(form) match {

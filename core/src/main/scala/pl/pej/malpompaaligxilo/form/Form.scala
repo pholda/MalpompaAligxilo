@@ -1,20 +1,27 @@
 package pl.pej.malpompaaligxilo.form
 
-import pl.pej.malpompaaligxilo.form.field.{CalculateField, TableCheckBoxField, CustomCalculateField}
+import pl.pej.malpompaaligxilo.form.field.CalculateField
 import pl.pej.malpompaaligxilo.util.Dates
 
-import scala.collection.immutable.ListMap
-//import scala.scalajs.js.annotation.{JSExportAll, JSExport}
-import scala.util.Try
-
-//@JSExportAll
 abstract class Form {
 
   def id: String
 
-  protected def getRawFieldValue(fieldName: FieldName): Seq[String]
+  @deprecated
+  protected def getRawFieldValue(fieldName: FieldName): Seq[String] = {
+    val field = fields.find(_.name  == fieldName)
+    field.map{
+      f => getRawFieldValue(f)
+    }.getOrElse(Seq.empty[String])
+  }
 
-  def dates: Dates
+  protected def getRawFieldValue(field: Field[_]): Seq[String]
+
+  def isFilled: Boolean
+
+  implicit def context: Context
+
+  implicit final def dates: Dates = context.dates
 
   def fields: List[Field[_]]
 
@@ -23,7 +30,8 @@ abstract class Form {
       case cf: CalculateField[_] =>
         cf.evaluate(this)
       case _ =>
-        field.parse(getRawFieldValue(field.name).filterNot(_.isEmpty))
+//        field.value(this)
+        field.parse(getRawFieldValue(field).filterNot(_.isEmpty))
     }
   }
 
@@ -34,18 +42,4 @@ abstract class Form {
   def hasErrors: Boolean = {
     fields.exists(_.validate(this).nonEmpty)
   }
-
-//  def validate: ValidationResult = {
-//    val errors = fields.map{ f =>
-//      f -> f.validate(fieldValue(f), this)
-//    }.collect{
-//      case (k, Some(v)) => k -> v
-//    }
-//
-//    if (errors.isEmpty) {
-//      SuccessValidation
-//    } else {
-//      FailureValidation(errors.toMap)
-//    }
-//  }
 }
