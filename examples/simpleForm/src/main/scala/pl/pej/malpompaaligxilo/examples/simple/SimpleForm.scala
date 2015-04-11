@@ -9,9 +9,6 @@ import pl.pej.malpompaaligxilo.util.{Dates, NoI18nString}
 class SimpleForm(rawFieldValue: Field[_] => Seq[String], val isFilled: Boolean = false)(implicit val context: Context) extends Form {
   override val id: String = "simpleForm"
 
-//  override protected def getRawFieldValue(field: Field[_]): Seq[String] = rawFieldValue(field)
-
-
   override protected def getRawFieldValue(field: Field[_]): Seq[String] = rawFieldValue(field)
 
   override def fields: List[Field[_]] = name :: surname :: birthDate :: country :: age ::

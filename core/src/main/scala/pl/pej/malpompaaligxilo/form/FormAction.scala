@@ -1,5 +1,5 @@
 package pl.pej.malpompaaligxilo.form
 
-abstract class FormAction {
-  def run(form: Form): Unit
+abstract class FormAction[F <: Form] {
+  def run(form: F): Unit
 }
