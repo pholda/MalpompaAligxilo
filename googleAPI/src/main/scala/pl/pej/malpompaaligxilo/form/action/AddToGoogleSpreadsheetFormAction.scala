@@ -5,7 +5,7 @@ import pl.pej.malpompaaligxilo.form.{Form, FormAction}
 import pl.pej.malpompaaligxilo.googleapi.Spreadsheet
 import pl.pej.malpompaaligxilo.util.Date
 
-case class AddToGoogleSpreadsheetFormAction(spreadsheet: Spreadsheet, worksheetTitle: String) extends FormAction {
+case class AddToGoogleSpreadsheetFormAction(spreadsheet: Spreadsheet, worksheetTitle: String) extends FormAction[Form] {
 
   override def run(form: Form): Unit = {
     val data: Map[String, String] = form.fields.flatMap{field =>
