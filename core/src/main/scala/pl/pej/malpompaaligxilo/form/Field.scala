@@ -13,7 +13,8 @@ case class Field[T](
   visible: FormExpr[Boolean] = true,
   required: Boolean = false,
   customValidate: T => Option[FormError] = {_:T => None},
-  store: Boolean = true
+  store: Boolean = true,
+  separateValues: Option[T] => Option[List[(String, String)]] = {o: Option[T] => None}
                      ) extends FormElement {
   final def isCalculate: Boolean = `type`.isInstanceOf[CalculateField[_]]
 
@@ -36,5 +37,9 @@ case class Field[T](
 
   def value(implicit form: Form): Option[T] = {
     form.fieldValue(this)
+  }
+
+  def separatedValues(implicit form: Form): Option[List[(String, String)]] = {
+    separateValues(value)
   }
 }

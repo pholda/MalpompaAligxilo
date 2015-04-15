@@ -8,7 +8,7 @@
 
 @if(field.visible(form)) {
     <strong>@field.caption(lang)</strong>: @{field match {
-        case Field(_, _, CustomCalculateField(formula), _, _, _, _, _, _) =>
+        case Field(_, _, CustomCalculateField(formula), _, _, _, _, _, _, _) =>
             formula(form) match {
 //                case d: Double => new DecimalFormat("#.##").format(d)
 //                case d: Double => new DecimalFormat("#.##").format(d)

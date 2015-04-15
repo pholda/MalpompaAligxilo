@@ -9,7 +9,7 @@ class JSDate(jsDate: js.Date) extends Date {
 
   override def getYear: Int = jsDate.getFullYear()
 
-  override def getMillis: Long = jsDate.getMilliseconds()
+  override def getMillis: Long = jsDate.getTime().toLong
 
-  override def toString: Lang = s"$getYear-$getMonth-$getDay"
+  override def toString: Lang = "%04d".format(getYear) + "-" + "%02d".format(getYear) + "-" + "%02d".format(getMonth)
 }

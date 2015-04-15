@@ -1,8 +1,5 @@
 package pl.pej.malpompaaligxilo
 
-/**
- * Created by piotr on 22.12.14.
- */
 package object form {
   type FieldName = String
 

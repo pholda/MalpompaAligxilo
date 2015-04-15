@@ -30,7 +30,6 @@ abstract class Form {
       case cf: CalculateField[_] =>
         cf.evaluate(this)
       case _ =>
-//        field.value(this)
         field.parse(getRawFieldValue(field).filterNot(_.isEmpty))
     }
   }
