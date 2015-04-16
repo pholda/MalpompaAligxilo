@@ -4,18 +4,18 @@
 
 @{
     field.`type` match {
-        case StringField(false) =>
+        case StringField(false, default) =>
             <input type="text"
                 name={field.name}
                 class="form-control"
                 placeholder={field.placeholder.map(_(lang)) orNull}
-                value={field.value.map(_.toString).orNull}
+                value={field.value.map(_.toString).orElse(default) orNull}
                 />
-        case StringField(true) =>
+        case StringField(true, default) =>
             <textarea
             name={field.name}
             class="form-control"
-            placeholder={field.placeholder.map(_(lang)) orNull}>{field.value.map(_.toString).orNull}</textarea>
+            placeholder={field.placeholder.map(_(lang)) orNull}>{field.value.map(_.toString).orElse(default) orNull}</textarea>
         case IntField(min, max, step) =>
             <input type="number"
                 name={field.name}

@@ -41,7 +41,7 @@ object SimpleFormJS extends JSApp {
   @JSExport
   override def main(): Unit = {
     lazy val calculableField = form.fields.collect{
-      case f@Field(_, _, _, _, _, _, _, _, _) if f.isCalculate => f
+      case f@Field(_, _, _, _, _, _, _, _, _, _) if f.isCalculate => f
     }
 
     def refresh() {
@@ -59,13 +59,13 @@ object SimpleFormJS extends JSApp {
       }
 
       calculableField.foreach{
-        case Field(name, _, pf: ProgressField, _, _, _, _, _, _) =>
+        case Field(name, _, pf: ProgressField, _, _, _, _, _, _, _) =>
           try {
             jQuery(s"progress[data-name='$name']").attr("max", pf.max(form)).attr("value", pf.value(form))
           } catch {
             case e: Exception => println(s"erraro3 cxe $name ${e.getMessage}")
           }
-        case Field(name, _, cf: CalculateField[_], _, _, _, _, _, _) =>
+        case Field(name, _, cf: CalculateField[_], _, _, _, _, _, _, _) =>
           try {
             jQuery(s".formExpression[data-name='$name']").html(cf.evaluate(form) match {
               case Some(x) => x.toString
