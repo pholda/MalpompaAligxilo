@@ -8,7 +8,7 @@ import com.typesafe.sbt.packager.universal.UniversalKeys
 object MalpompaAligxilo extends Build with UniversalKeys {
   val defaults = Defaults.coreDefaultSettings ++ List(
     organization := "pl.pej.malpompaaligxilo",
-    version := "0.1.1",
+    version := "0.1.2-SNAPSHOT",
     scalaVersion := "2.11.5",
     libraryDependencies ++= List(
 //      "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test"

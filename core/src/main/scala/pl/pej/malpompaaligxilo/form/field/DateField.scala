@@ -10,7 +10,6 @@ case class DateField(
                       maxDate: Option[String] = None,
                       yearRange: Option[String] = None)
                   (implicit dates: Dates) extends FieldType[Date]{
-//  override def parse(values: Seq[String]): Option[String] = values.headOption
   override def parse(values: Seq[String]): Option[Date] =
   Try(values.headOption.map(str => dates.fromString(str))).toOption.flatten
 
