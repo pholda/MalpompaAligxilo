@@ -39,6 +39,6 @@ abstract class Form {
   }
 
   def hasErrors: Boolean = {
-    fields.exists(_.validate(this).nonEmpty)
+    isFilled && fields.exists(_.validate(this).nonEmpty)
   }
 }
