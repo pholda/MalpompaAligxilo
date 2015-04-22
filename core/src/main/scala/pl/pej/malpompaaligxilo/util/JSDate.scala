@@ -11,5 +11,5 @@ class JSDate(jsDate: js.Date) extends Date {
 
   override def getMillis: Long = jsDate.getTime().toLong
 
-  override def toString: Lang = "%04d".format(getYear) + "-" + "%02d".format(getYear) + "-" + "%02d".format(getMonth)
+  override def toString: Lang = "%04d".format(getYear) + "-" + "%02d".format(getMonth) + "-" + "%02d".format(getDay)
 }

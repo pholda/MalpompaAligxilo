@@ -82,7 +82,7 @@
                     field.value match {
                         case Some(s: Set[(TableCheckboxRow, TableCheckboxCol)])
                             if s.contains((row, cols.head)) => "checked"
-                        case None if default => "checked"
+                        case _ if !form.isFilled && default => "checked"
                         case _ => null
                     }
                     }
@@ -113,7 +113,7 @@
                         field.value match {
                             case Some(s: Set[(TableCheckboxRow, TableCheckboxCol)])
                                 if s.contains((row, cols.head)) => "checked"
-                            case None if default => "checked"
+                            case _ if !form.isFilled && default => "checked"
                             case _ => null
                         }
                         }
