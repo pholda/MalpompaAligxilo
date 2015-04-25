@@ -1,0 +1,22 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=utf-8\n"
+"X-Language: pl\n"
+
+msgid "Name"
+msgstr "Imię"
+
+msgid "Surname"
+msgstr "Nazwisko"
+
+msgid "Date of birth"
+msgstr "Data urodzenia"
+
+msgid "Personal data:"
+msgstr "Dane osobowe:"
+
+msgid "send!"
+msgstr "wyślij!"
+
+msgid "years"
+msgstr "lat"

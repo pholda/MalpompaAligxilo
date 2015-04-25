@@ -39,7 +39,6 @@ case class AddToGoogleSpreadsheetFormAction(spreadsheet: Spreadsheet, worksheetT
       }
     }.toMap
 
-    println(s">> data to insert = $data")
     spreadsheet.insertRow(data.map{
       case (k, v) => k.replace('/', '-') -> v
     }.toMap, worksheetTitle)

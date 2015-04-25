@@ -1,0 +1,22 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=utf-8\n"
+"X-Language: pl\n"
+
+msgid "Name"
+msgstr "Nomo"
+
+msgid "Surname"
+msgstr "Familia nomo"
+
+msgid "Date of birth"
+msgstr "Naskiĝdato"
+
+msgid "Personal data:"
+msgstr "Personaj datumoj:"
+
+msgid "send!"
+msgstr "aliĝu!"
+
+msgid "years"
+msgstr "jaroj"

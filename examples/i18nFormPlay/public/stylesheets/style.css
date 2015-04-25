@@ -1,0 +1,17 @@
+form {
+    width: 80%;
+    min-width: 400px;
+    margin: 0 auto;
+}
+
+form dd {
+    font-weight: normal;
+}
+
+form input[type=checkbox] {
+    width: auto;
+}
+
+.error {
+    color: #ff0000;
+}

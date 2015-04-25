@@ -1,7 +1,9 @@
 package pl.pej.malpompaaligxilo.util
 
-case class I18nString(values: Map[Lang, String]) extends I18nable[String] {
+case class I18nString(values: Map[Lang, String]) extends I18nableString {
   override def apply(implicit lang: Lang): String = values.apply(lang)
+
+  override def apply(n: Int)(implicit lang: Lang): String = apply(lang)
 }
 
 object I18nString {
