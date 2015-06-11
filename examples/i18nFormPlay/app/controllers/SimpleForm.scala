@@ -1,21 +1,20 @@
 package controllers
 
-import pl.pej.malpompaaligxilo.examples.i18n._
-import pl.pej.malpompaaligxilo.form.ScalaContext
-import pl.pej.malpompaaligxilo.util.{PoCfg, Lang}
+import pl.pholda.malpompaaligxilo.ContextJVM
+import pl.pholda.malpompaaligxilo.i18n.{Lang, PoCfgScala}
 import play.api.mvc._
 import views.html
 
 object SimpleForm extends Controller {
-  implicit val context = ScalaContext
+  implicit val context = ContextJVM
 
-  implicit val poCfg = PoCfg.fromResources(getClass,
+  implicit val poCfg = PoCfgScala.fromResources(getClass,
     "pl" -> "/form_pl.po",
     "eo" -> "/form_eo.po",
     "en" -> "/form_en.po"
   )
 
-  import pl.pej.malpompaaligxilo.examples.i18n.I18nForm
+  import pl.pholda.malpompaaligxilo.examples.i18n.I18nForm
 
   def index(implicit lang: Lang = "en") = Action {
     val form = new I18nForm(

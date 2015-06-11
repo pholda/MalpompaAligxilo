@@ -1,13 +1,13 @@
 package controllers
 
-import pl.pej.malpompaaligxilo.form.ScalaContext
+import pl.pholda.malpompaaligxilo.form.ScalaContext
 import play.api.mvc._
 import views.html
 
 object SimpleForm extends Controller {
   implicit val context = ScalaContext
 
-  import pl.pej.malpompaaligxilo.examples.simple.SimpleForm
+  import pl.pholda.malpompaaligxilo.examples.simple.SimpleForm
 
   def index = Action {
     val form = new SimpleForm(

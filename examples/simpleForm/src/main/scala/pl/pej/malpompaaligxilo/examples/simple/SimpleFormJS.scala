@@ -1,11 +1,11 @@
-package pl.pej.malpompaaligxilo.examples.simple
+package pl.pholda.malpompaaligxilo.examples.simple
 
 import org.scalajs.dom
 import org.scalajs.dom.Element
-import pl.pej.malpompaaligxilo.form.{JSContext, Field}
-import pl.pej.malpompaaligxilo.form.field.{TableCheckboxField, CalculateField}
-import pl.pej.malpompaaligxilo.form.field.calculateField.ProgressField
-import pl.pej.malpompaaligxilo.util.DatesJS
+import pl.pholda.malpompaaligxilo.form.{JSContext, Field}
+import pl.pholda.malpompaaligxilo.form.field.{TableCheckboxField, CalculateField}
+import pl.pholda.malpompaaligxilo.form.field.calculateField.ProgressField
+import pl.pholda.malpompaaligxilo.util.util.DatesJS
 
 import scala.collection.mutable.ListBuffer
 import scala.scalajs.js

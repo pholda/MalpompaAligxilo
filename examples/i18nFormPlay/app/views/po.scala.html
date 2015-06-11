@@ -1,8 +1,8 @@
-@()(implicit lang: pl.pej.malpompaaligxilo.util.Lang = "en")
+@()(implicit lang: pl.pholda.malpompaaligxilo.i18n.Lang = "en")
 @import play.api.libs.json.Json
-@import pl.pej.malpompaaligxilo.util.I18n
+@import pl.pholda.malpompaaligxilo.i18n.PoCfgScala
 <script type="text/javascript">
     formI18n = @{
-        Html(Json.toJson(Map(lang -> I18n.getSimpleBodyFromResource(getClass, s"/form_$lang.po"))).toString())
+        Html(Json.toJson(Map(lang -> PoCfgScala.getSimpleBodyFromResource(getClass, s"/form_$lang.po"))).toString())
     }
 </script>

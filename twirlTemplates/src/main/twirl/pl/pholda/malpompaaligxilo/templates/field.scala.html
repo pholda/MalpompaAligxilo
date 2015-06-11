@@ -1,0 +1,141 @@
+@(field: pl.pholda.malpompaaligxilo.form.Field[_])(implicit form: pl.pholda.malpompaaligxilo.form.Form, lang: pl.pholda.malpompaaligxilo.i18n.Lang = "en")
+@import pl.pholda.malpompaaligxilo.form.field.calculateField.ProgressField
+@import pl.pholda.malpompaaligxilo.form.field.{CalculateField, CheckboxField, DateField, EmailField, EnumOption, IntField, SelectField, StringField, TableCheckboxCol, TableCheckboxField, TableCheckboxRow}
+
+@{
+    field.`type` match {
+        case StringField(false, default) =>
+            <input type="text"
+                name={field.name}
+                class="form-control"
+                placeholder={field.placeholder.map(_(lang)) orNull}
+                value={field.value.map(_.toString).orElse(default) orNull}
+                />
+        case StringField(true, default) =>
+            <textarea
+            name={field.name}
+            class="form-control"
+            placeholder={field.placeholder.map(_(lang)) orNull}>{field.value.map(_.toString).orElse(default) orNull}</textarea>
+        case IntField(min, max, step) =>
+            <input type="number"
+                name={field.name}
+                class="form-control"
+                placeholder={field.placeholder.map(_(lang)) orNull}
+                min={min.map(_.toString) orNull}
+                max={max.map(_.toString) orNull}
+                step={step.map(_.toString) orNull}
+                value={field.value.map(_.toString).orNull}
+                />
+        case DateField(minDate, maxDate, yearRange) =>
+            <input type="text"
+                name={field.name}
+                class="form-control formDate"
+                data-mindate={minDate orNull}
+                data-maxdate={maxDate orNull}
+                data-yearrange={yearRange orNull}
+                placeholder={field.placeholder.map(_(lang)) orNull}
+                value={field.value.map(_.toString).orNull}
+                />
+        case pf: ProgressField =>
+//            <div class="progressField" data-name={field.name}></div>
+            <progress
+                data-name={field.name}
+                value={pf.value(form).toString}
+                max={pf.max(form).toString}
+            />
+        case cf: CalculateField[_] =>
+            <span class="formExpression" data-name={field.name}>{cf.evaluate.getOrElse(null)}</span>
+            //TODO ordering@selectField
+        case s@SelectField(_, size, _, ordering) =>
+
+            <select name={field.name} size={size.toString}
+            class="form-control">{
+            s.allOptions.map{ option =>
+                <option
+                value={option.value}
+                selected={
+                field.value match {
+                    case Some(EnumOption(fval, _)) if fval == option.value => "selected"
+                    case _ => null
+                }
+                }
+                >{option.caption(lang)}</option>
+            }.toSeq
+            }</select>
+        case EmailField =>
+            <input type="email"
+                name={field.name}
+                placeholder={field.placeholder.map(_(lang)) orNull}
+                class="form-control"
+                value={field.value.map(_.toString).orNull}/>
+        case tfield@TableCheckboxField(rows, cols, disabled, default) if cols.size == 1 =>
+            <table data-name={field.name}>{
+            rows.map { row =>
+                <tr><td>
+                <label for={field.name + "-" + row.id}>{row.caption(lang)}</label>
+                </td><td>
+                <input type="checkbox"
+                    class="form-control"
+                    id={field.name + "-" + row.id}
+                    name={field.name+"[]"}
+                    value={row.id}
+                    checked={
+                    field.value match {
+                        case Some(s: Set[(TableCheckboxRow, TableCheckboxCol)])
+                            if s.contains((row, cols.head)) => "checked"
+                        case _ if !form.isFilled && default => "checked"
+                        case _ => null
+                    }
+                    }
+                    />
+                </td></tr>
+            }
+            }</table>
+        case tfield@TableCheckboxField(rows, cols, disabled, default) =>
+            <table data-name={field.name}>
+            <tr><td></td>{
+                cols.map { col =>
+                    <th>{col.caption(lang)}</th>
+                }
+            }</tr>
+            {
+            rows.map { row =>
+                <tr><td>
+                <label for={field.name + "-" + row.id}>{row.caption(lang)}</label>
+                </td>{
+                cols.map {col =>
+                    <td>
+                    <input type="checkbox"
+                        class="form-control"
+                        id={field.name + "-" + col.id + "-" + row.id}
+                        name={field.name+"[]"}
+                        value={col.id + "-" + row.id}
+                        checked={
+                        field.value match {
+                            case Some(s: Set[(TableCheckboxRow, TableCheckboxCol)])
+                                if s.contains((row, cols.head)) => "checked"
+                            case _ if !form.isFilled && default => "checked"
+                            case _ => null
+                        }
+                        }
+                    />
+                    </td>
+                }}
+                </tr>
+            }
+            }</table>
+        case CheckboxField(default) =>
+            <input type="checkbox"
+                name={field.name}
+                checked={
+                field.value match {
+                    case None if default => "checked"
+                    case Some(true) => "checked"
+                    case _ => null
+                }
+                }
+                class="form-control"
+                id={field.name}/>
+        case x => Html(s"unrecognized field!! $x")
+    }
+}

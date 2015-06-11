@@ -9,44 +9,45 @@ object MalpompaAligxilo extends Build with UniversalKeys {
 
   val defaults = Defaults.coreDefaultSettings ++ List(
     organization := "pl.pej.malpompaaligxilo",
-    version := "0.1.2",
+    version := "0.1.3-SNAPSHOT",
     scalaVersion := "2.11.5",
     libraryDependencies ++= List(
-//      "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test"
-      "org.monifu" %% "minitest" % "0.11" % "test"//,
-//      "org.monifu" %%% "minitest" % "0.11" % "test"
-    ),
+      "com.lihaoyi" %% "utest" % "0.3.1"
 
-    testFrameworks += new TestFramework("minitest.runner.Framework")
+    ),
+    testFrameworks += new TestFramework("utest.runner.Framework")
   )
 
-  lazy val root = Project(id = "malpompaAligxilo",
-    base = file("."),
-    settings = defaults ++ List(
-      publishArtifact := false
-    )
-  ).aggregate(core, coreTests, googleAPI, twirlTemplates, Examples.examples)
+  lazy val root = project.in(file(".")).settings(defaults:_*).settings(
+    publishArtifact := false
+  ).aggregate(coreJS, coreJVM, /*coreTests, */googleAPI, twirlTemplates/*, Examples.examples*/)
 
-  lazy val core = Project(id = "core",
-    base = file("core"),
-    settings = defaults ++ List(
-      name := "core",
-      libraryDependencies ++= Seq(
-        "org.scala-lang.modules" % "scala-parser-combinators_2.11" % "1.0.3",
-        "joda-time" % "joda-time" % "2.0",
-        "tv.cntt" %% "scaposer" % "1.5"
-      )
+  lazy val core = crossProject.in(file("core")).settings(
+    name := "core"//,
+//    defaults:_*
+  ).settings(defaults:_*).jvmSettings(
+    libraryDependencies ++= Seq(
+      "org.scala-lang.modules" % "scala-parser-combinators_2.11" % "1.0.3",
+      "joda-time" % "joda-time" % "2.7",
+      "org.joda" % "joda-convert" % "1.7",
+      "tv.cntt" %% "scaposer" % "1.5"
     )
-  ).enablePlugins(ScalaJSPlugin)
+  ).jsSettings(
 
-  lazy val coreTests = Project(id = "coreTests",
-    base = file("coreTests"),
-    settings = defaults ++ List(
-      name := "coreTests",
-      publishArtifact := false
-    )
-  ).dependsOn(core)
+  )
+  lazy val coreJVM = core.jvm
+  lazy val coreJS = core.js
+  //for intellij idea
+  lazy val coreShared = Project("coreShared", file("core/shared")).settings(defaults:_*)
 
+//  lazy val coreTests = Project(id = "coreTests",
+//    base = file("coreTests"),
+//    settings = defaults ++ List(
+//      name := "coreTests",
+//      publishArtifact := false
+//    )
+//  ).dependsOn(coreJVM)
+//
   lazy val googleAPI = Project(id = "googleAPI",
     base = file("googleAPI"),
     settings = defaults ++ List(
@@ -56,7 +57,7 @@ object MalpompaAligxilo extends Build with UniversalKeys {
         "com.google.api-client" % "google-api-client" % "1.19.1"
       )
     )
-  ).dependsOn(core)
+  ).dependsOn(coreJVM)
 
   lazy val twirlTemplates = Project(id = "twirlTemplates",
     base = file("twirlTemplates"),
@@ -64,7 +65,7 @@ object MalpompaAligxilo extends Build with UniversalKeys {
       name := "twirl-templates"/*,
       publishArtifact := false*/
     )
-  ).dependsOn(core).enablePlugins(SbtTwirl)
+  ).dependsOn(coreJVM).enablePlugins(SbtTwirl)
 
   val scalajsOutputDir = Def.settingKey[File]("directory for javascript files output by scalajs")
 }

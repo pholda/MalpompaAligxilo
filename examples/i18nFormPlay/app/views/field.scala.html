@@ -1,8 +1,8 @@
-@(field: pl.pej.malpompaaligxilo.form.Field[_])(implicit form: pl.pej.malpompaaligxilo.form.Form, lang: pl.pej.malpompaaligxilo.util.Lang = "en")
-@import pl.pej.malpompaaligxilo.form.errors.BadDateFormatError
-@import pl.pej.malpompaaligxilo.form.errors.NothingSelectedError
-@import pl.pej.malpompaaligxilo.form.errors.RequiredError
-@import pl.pej.malpompaaligxilo.form.errors.CustomError
+@(field: pl.pholda.malpompaaligxilo.form.Field[_])(implicit form: pl.pholda.malpompaaligxilo.form.Form, lang: pl.pholda.malpompaaligxilo.i18n.Lang = "en")
+@import pl.pholda.malpompaaligxilo.form.errors.BadDateFormatError
+@import pl.pholda.malpompaaligxilo.form.errors.NothingSelectedError
+@import pl.pholda.malpompaaligxilo.form.errors.RequiredError
+@import pl.pholda.malpompaaligxilo.form.errors.CustomError
 
 <div class="form-group">
     <label for="@field.name" class="col-sm-4 control-label">
@@ -26,6 +26,6 @@
         </dl>
     </label>
     <div class="col-sm-8">
-    @pl.pej.malpompaaligxilo.templates.html.field(field)
+    @pl.pholda.malpompaaligxilo.templates.html.field(field)
     </div>
 </div>

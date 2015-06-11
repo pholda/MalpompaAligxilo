@@ -1,9 +1,9 @@
-package pl.pej.malpompaaligxilo.examples.simple
+package pl.pholda.malpompaaligxilo.examples.simple
 
-import pl.pej.malpompaaligxilo.form.field._
-import pl.pej.malpompaaligxilo.form.field.calculateField.FormProgressField
-import pl.pej.malpompaaligxilo.form.{Context, Field, FieldName, Form}
-import pl.pej.malpompaaligxilo.util.{Dates, NoI18nString}
+import pl.pholda.malpompaaligxilo.form.field._
+import pl.pholda.malpompaaligxilo.form.field.calculateField.FormProgressField
+import pl.pholda.malpompaaligxilo.form.{Context, Field, FieldName, Form}
+import pl.pholda.malpompaaligxilo.util.{Dates, NoI18nString}
 
 
 class SimpleForm(rawFieldValue: Field[_] => Seq[String], val isFilled: Boolean = false)(implicit val context: Context) extends Form {

@@ -14,43 +14,44 @@ object Examples extends Build with UniversalKeys
     settings = defaults ++ List(
       publishArtifact := false
     )
-  ).aggregate(simpleForm, simpleFormPlay, i18nForm, i18nFormPlay)
+  ).aggregate(/*simpleForm, simpleFormPlay, */i18nForm, i18nFormPlay)
 
-  lazy val simpleForm = Project(id = "simpleForm",
-    base = file("examples/simpleForm"),
-    settings = defaults ++ List(
-      name := "examples.simple-form",
-      libraryDependencies ++= Seq(
-        "joda-time" % "joda-time" % "2.0",
-        "be.doeraene" %%% "scalajs-jquery" % "0.8.0"
-      ),
-      skip in packageJSDependencies := false,
-      publishArtifact := false
-    )
-  ).dependsOn(core, googleAPI).enablePlugins(ScalaJSPlugin)
-
-  lazy val simpleFormPlay = Project(id = "simpleFormPlay",
-    base = file("examples/simpleFormPlay"),
-    settings = defaults ++ List(
-      name := "examples.simpleFormPlay",
-      libraryDependencies ++= Seq(
-        "com.typesafe.play.plugins" %% "play-plugins-mailer" % "2.3.6-SNAPSHOT",
-        "org.mongodb" %% "casbah" % "2.7.4"
-      ),
-      publishArtifact := false,
-      scalajsOutputDir := (classDirectory in Compile).value / "public" / "javascripts",
-      /**
-       * copying scalajs output to public/javascript. It should be done better
-       */
-      compile in Compile <<= (compile in Compile) dependsOn (fastOptJS in (simpleForm, Compile)),
-      dist <<= dist dependsOn (fullOptJS in (simpleForm, Compile)),
-      stage <<= stage dependsOn (fullOptJS in (simpleForm, Compile))
-
-    ) ++ (
-      Seq(packageScalaJSLauncher, fastOptJS, fullOptJS) map { packageJSKey =>
-        crossTarget in (simpleForm, Compile, packageJSKey) := scalajsOutputDir.value
-      })
-  ).dependsOn(simpleForm, core, twirlTemplates).enablePlugins(play.PlayScala)
+//  lazy val simpleForm = Project(id = "simpleForm",
+//    base = file("examples/simpleForm"),
+//    settings = defaults ++ List(
+//      name := "examples.simple-form",
+//      libraryDependencies ++= Seq(
+//        "joda-time" % "joda-time" % "2.0",
+//        "be.doeraene" %%% "scalajs-jquery" % "0.8.0"
+//      ),
+//      skip in packageJSDependencies := false,
+//      publishArtifact := false
+//    )
+//  ).dependsOn(core.jvm, core.js, googleAPI).enablePlugins(ScalaJSPlugin)
+//
+//  lazy val simpleFormPlay = Project(id = "simpleFormPlay",
+//    base = file("examples/simpleFormPlay"),
+//    settings = defaults ++ List(
+//      name := "examples.simpleFormPlay",
+//      libraryDependencies ++= Seq(
+////        "com.typesafe.play.plugins" %% "play-plugins-mailer" % "2.3.6-SNAPSHOT",
+//        "com.typesafe.play" %% "play-mailer" % "2.4.0",
+//        "org.mongodb" %% "casbah" % "2.7.4"
+//      ),
+//      publishArtifact := false,
+//      scalajsOutputDir := (classDirectory in Compile).value / "public" / "javascripts",
+//      /**
+//       * copying scalajs output to public/javascript. It should be done better
+//       */
+//      compile in Compile <<= (compile in Compile) dependsOn (fastOptJS in (simpleForm, Compile)),
+//      dist <<= dist dependsOn (fullOptJS in (simpleForm, Compile)),
+//      stage <<= stage dependsOn (fullOptJS in (simpleForm, Compile))
+//
+//    ) ++ (
+//      Seq(packageScalaJSLauncher, fastOptJS, fullOptJS) map { packageJSKey =>
+//        crossTarget in (simpleForm, Compile, packageJSKey) := scalajsOutputDir.value
+//      })
+//  ).dependsOn(simpleForm, core.jvm, twirlTemplates).enablePlugins(play.PlayScala)
 
 
   lazy val i18nForm = Project(id = "i18nForm",
@@ -65,7 +66,7 @@ object Examples extends Build with UniversalKeys
       skip in packageJSDependencies := false,
       publishArtifact := false
     )
-  ).dependsOn(core, googleAPI).enablePlugins(ScalaJSPlugin)
+  ).dependsOn(core.js, core.jvm, googleAPI).enablePlugins(ScalaJSPlugin)
 
 
   lazy val i18nFormPlay = Project(id = "i18nFormPlay",
@@ -73,7 +74,8 @@ object Examples extends Build with UniversalKeys
     settings = defaults ++ List(
       name := "examples.i18nFormPlay",
       libraryDependencies ++= Seq(
-        "com.typesafe.play.plugins" %% "play-plugins-mailer" % "2.3.6-SNAPSHOT",
+//        "com.typesafe.play.plugins" %% "play-plugins-mailer" % "2.3.6-SNAPSHOT",
+        "com.typesafe.play" %% "play-mailer" % "2.4.0",
         "org.mongodb" %% "casbah" % "2.7.4"
       ),
       publishArtifact := false,
@@ -89,5 +91,5 @@ object Examples extends Build with UniversalKeys
       Seq(packageScalaJSLauncher, fastOptJS, fullOptJS) map { packageJSKey =>
         crossTarget in (i18nForm, Compile, packageJSKey) := scalajsOutputDir.value
       })
-  ).dependsOn(i18nForm, core, twirlTemplates).enablePlugins(play.PlayScala)
+  ).dependsOn(i18nForm, core.jvm, twirlTemplates).enablePlugins(play.PlayScala)
 }

@@ -1,0 +1,57 @@
+@(field: pl.pholda.malpompaaligxilo.form.Field[_])(implicit form: pl.pholda.malpompaaligxilo.form.Form, lang: pl.pholda.malpompaaligxilo.i18n.Lang = "en", poCfg: pl.pholda.malpompaaligxilo.i18n.PoCfg = pl.pholda.malpompaaligxilo.i18n.PoCfg.empty)
+@import pl.pholda.malpompaaligxilo.i18n.I18nString
+@import pl.pholda.malpompaaligxilo.i18n.I18n
+@import pl.pholda.malpompaaligxilo.form.PrintableCalculateFieldValue
+@import pl.pholda.malpompaaligxilo.form.field.TableCheckboxField
+@import pl.pholda.malpompaaligxilo.form.Field
+@import pl.pholda.malpompaaligxilo.form.field.CustomCalculateField
+@import java.text.DecimalFormat
+@import pl.pholda.malpompaaligxilo.form.field.TableCheckboxCol
+@import pl.pholda.malpompaaligxilo.form.field.TableCheckboxRow
+@import pl.pholda.malpompaaligxilo.form.field.EnumOption
+
+@if(field.visible(form)) {
+    @if(field.caption(lang).nonEmpty){
+        <strong>@field.caption(lang)</strong>:
+    }
+
+    @{field match {
+        case Field(_, _, CustomCalculateField(formula), _, _, _, _, _, _, _) =>
+            formula(form) match {
+                case Some(i18nString: I18nString) => Html(i18nString(lang))
+                case Some(p: PrintableCalculateFieldValue) => Html(p.str(lang, poCfg))
+                case Some(x) => Html(x.toString)
+                case None => Html("")
+            }
+        case Field(_, _, TableCheckboxField(rows, cols, _, _), _, _, _, _, _, _, _) =>
+            form.fieldValue(field) match {
+                case Some(s: Set[(TableCheckboxRow, TableCheckboxCol)]) if cols.size > 1 =>
+                    if (s.isEmpty) {
+                        I18n.t("(nothing)")
+                    } else {
+                        s.map{
+                            case (r, c) => r.caption(lang) + " " + c.caption(lang)
+                        }.mkString(", ")
+                    }
+                case Some(s: Set[(TableCheckboxRow, TableCheckboxCol)]) if cols.size == 1 =>
+                    if (s.isEmpty) {
+                        I18n.t("(nothing)")
+                    } else {
+                        s.map{
+                            case (r, c) => r.caption(lang)
+                        }.mkString(", ")
+                    }
+            }
+        case s:Set[(TableCheckboxRow, TableCheckboxCol)] => {
+
+        }
+        case _ => form.fieldValue(field).getOrElse("") match {
+            case d: Double => new DecimalFormat("#.##").format(d)
+            case true => I18n.t("yes")
+            case false => I18n.t("no")
+            case EnumOption(_, caption) => caption(lang)
+            case x => x.toString
+        }
+    }}
+    <br/>
+}
