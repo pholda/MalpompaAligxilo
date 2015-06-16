@@ -1,7 +1,7 @@
 @(implicit form: pl.pholda.malpompaaligxilo.examples.i18n.I18nForm, lang: pl.pholda.malpompaaligxilo.i18n.Lang, poCfg: pl.pholda.malpompaaligxilo.i18n.PoCfg)
 @import views.html.field
 <!DOCTYPE html>
-<html lang="@lang">
+<html lang="@lang" ng-app="malpompaAligxilo">
     <head>
         <meta charset="UTF-8">
         <title>MalpompaAliĝilo - simple example</title>
@@ -9,9 +9,31 @@
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.2/themes/ui-lightness/jquery-ui.css" />
         <link rel="stylesheet" href="@routes.Assets.at("stylesheets/style.css")" />
     </head>
-    <body>
+    <body ng-controller="FormCtrl as form">
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
         <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
         <script type="text/javascript" src="https://code.jquery.com/ui/1.11.2/jquery-ui.min.js"></script>
+
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/examples-i18n-form-fastopt.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/i18n/jes2015_pl.js")"></script>
+        <script type="text/javascript">
+//        $(function(){
+//            $('input[type=text].formDate' ).each(function() {
+//                $(this).datepicker({
+//                    "dateFormat": "yy-mm-dd",
+//                    changeMonth: true,
+//                    changeYear: true,
+//                    minDate: $(this).data("mindate"),
+//                    maxDate: $(this).data("maxdate"),
+//                    yearRange: $(this).data("yearrange")
+//                });
+//            });
+//        })
+        </script>
+
+        <script type="text/javascript">
+            pl.pholda.malpompaaligxilo.examples.i18n.I18nFormJS().main();
+        </script>
         @{
             lang match {
                 case "eo" =>
@@ -23,22 +45,6 @@
         }
 
 
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/examples-i18n-form-fastopt.js")"></script>
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/i18n/jes2015_pl.js")"></script>
-        <script type="text/javascript">
-        $(function(){
-            $('input[type=text].formDate' ).each(function() {
-                $(this).datepicker({
-                    "dateFormat": "yy-mm-dd",
-                    changeMonth: true,
-                    changeYear: true,
-                    minDate: $(this).data("mindate"),
-                    maxDate: $(this).data("maxdate"),
-                    yearRange: $(this).data("yearrange")
-                });
-            });
-        })
-        </script>
         @po()
         <div>
             <a href="@routes.SimpleForm.index("en")">english</a> |
@@ -51,6 +57,8 @@
             </div>
             @field(form.name)
             @field(form.surname)
+            @field(form.hasMiddleName)
+            @field(form.middleName)
             @field(form.birthDate)
             @field(form.age)
             <div class="form-group">
@@ -59,8 +67,5 @@
                 </div>
             </div>
         </form>
-        <script type="text/javascript">
-            pl.pholda.malpompaaligxilo.examples.i18n.I18nFormJS().main();
-        </script>
     </body>
 </html>

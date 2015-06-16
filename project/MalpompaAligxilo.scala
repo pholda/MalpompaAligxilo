@@ -10,7 +10,7 @@ object MalpompaAligxilo extends Build with UniversalKeys {
   val defaults = Defaults.coreDefaultSettings ++ List(
     organization := "pl.pej.malpompaaligxilo",
     version := "0.1.3-SNAPSHOT",
-    scalaVersion := "2.11.5",
+    scalaVersion := "2.11.6",
     libraryDependencies ++= List(
       "com.lihaoyi" %% "utest" % "0.3.1"
 
@@ -20,11 +20,10 @@ object MalpompaAligxilo extends Build with UniversalKeys {
 
   lazy val root = project.in(file(".")).settings(defaults:_*).settings(
     publishArtifact := false
-  ).aggregate(coreJS, coreJVM, /*coreTests, */googleAPI, twirlTemplates/*, Examples.examples*/)
+  ).aggregate(coreJS, coreJVM, /*coreTests, */googleAPI, templates/*, Examples.examples*/)
 
   lazy val core = crossProject.in(file("core")).settings(
-    name := "core"//,
-//    defaults:_*
+    name := "core"
   ).settings(defaults:_*).jvmSettings(
     libraryDependencies ++= Seq(
       "org.scala-lang.modules" % "scala-parser-combinators_2.11" % "1.0.3",
@@ -59,12 +58,8 @@ object MalpompaAligxilo extends Build with UniversalKeys {
     )
   ).dependsOn(coreJVM)
 
-  lazy val twirlTemplates = Project(id = "twirlTemplates",
-    base = file("twirlTemplates"),
-    settings = defaults ++ List(
-      name := "twirl-templates"/*,
-      publishArtifact := false*/
-    )
+  lazy val templates = project.in(file("templates")).settings(defaults:_*).settings(
+    name := "templates"
   ).dependsOn(coreJVM).enablePlugins(SbtTwirl)
 
   val scalajsOutputDir = Def.settingKey[File]("directory for javascript files output by scalajs")

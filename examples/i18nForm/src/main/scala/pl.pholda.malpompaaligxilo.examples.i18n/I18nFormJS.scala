@@ -1,18 +1,18 @@
 package pl.pholda.malpompaaligxilo.examples.i18n
 
 
-import org.scalajs.dom
+import biz.enef.angulate._
 import org.scalajs.dom.Element
 import org.scalajs.jquery.jQuery
 import pl.pholda.malpompaaligxilo.ContextJS
-import pl.pholda.malpompaaligxilo.form.field.CalculateField
-import pl.pholda.malpompaaligxilo.form.field.calculateField.ProgressField
+import pl.pholda.malpompaaligxilo.form.field.{CalculateField, CheckboxField}
 import pl.pholda.malpompaaligxilo.form.{Field, PrintableCalculateFieldValue}
 import pl.pholda.malpompaaligxilo.i18n.{Lang, PoCfg, PoCfgJS}
 
 import scala.collection.mutable.ListBuffer
 import scala.scalajs.js
 import scala.scalajs.js.JSApp
+import scala.scalajs.js.JSConverters._
 import scala.scalajs.js.annotation.JSExport
 
 object I18nFormJS extends JSApp {
@@ -21,72 +21,79 @@ object I18nFormJS extends JSApp {
   implicit val lang: Lang = jQuery("html").attr("lang")
   implicit val poCfg: PoCfg = PoCfgJS.fromJS("formI18n")
 
-  val form = new I18nForm({field =>
-    field.`type`.arrayValue match {
-      case true =>
-        val checked = new ListBuffer[String]
-        jQuery(s"[name='$field[]']:checked").each{(a: js.Any, e: Element) =>
-          checked.append(jQuery(e).`val`().asInstanceOf[String])
-          a
-        }
-        checked.toSeq
-      case false =>
-        if (jQuery(s"[name=${field.name}]").is("[type=checkbox]")) {
-          jQuery(s"[name=${field.name}]").is(":checked") match {
-            case true => Seq("yes")
-            case false => Seq.empty
+
+  trait MyScope extends Scope {
+
+    var field: js.Dictionary[Any] = js.native
+
+    var fieldVisible: js.Function = js.native
+
+    var calculateValue: js.Function = js.native
+  }
+
+  class FormCtrl($scope: MyScope) extends ScopeController {
+
+    implicit val form = new I18nForm({field =>
+      field.`type`.arrayValue match {
+        case true =>
+          val checked = new ListBuffer[String]
+          jQuery(s"[name='$field[]']:checked").each{(a: js.Any, e: Element) =>
+            checked.append(jQuery(e).`val`().asInstanceOf[String])
+            a
           }
-        }
-        Seq(jQuery(s"[name=${field.name}]").`val`().asInstanceOf[String])
+          checked.toSeq
+        case false =>
+          field.`type` match {
+            case CheckboxField(default) =>
+              $scope.field.get(field.name) match {
+                case Some(true) =>
+                  Seq("true")
+                case _ =>
+                  Seq.empty
+              }
+            case _ =>
+              $scope.field.get(field.name).map(x => Seq(x.toString)).getOrElse(Seq.empty)
+          }
+      }
+
+    })
+
+    val fields = form.fields.map{f =>
+      (f.name -> f).asInstanceOf[Tuple2[String, Field[_]]]
+    }.toMap.toJSDictionary
+
+    $scope.field = js.Dictionary.empty
+
+    $scope.fieldVisible = (name: String) => try {
+      fields.get(name).map(_.visible(form)).getOrElse(true)
+    } catch {
+      case _ => false
     }
 
-  })
-
+    $scope.calculateValue = (name: String) => try {
+      fields.get(name) match {
+        case Some(field) =>
+          field.`type` match {
+            case cf: CalculateField[_] =>
+              field.value(form).map{
+                case printable: PrintableCalculateFieldValue =>
+                  printable.str(lang, poCfg)
+                case other => "other+"+other.toString
+              }.getOrElse("")
+            case _ =>
+              ""
+          }
+        case _ =>
+          ""
+      }
+    } catch {
+      case _ => ""
+    }
+  }
   @JSExport
   override def main(): Unit = {
-    lazy val calculableField = form.fields.collect{
-      case f@Field(_, _, _, _, _, _, _, _, _, _) if f.isCalculate => f
-    }
+    val module = angular.createModule("malpompaAligxilo")
 
-    def refresh() {
-      form.fields.foreach{f: Field[_] =>
-        try {
-          val v = f.visible(form)
-          jQuery(s"[name='${f.name}'], [data-name=${f.name}]").parents("div.form-group").css("display", v match {
-            case true => "block"
-            case false => "none"
-          })
-        } catch {
-          case e: Exception =>
-            println(s"error, field ${f.name}, ")
-        }
-      }
-
-      calculableField.foreach{
-        case Field(name, _, pf: ProgressField, _, _, _, _, _, _, _) =>
-          try {
-            jQuery(s"progress[data-name='$name']").attr("max", pf.max(form)).attr("value", pf.value(form))
-          } catch {
-            case e: Exception => println(s"error, $name ${e.getMessage}")
-          }
-        case Field(name, _, cf: CalculateField[_], _, _, _, _, _, _, _) =>
-          try {
-            jQuery(s".formExpression[data-name='$name']").html(cf.evaluate(form) match {
-              case Some(p: PrintableCalculateFieldValue) => p.str
-              case Some(x) => x.toString
-              case None => ""
-            })
-          } catch {
-            case e: Exception => println(s"error, $name ${e.getMessage}")
-          }
-
-      }
-    }
-
-    jQuery(":input").change{e: dom.Element =>
-      refresh()
-    }
-    refresh()
-
+    module.controllerOf[FormCtrl]("FormCtrl")
   }
 }

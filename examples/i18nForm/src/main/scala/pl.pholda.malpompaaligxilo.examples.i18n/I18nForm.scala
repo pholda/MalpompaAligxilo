@@ -6,11 +6,11 @@ import pl.pholda.malpompaaligxilo.form.{Field, Form}
 import pl.pholda.malpompaaligxilo.i18n.{I18n, PoCfg}
 
 class I18nForm(rawFieldValue: Field[_] => Seq[String], val isFilled: Boolean = false)(implicit val context: Context, poCfg: PoCfg) extends Form {
-  override val id: String = "pl.pholda.malpompaaligxilo.util/i18n"
+  override val id: String = "i18n"
 
   override protected def getRawFieldValue(field: Field[_]): Seq[String] = rawFieldValue(field)
 
-  override def fields: List[Field[_]] = name :: surname :: birthDate :: age :: Nil
+  override def fields: List[Field[_]] = name :: surname :: hasMiddleName :: middleName :: birthDate :: age :: Nil
 
   val name = Field(
     name = "name",
@@ -24,6 +24,21 @@ class I18nForm(rawFieldValue: Field[_] => Seq[String], val isFilled: Boolean = f
     caption = I18n.po("Surname"),
     `type` = StringField(),
     required = true
+  )
+
+  val hasMiddleName = Field(
+    name = "hasMiddleName",
+    caption = I18n.po("Has middle name"),
+    `type` = CheckboxField(default = false)
+  )
+
+  val middleName = Field(
+    name = "middleName",
+    caption = I18n.po("Middle name"),
+    `type` = StringField(),
+    visible = { implicit form =>
+      hasMiddleName.value.contains(true)
+    }
   )
 
   val birthDate = Field(

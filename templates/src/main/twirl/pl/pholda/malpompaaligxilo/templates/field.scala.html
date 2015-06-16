@@ -6,6 +6,7 @@
     field.`type` match {
         case StringField(false, default) =>
             <input type="text"
+                ng-model={"field['"+field.name+"']"}
                 name={field.name}
                 class="form-control"
                 placeholder={field.placeholder.map(_(lang)) orNull}
@@ -13,11 +14,13 @@
                 />
         case StringField(true, default) =>
             <textarea
+            ng-model={"field['"+field.name+"']"}
             name={field.name}
             class="form-control"
             placeholder={field.placeholder.map(_(lang)) orNull}>{field.value.map(_.toString).orElse(default) orNull}</textarea>
         case IntField(min, max, step) =>
             <input type="number"
+                ng-model={"field['"+field.name+"']"}
                 name={field.name}
                 class="form-control"
                 placeholder={field.placeholder.map(_(lang)) orNull}
@@ -28,6 +31,7 @@
                 />
         case DateField(minDate, maxDate, yearRange) =>
             <input type="text"
+                ng-model={"field['"+field.name+"']"}
                 name={field.name}
                 class="form-control formDate"
                 data-mindate={minDate orNull}
@@ -39,31 +43,34 @@
         case pf: ProgressField =>
 //            <div class="progressField" data-name={field.name}></div>
             <progress
+                ng-model={"field['"+field.name+"']"}
                 data-name={field.name}
                 value={pf.value(form).toString}
                 max={pf.max(form).toString}
             />
         case cf: CalculateField[_] =>
-            <span class="formExpression" data-name={field.name}>{cf.evaluate.getOrElse(null)}</span>
+            <span>{s"{{calculateValue('${field.name}')}}"}</span>
             //TODO ordering@selectField
         case s@SelectField(_, size, _, ordering) =>
 
             <select name={field.name} size={size.toString}
-            class="form-control">{
-            s.allOptions.map{ option =>
-                <option
-                value={option.value}
-                selected={
-                field.value match {
-                    case Some(EnumOption(fval, _)) if fval == option.value => "selected"
-                    case _ => null
-                }
-                }
-                >{option.caption(lang)}</option>
-            }.toSeq
+                ng-model={"field['"+field.name+"']"}
+                class="form-control">{
+                s.allOptions.map{ option =>
+                    <option
+                    value={option.value}
+                    selected={
+                    field.value match {
+                        case Some(EnumOption(fval, _)) if fval == option.value => "selected"
+                        case _ => null
+                    }
+                    }
+                    >{option.caption(lang)}</option>
+                }.toSeq
             }</select>
         case EmailField =>
             <input type="email"
+                ng-model={"field['"+field.name+"']"}
                 name={field.name}
                 placeholder={field.placeholder.map(_(lang)) orNull}
                 class="form-control"
@@ -126,6 +133,7 @@
             }</table>
         case CheckboxField(default) =>
             <input type="checkbox"
+                ng-model={"field['"+field.name+"']"}
                 name={field.name}
                 checked={
                 field.value match {

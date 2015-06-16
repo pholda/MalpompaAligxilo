@@ -61,7 +61,8 @@ object Examples extends Build with UniversalKeys
       libraryDependencies ++= Seq(
         "joda-time" % "joda-time" % "2.0",
         "be.doeraene" %%% "scalajs-jquery" % "0.8.0",
-        "tv.cntt" %% "scaposer" % "1.5"
+        "tv.cntt" %% "scaposer" % "1.5",
+        "biz.enef" %%% "scalajs-angulate" % "0.2.1"
       ),
       skip in packageJSDependencies := false,
       publishArtifact := false
@@ -74,7 +75,6 @@ object Examples extends Build with UniversalKeys
     settings = defaults ++ List(
       name := "examples.i18nFormPlay",
       libraryDependencies ++= Seq(
-//        "com.typesafe.play.plugins" %% "play-plugins-mailer" % "2.3.6-SNAPSHOT",
         "com.typesafe.play" %% "play-mailer" % "2.4.0",
         "org.mongodb" %% "casbah" % "2.7.4"
       ),
@@ -91,5 +91,5 @@ object Examples extends Build with UniversalKeys
       Seq(packageScalaJSLauncher, fastOptJS, fullOptJS) map { packageJSKey =>
         crossTarget in (i18nForm, Compile, packageJSKey) := scalajsOutputDir.value
       })
-  ).dependsOn(i18nForm, core.jvm, twirlTemplates).enablePlugins(play.PlayScala)
+  ).dependsOn(i18nForm, core.jvm, templates).enablePlugins(play.PlayScala)
 }
