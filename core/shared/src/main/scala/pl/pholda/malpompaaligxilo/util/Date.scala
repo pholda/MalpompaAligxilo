@@ -6,9 +6,8 @@ abstract class Date {
   def getYear: Int
   def getMillis: Long
 
-  override def equals(obj: scala.Any): Boolean = obj match {
-    case d: Date => d.getMillis == getMillis
-    case _ => false
+  def ==(date: Date): Boolean = {
+    getMillis == date.getMillis
   }
 
   def >(d: Date): Boolean = {
