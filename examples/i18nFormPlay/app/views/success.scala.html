@@ -1,5 +1,6 @@
-@(implicit form: pl.pholda.malpompaaligxilo.examples.i18n.I18nForm)
+@()(implicit form: pl.pholda.malpompaaligxilo.form.FormInstanceJVM[pl.pholda.malpompaaligxilo.examples.i18n.I18nForm])
 @import pl.pholda.malpompaaligxilo.templates.html.fieldvalue
+@import form.specification._
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,9 +17,9 @@
         <h1>Success!</h1>
         <h2>Your data:</h2>
         <h3>Personal Data:</h3>
-        @fieldvalue(form.name)
-        @fieldvalue(form.surname)
-        @fieldvalue(form.birthDate)
-        @fieldvalue(form.age)
+        @fieldvalue(name)
+        @fieldvalue(surname)
+        @fieldvalue(birthDate)
+        @fieldvalue(age)
     </body>
 </html>

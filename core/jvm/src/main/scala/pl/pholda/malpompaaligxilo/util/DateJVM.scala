@@ -2,7 +2,7 @@ package pl.pholda.malpompaaligxilo.util
 
 import org.joda.time.DateTime
 
-class JVMDate(jodaDate: DateTime) extends Date  {
+class DateJVM(jodaDate: DateTime) extends Date  {
   override def getDay: Int = jodaDate.getDayOfMonth
 
   override def getMonth: Int = jodaDate.getMonthOfYear
@@ -14,9 +14,9 @@ class JVMDate(jodaDate: DateTime) extends Date  {
   override def toString: String = jodaDate.toString("yyyy-MM-dd")
 }
 
-object JVMDate extends DateCompanion {
+object DateJVM extends DateCompanion {
 
-  override def now: Date = new JVMDate(DateTime.now())
+  override def now: Date = new DateJVM(DateTime.now())
 
-  override def fromString(str: String): Date = new JVMDate(DateTime.parse(str))
+  override def fromString(str: String): Date = new DateJVM(DateTime.parse(str))
 }

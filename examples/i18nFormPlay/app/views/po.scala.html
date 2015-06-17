@@ -1,8 +1,17 @@
-@()(implicit lang: pl.pholda.malpompaaligxilo.i18n.Lang = "en")
+@import pl.pholda.malpompaaligxilo.i18n.ScaposerPo
+@()(implicit form: pl.pholda.malpompaaligxilo.form.FormInstanceJVM[_], lang: pl.pholda.malpompaaligxilo.i18n.Lang = "en")
+@import pl.pholda.malpompaaligxilo.ContextJVM
+@import pl.pholda.malpompaaligxilo.i18n.I18nPo
 @import play.api.libs.json.Json
-@import pl.pholda.malpompaaligxilo.i18n.PoCfgScala
 <script type="text/javascript">
-    formI18n = @{
-        Html(Json.toJson(Map(lang -> PoCfgScala.getSimpleBodyFromResource(getClass, s"/form_$lang.po"))).toString())
+window.@{form.id}_i18n = @{
+    val po = form.context.asInstanceOf[ContextJVM].i18n.asInstanceOf[I18nPo].poSet.translations(lang).asInstanceOf[ScaposerPo]
+
+    val simplified = po.po.body.map{
+        case ((_, singular), translations) =>
+            singular -> translations.head
     }
+
+    Html(Json.toJson(simplified).toString())
+}
 </script>

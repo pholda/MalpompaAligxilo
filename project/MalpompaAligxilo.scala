@@ -7,6 +7,8 @@ import com.typesafe.sbt.packager.universal.UniversalKeys
 
 object MalpompaAligxilo extends Build with UniversalKeys {
 
+  val scalajsAngulateVersion = "0.2.1"
+
   val defaults = Defaults.coreDefaultSettings ++ List(
     organization := "pl.pej.malpompaaligxilo",
     version := "0.1.3-SNAPSHOT",
@@ -32,7 +34,10 @@ object MalpompaAligxilo extends Build with UniversalKeys {
       "tv.cntt" %% "scaposer" % "1.5"
     )
   ).jsSettings(
-
+    libraryDependencies ++= Seq(
+      "biz.enef" %%% "scalajs-angulate" % scalajsAngulateVersion,
+      "be.doeraene" %%% "scalajs-jquery" % "0.8.0"
+    )
   )
   lazy val coreJVM = core.jvm
   lazy val coreJS = core.js

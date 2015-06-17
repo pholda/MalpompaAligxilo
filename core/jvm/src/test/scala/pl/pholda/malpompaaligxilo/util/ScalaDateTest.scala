@@ -2,4 +2,4 @@ package pl.pholda.malpompaaligxilo.util
 
 import utest._
 
-object ScalaDateTest extends DateTest(JVMDate)
+object ScalaDateTest extends DateTest(DateJVM)

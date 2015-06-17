@@ -4,26 +4,27 @@ import pl.pholda.malpompaaligxilo.util._
 
 import scala.io.Source
 
+abstract class I18n {
+
+  def t(singular: String): I18nableString
+
+  def tc(ctx: String, singular: String): I18nableString
+
+  def tp(singular: String, plural: String): I18nableString
+
+  def tcp(ctx: String, singular: String, plural: String): I18nableString
+}
+
 object I18n {
-  def po(msgid: String)(implicit poCfg: PoCfg): I18nPoString = {
-    new I18nPoString(
-      poCfg.languages.mapValues{po =>
-      {i: Int => po.t(msgid/*, "", i*/)}
-      }
-    )
-  }
+  def t(singular: String)(implicit i18n: I18n, lang: Lang): String =
+    i18n.t(singular)(lang)
 
-  //TODO add context, plurar etc.
-  def t(msgid: String)(implicit poCfg: PoCfg, lang: Lang): String = {
-    try {
-      poCfg.languages(lang).t(msgid)
-    } catch {
-      case e: Exception => throw new Exception(s"unable to translate $msgid to language $lang")
-    }
-  }
+  def tc(ctx: String, singular: String)(implicit i18n: I18n, lang: Lang): String =
+    i18n.tc(ctx, singular)(lang)
 
-  def tf(msgid: String, args: Any*)(implicit poCfg: PoCfg, lang: Lang): String = {
-    poCfg.languages(lang).tf(msgid, args:_*)
-  }
+  def tp(singular: String, plural: String)(implicit i18n: I18n, lang: Lang): String =
+    i18n.tp(singular, plural)(lang)
 
+  def tcp(ctx: String, singular: String, plural: String)(implicit i18n: I18n, lang: Lang): String =
+    i18n.tcp(ctx, singular, plural)(lang)
 }

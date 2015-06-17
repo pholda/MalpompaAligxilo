@@ -62,7 +62,7 @@ object Examples extends Build with UniversalKeys
         "joda-time" % "joda-time" % "2.0",
         "be.doeraene" %%% "scalajs-jquery" % "0.8.0",
         "tv.cntt" %% "scaposer" % "1.5",
-        "biz.enef" %%% "scalajs-angulate" % "0.2.1"
+        "biz.enef" %%% "scalajs-angulate" % scalajsAngulateVersion
       ),
       skip in packageJSDependencies := false,
       publishArtifact := false

@@ -1,3 +1,3 @@
-@(msgid: String)(implicit poCfg: pl.pholda.malpompaaligxilo.i18n.PoCfg, lang: pl.pholda.malpompaaligxilo.i18n.Lang = "en")
+@(msgid: String)(implicit form: pl.pholda.malpompaaligxilo.form.FormInstanceJVM[_], lang: pl.pholda.malpompaaligxilo.i18n.Lang = "en")
 @import pl.pholda.malpompaaligxilo.i18n.I18n
-@{I18n.t(msgid)}
+@{I18n.t(msgid)(form.context.i18n, lang)}

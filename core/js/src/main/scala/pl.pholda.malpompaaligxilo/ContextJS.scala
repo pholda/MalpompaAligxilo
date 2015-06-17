@@ -1,7 +1,8 @@
 package pl.pholda.malpompaaligxilo
 
-import pl.pholda.malpompaaligxilo.util.{JSDate, DateCompanion}
+import pl.pholda.malpompaaligxilo.i18n.I18n
+import pl.pholda.malpompaaligxilo.util.{DateCompanion, DateJS}
 
-object ContextJS extends Context {
-  override def date: DateCompanion = JSDate
+case class ContextJS(i18n: I18n) extends Context {
+  override def date: DateCompanion = DateJS
 }

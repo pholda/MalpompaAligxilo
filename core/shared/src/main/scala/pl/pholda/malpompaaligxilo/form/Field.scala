@@ -20,13 +20,13 @@ case class Field[T](
 
   def parse(values: Seq[String]): Option[T] = `type`.parse(values)
 
-  def validate(implicit form: Form): Option[FormError] = {
-    val value = form.fieldValue(this)
+  def validate(implicit formInstance: FormInstance): Option[FormError] = {
+    val value = formInstance.fieldValue(this)
     value match {
       case None if required => Some(RequiredError)
-      case Some(v:T) =>
-        `type`.validate(v).orElse{
-          visible(form) match {
+      case Some(v: T) =>
+        `type`.validate(v).orElse {
+          visible(formInstance) match {
             case true => customValidate(v)
             case _ => None
           }
@@ -35,11 +35,11 @@ case class Field[T](
     }
   }
 
-  def value(implicit form: Form): Option[T] = {
-    form.fieldValue(this)
+  def value(implicit formInstance: FormInstance): Option[T] = {
+    formInstance.fieldValue(this)
   }
 
-  def separatedValues(implicit form: Form): Option[List[(String, String)]] = {
+  def separatedValues(implicit formInstance: FormInstance): Option[List[(String, String)]] = {
     separateValues(value)
   }
 }

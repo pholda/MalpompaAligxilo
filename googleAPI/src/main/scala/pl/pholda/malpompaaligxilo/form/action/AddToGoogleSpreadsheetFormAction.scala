@@ -1,17 +1,17 @@
 package pl.pholda.malpompaaligxilo.form.action
 
-import pl.pholda.malpompaaligxilo.form.field.{EnumOption, TableCheckboxCol, TableCheckboxRow, TableCheckboxField}
-import pl.pholda.malpompaaligxilo.form.{Form, FormAction}
+import pl.pholda.malpompaaligxilo.form.field.{EnumOption, TableCheckboxCol, TableCheckboxField, TableCheckboxRow}
+import pl.pholda.malpompaaligxilo.form.{FormAction, FormInstance}
 import pl.pholda.malpompaaligxilo.googleapi.Spreadsheet
 import pl.pholda.malpompaaligxilo.util.Date
 
-case class AddToGoogleSpreadsheetFormAction(spreadsheet: Spreadsheet, worksheetTitle: String) extends FormAction[Form] {
+case class AddToGoogleSpreadsheetFormAction(spreadsheet: Spreadsheet, worksheetTitle: String) extends FormAction {
 
-  override def run(form: Form): Unit = {
-    val data: Map[String, String] = form.fields.filter(_.store).flatMap{field =>
-      field.separatedValues(form) match {
+  override def run(formInstance: FormInstance): Unit = {
+    val data: Map[String, String] = formInstance.fields.filter(_.store).flatMap{field =>
+      field.separatedValues(formInstance) match {
         case None =>
-          field.value(form) match {
+          field.value(formInstance) match {
           case Some(v) => v match {
             case s: String => (field.name -> s) :: Nil
             case true => (field.name -> "x") :: Nil

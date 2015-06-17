@@ -1,5 +1,7 @@
-@(implicit form: pl.pholda.malpompaaligxilo.examples.i18n.I18nForm, lang: pl.pholda.malpompaaligxilo.i18n.Lang, poCfg: pl.pholda.malpompaaligxilo.i18n.PoCfg)
+@()(implicit form: pl.pholda.malpompaaligxilo.form.FormInstanceJVM[pl.pholda.malpompaaligxilo.examples.i18n.I18nForm], lang: pl.pholda.malpompaaligxilo.i18n.Lang)
 @import views.html.field
+@import form.specification._
+@import views.html.i18n
 <!DOCTYPE html>
 <html lang="@lang" ng-app="malpompaAligxilo">
     <head>
@@ -13,9 +15,7 @@
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
         <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
         <script type="text/javascript" src="https://code.jquery.com/ui/1.11.2/jquery-ui.min.js"></script>
-
         <script type="text/javascript" src="@routes.Assets.at("javascripts/examples-i18n-form-fastopt.js")"></script>
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/i18n/jes2015_pl.js")"></script>
         <script type="text/javascript">
 //        $(function(){
 //            $('input[type=text].formDate' ).each(function() {
@@ -30,10 +30,6 @@
 //            });
 //        })
         </script>
-
-        <script type="text/javascript">
-            pl.pholda.malpompaaligxilo.examples.i18n.I18nFormJS().main();
-        </script>
         @{
             lang match {
                 case "eo" =>
@@ -46,6 +42,9 @@
 
 
         @po()
+        <script type="text/javascript">
+            pl.pholda.malpompaaligxilo.examples.i18n.I18nFormJS().main();
+        </script>
         <div>
             <a href="@routes.SimpleForm.index("en")">english</a> |
             <a href="@routes.SimpleForm.index("eo")">esperanto</a> |
@@ -55,12 +54,12 @@
             <div class="row">
                 <h1>@i18n("Personal data:")</h1>
             </div>
-            @field(form.name)
-            @field(form.surname)
-            @field(form.hasMiddleName)
-            @field(form.middleName)
-            @field(form.birthDate)
-            @field(form.age)
+            @field(name)
+            @field(surname)
+            @field(hasMiddleName)
+            @field(middleName)
+            @field(birthDate)
+            @field(age)
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <input type="submit" value="@i18n("send!")" name="send" class="btn btn-default" />
