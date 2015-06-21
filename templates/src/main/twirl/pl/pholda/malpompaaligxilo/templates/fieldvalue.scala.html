@@ -1,11 +1,10 @@
 @(field: pl.pholda.malpompaaligxilo.form.Field[_])(implicit form: pl.pholda.malpompaaligxilo.form.FormInstanceJVM[_], lang: pl.pholda.malpompaaligxilo.i18n.Lang = "en")
-@import pl.pholda.malpompaaligxilo.i18n.I18nString
-@import pl.pholda.malpompaaligxilo.i18n.I18n
-@import pl.pholda.malpompaaligxilo.form.PrintableCalculateFieldValue
-@import pl.pholda.malpompaaligxilo.form.Field
-@import pl.pholda.malpompaaligxilo.form.field._
 @import java.text.DecimalFormat
+@import pl.pholda.malpompaaligxilo.i18n.I18nableString
 @import form.context.i18n
+@import pl.pholda.malpompaaligxilo.form.{Field, PrintableCalculateFieldValue}
+@import pl.pholda.malpompaaligxilo.form.field._
+@import pl.pholda.malpompaaligxilo.i18n.I18n
 @if(field.visible(form)) {
     @if(field.caption(lang).nonEmpty){
         <strong>@field.caption(lang)</strong>:
@@ -14,7 +13,7 @@
     @{field match {
         case Field(_, _, CustomCalculateField(formula), _, _, _, _, _, _, _) =>
             formula(form) match {
-                case Some(i18nString: I18nString) => Html(i18nString(lang))
+                case Some(i18nable: I18nableString) => Html(i18nable(lang))
                 case Some(p: PrintableCalculateFieldValue) => Html(p.str(lang, form.context.i18n))
                 case Some(x) => Html(x.toString)
                 case None => Html("")

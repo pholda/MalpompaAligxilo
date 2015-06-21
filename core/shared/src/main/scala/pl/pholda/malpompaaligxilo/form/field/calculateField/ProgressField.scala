@@ -8,7 +8,7 @@ abstract class ProgressField extends CalculateField[Int] {
 
   def value: FormExpr[Int]
 
-  final override protected def formula: FormExpr[Option[Int]] = {form =>
+  final override protected def formula: FormExpr[Option[Int]] = FormExpr{form =>
       Some(max(form))
   }
 }

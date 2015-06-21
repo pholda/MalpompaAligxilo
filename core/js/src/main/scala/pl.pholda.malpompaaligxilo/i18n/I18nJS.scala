@@ -1,21 +1,18 @@
 package pl.pholda.malpompaaligxilo.i18n
 
-import scala.scalajs.js
+import scalajs.js
+import scalajs.js._
 
-//TODO: correct other i18n methods, better method of passing formId
-class I18nJS(formId: String) extends I18n {
-
-  val i18n: js.Dictionary[String] = js.eval(s"${formId}_i18n").asInstanceOf[js.Dictionary[String]]
-
+class I18nJS(obj: js.Dynamic) extends I18n {
   override def t(singular: String): I18nableString =
-    NoI18nString(i18n.get(singular).getOrElse("???"))
+    NoI18nString(obj.selectDynamic(singular).asInstanceOf[String])
 
   override def tp(singular: String, plural: String): I18nableString =
-    NoI18nString(i18n.get(singular).getOrElse("???"))
+    NoI18nString("not implemented")
 
   override def tc(ctx: String, singular: String): I18nableString =
-    NoI18nString(i18n.get(singular).getOrElse("???"))
+    NoI18nString("not implemented")
 
   override def tcp(ctx: String, singular: String, plural: String): I18nableString =
-    NoI18nString(i18n.get(singular).getOrElse("???"))
+    NoI18nString("not implemented")
 }

@@ -1,28 +1,23 @@
 package pl.pholda.malpompaaligxilo.angular
 
 import biz.enef.angulate.ScopeController
-import pl.pholda.malpompaaligxilo.ContextJS
+import org.scalajs.jquery._
 import pl.pholda.malpompaaligxilo.form.field.CalculateField
-import pl.pholda.malpompaaligxilo.form.{PrintableCalculateFieldValue, Field, FormSpecification, FormInstanceJS}
+import pl.pholda.malpompaaligxilo.form.{Field, FormInstanceJS, PrintableCalculateFieldValue}
+import pl.pholda.malpompaaligxilo.i18n.I18nableString
 
 import scala.scalajs.js
-import org.scalajs.jquery.jQuery
-import scala.scalajs.js.JSConverters._
+import scala.scalajs.js.Dictionary
 import scala.util.Try
 
-abstract class FormController(
-    $scope: FormScope,
-    formSpecification: FormSpecification
-  )(
-    implicit context: ContextJS
-  ) extends ScopeController {
-  val form = new FormInstanceJS(formSpecification, $scope)
+trait FormController extends ScopeController {
+  def $scope: FormScope
 
-  protected lazy val lang = Try(jQuery("html").attr("lang")).getOrElse("en")
+  def form: FormInstanceJS
 
-  val fields = form.fields.map{f =>
-    (f.name -> f).asInstanceOf[Tuple2[String, Field[_]]]
-  }.toMap.toJSDictionary
+  protected lazy val lang: String = Try(jQuery("html").attr("lang")).getOrElse("en")
+
+  def fields: Dictionary[Field[_]]
 
   $scope.field = js.Dictionary.empty
 
@@ -40,7 +35,12 @@ abstract class FormController(
             field.value(form).map{
               case printable: PrintableCalculateFieldValue =>
                 printable.str(lang, form.context.i18n)
-              case other => "other+"+other.toString
+              case string: String =>
+                string
+              case i18nString: I18nableString =>
+                i18nString("en")
+              case x =>
+                x.toString
             }.getOrElse("")
           case _ =>
             ""
@@ -49,6 +49,6 @@ abstract class FormController(
         ""
     }
   } catch {
-    case _ => ""
+    case e: Exception => ""
   }
 }

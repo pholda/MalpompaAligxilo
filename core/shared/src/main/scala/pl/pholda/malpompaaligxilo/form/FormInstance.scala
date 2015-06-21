@@ -15,6 +15,8 @@ abstract class FormInstance(specification: FormSpecification) {
 
   def fields: List[Field[_]] = specification.fields
 
+  lazy val fieldsByName: Map[String, Field[_]] = fields.map(f => f.name -> f).toMap
+
   def fieldValue[T](field: Field[T]): Option[T] = {
     field.`type` match {
       case cf: CalculateField[_] =>

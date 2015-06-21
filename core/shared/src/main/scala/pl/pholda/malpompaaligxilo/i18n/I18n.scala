@@ -1,9 +1,5 @@
 package pl.pholda.malpompaaligxilo.i18n
 
-import pl.pholda.malpompaaligxilo.util._
-
-import scala.io.Source
-
 abstract class I18n {
 
   def t(singular: String): I18nableString

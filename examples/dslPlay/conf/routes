@@ -1,0 +1,14 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET        /                      controllers.Main.index(lang = "en")
+GET        /$lang<(pl|en)>        controllers.Main.index(lang: String)
+
+GET        /specification         controllers.Main.specification()
+
+GET        /po/$lang<(pl|en)>     controllers.Main.po(lang)
+
+# Map static resources from the /public folder to the /assets URL path
+GET        /assets/*file          controllers.Assets.at(path="/public", file)

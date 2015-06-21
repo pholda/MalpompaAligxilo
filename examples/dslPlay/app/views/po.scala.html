@@ -1,0 +1,13 @@
+@(i18nPo: pl.pholda.malpompaaligxilo.i18n.I18nPo, lang: pl.pholda.malpompaaligxilo.i18n.Lang = "en")
+@import play.api.libs.json.Json
+@{
+    i18nPo.poSet.translations(lang) match {
+        case po: scaposer.Po =>
+            val simplified = po.body.map {
+                case ((_, singular), translations) =>
+                    singular -> translations.head
+            }
+            Html(Json.toJson(simplified).toString())
+    }
+
+}

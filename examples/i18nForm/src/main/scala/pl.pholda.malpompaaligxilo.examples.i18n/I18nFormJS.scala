@@ -4,7 +4,7 @@ package pl.pholda.malpompaaligxilo.examples.i18n
 import biz.enef.angulate._
 import org.scalajs.jquery.jQuery
 import pl.pholda.malpompaaligxilo.ContextJS
-import pl.pholda.malpompaaligxilo.angular.{FormController, FormScope}
+import pl.pholda.malpompaaligxilo.angular.{StaticFormController, FormScope}
 import pl.pholda.malpompaaligxilo.i18n.{I18nJS, Lang}
 
 import scala.scalajs.js.JSApp
@@ -15,7 +15,7 @@ object I18nFormJS extends JSApp {
 
   implicit val lang: Lang = jQuery("html").attr("lang")
 
-  class I18nFormCtrl($scope: FormScope) extends FormController($scope, new I18nForm())
+  class I18nFormCtrl($scope: FormScope) extends StaticFormController($scope, new I18nForm())
 
   @JSExport
   override def main(): Unit = {

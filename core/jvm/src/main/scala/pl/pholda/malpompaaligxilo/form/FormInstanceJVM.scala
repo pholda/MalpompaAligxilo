@@ -1,16 +1,16 @@
 package pl.pholda.malpompaaligxilo.form
 
-import pl.pholda.malpompaaligxilo.{ContextJVM, Context}
-import pl.pholda.malpompaaligxilo.util.DateCompanion
+import pl.pholda.malpompaaligxilo.ContextJVM
 
 class FormInstanceJVM[T <: FormSpecification](
-  val specification: T
+  val specification: T,
+  rawFieldValue: Field[_] => Seq[String]
 )(
   implicit val context: ContextJVM
   ) extends FormInstance(specification) {
 
-  //TODO
-  override protected def getRawFieldValue(field: Field[_]): Seq[String] = Seq()
+//  TODO
+  override protected def getRawFieldValue(field: Field[_]): Seq[String] = rawFieldValue(field)
 
 
   //TODO

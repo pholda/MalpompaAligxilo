@@ -22,13 +22,12 @@ object MalpompaAligxilo extends Build with UniversalKeys {
 
   lazy val root = project.in(file(".")).settings(defaults:_*).settings(
     publishArtifact := false
-  ).aggregate(coreJS, coreJVM, /*coreTests, */googleAPI, templates/*, Examples.examples*/)
+  ).aggregate(coreJS, coreJVM, /*coreTests, */dslJS, dslJVM, googleAPI, templates/*, Examples.examples*/)
 
   lazy val core = crossProject.in(file("core")).settings(
     name := "core"
   ).settings(defaults:_*).jvmSettings(
     libraryDependencies ++= Seq(
-      "org.scala-lang.modules" % "scala-parser-combinators_2.11" % "1.0.3",
       "joda-time" % "joda-time" % "2.7",
       "org.joda" % "joda-convert" % "1.7",
       "tv.cntt" %% "scaposer" % "1.5"
@@ -43,6 +42,24 @@ object MalpompaAligxilo extends Build with UniversalKeys {
   lazy val coreJS = core.js
   //for intellij idea
   lazy val coreShared = Project("coreShared", file("core/shared")).settings(defaults:_*)
+
+  lazy val dsl = crossProject.in(file("dsl")).settings(defaults:_*).settings(
+    libraryDependencies ++= Seq(
+//      "org.scala-lang.modules" %%% "scala-parser-combinators" % "1.0.2"
+//      "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4"//,
+      "org.scala-js" % "scala-parser-combinators_sjs0.6_2.11" % "1.0.2.1"
+    )
+  ).dependsOn(core)
+
+  lazy val dslJVM = dsl.jvm
+  lazy val dslJS = dsl.js
+  //for intellij idea
+  lazy val dslShared = Project("dslShared", file("dsl/shared")).settings(defaults:_*).settings(
+    libraryDependencies ++= Seq(
+      //      "org.scala-lang.modules" %%% "scala-parser-combinators" % "1.0.2"
+      //      "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4"//,
+      "org.scala-js" % "scala-parser-combinators_sjs0.6_2.11" % "1.0.2"
+  )).dependsOn(coreShared)
 
 //  lazy val coreTests = Project(id = "coreTests",
 //    base = file("coreTests"),

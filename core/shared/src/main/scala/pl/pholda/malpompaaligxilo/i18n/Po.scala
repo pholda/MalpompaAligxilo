@@ -1,6 +1,6 @@
 package pl.pholda.malpompaaligxilo.i18n
 
-abstract class Po {
+trait Po {
   def t(singular: String): String
 
   def t(ctx: String, singular: String): String

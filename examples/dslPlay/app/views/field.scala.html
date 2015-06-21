@@ -1,0 +1,30 @@
+@(field: pl.pholda.malpompaaligxilo.form.Field[_])(implicit form: pl.pholda.malpompaaligxilo.form.FormInstanceJVM[_], lang: pl.pholda.malpompaaligxilo.i18n.Lang = "en")
+@import pl.pholda.malpompaaligxilo.form.errors.BadDateFormatError
+@import pl.pholda.malpompaaligxilo.form.errors.NothingSelectedError
+@import pl.pholda.malpompaaligxilo.form.errors.RequiredError
+@import pl.pholda.malpompaaligxilo.form.errors.CustomError
+<div class="form-group" ng-show="@{s"${form.id}-fieldVisible('${field.name}')"}">
+    <label for="@field.name" class="col-sm-4 control-label">
+        <dl>
+            <dt>@field.caption(lang)@if(field.required){<span class="required"> *</span>}@if(field.caption(lang).nonEmpty){:}</dt>
+            <dd>@if(field.description.nonEmpty){
+                <div class="fieldDesc">@field.description.get</div>
+            }</dd>
+            @if(form.isFilled && field.validate.nonEmpty){
+                <dd class="error">
+                @{
+                    field.validate.getOrElse("undefined") match {
+                        case RequiredError => "this field is required"
+                        case NothingSelectedError => "nothing was selected"
+                        case BadDateFormatError => "bad date format"
+                        case CustomError(msg) => msg(lang)
+                    }
+                }
+                </dd>
+            }
+        </dl>
+    </label>
+    <div class="col-sm-8">
+    @pl.pholda.malpompaaligxilo.templates.html.field(field)
+    </div>
+</div>

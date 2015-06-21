@@ -5,6 +5,9 @@ import java.io.File
 import scala.io.Source
 
 object I18nJVM {
+  implicit def scaposerPo2po(scaposerPo: scaposer.Po): Po =
+    new scaposer.Po(scaposerPo.body) with Po
+
   def fromFiles(languages: (Lang, File)*): I18nPo = {
     val translations = languages.map{
       case (lang, file) =>
@@ -12,7 +15,7 @@ object I18nJVM {
           Source.fromFile(file).mkString
         )
     }.collect{
-      case (lang, Some(po)) => lang -> new ScaposerPo(po)
+      case (lang, Some(po)) => lang -> scaposerPo2po(po)
     }.toMap
 
     new I18nPo(PoSet(translations))
@@ -25,7 +28,7 @@ object I18nJVM {
           Source.fromInputStream(clazz.getResourceAsStream(resource)).mkString
         )
     }.collect{
-      case (lang, Some(po)) => lang -> new ScaposerPo(po)
+      case (lang, Some(po)) => lang -> scaposerPo2po(po)
     }.toMap
 
     new I18nPo(PoSet(translations))
