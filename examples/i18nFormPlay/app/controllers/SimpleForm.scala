@@ -5,6 +5,7 @@ import pl.pholda.malpompaaligxilo.form.FormInstanceJVM
 import pl.pholda.malpompaaligxilo.i18n.{I18nJVM, Lang}
 import play.api.mvc._
 import views.html
+import pl.pholda.malpompaaligxilo.examples.i18n.I18nFormSpec
 
 object SimpleForm extends Controller {
   implicit val i18n = I18nJVM.fromResources(getClass,
@@ -15,11 +16,11 @@ object SimpleForm extends Controller {
 
   implicit val context = new ContextJVM()
 
-  import pl.pholda.malpompaaligxilo.examples.i18n.I18nForm
-
   def index(implicit lang: Lang = "en") = Action {
-    val spec = new I18nForm()
-    implicit val formInstance = new FormInstanceJVM(new I18nForm())
+    val spec = new I18nFormSpec()
+    implicit val formInstance = new FormInstanceJVM(spec, {field =>
+      Seq.empty
+    })
 
     Ok(html.index())
   }

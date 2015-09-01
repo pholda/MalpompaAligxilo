@@ -1,0 +1,3 @@
+package pl.pholda.malpompaaligxilo.i18n
+
+object NoI18nStringJSTest extends NoI18nStringTest

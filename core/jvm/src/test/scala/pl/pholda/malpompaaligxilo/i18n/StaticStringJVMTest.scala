@@ -1,0 +1,3 @@
+package pl.pholda.malpompaaligxilo.i18n
+
+object StaticStringJVMTest extends StaticStringTest

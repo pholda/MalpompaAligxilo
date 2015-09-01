@@ -14,3 +14,15 @@ msgstr "Sex"
 
 msgid "Info"
 msgstr "Info"
+
+msgid "low"
+msgstr "low"
+
+msgid "medium"
+msgstr "medium"
+
+msgid "high"
+msgstr "high"
+
+msgid "please choose option.."
+msgstr "please choose option.."

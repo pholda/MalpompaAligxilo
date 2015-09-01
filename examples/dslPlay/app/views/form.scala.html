@@ -1,9 +1,10 @@
-@(implicit form: pl.pholda.malpompaaligxilo.form.FormInstanceJVM[pl.pholda.malpompaaligxilo.dsl.DslFormSpecification], lang: pl.pholda.malpompaaligxilo.i18n.Lang)
-<form action="#" method="post" class="form-horizontal">
+@(implicit form: pl.pholda.malpompaaligxilo.form.FormInstanceJVM[pl.pholda.malpompaaligxilo.dsl.form.DslFormSpecification], lang: pl.pholda.malpompaaligxilo.i18n.Lang)
+<form action="#" method="post" class="form-horizontal" xmlns="http://www.w3.org/1999/html">
     <div class="row">
         <h1>GenericForm</h1>
     </div>
     @for(f <- form.fields) {
         @field(f)
     }
+    <input type="submit">send</input>
 </form>

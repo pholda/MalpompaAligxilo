@@ -1,9 +1,9 @@
 package pl.pholda.malpompaaligxilo.form.field.calculateField
 
 import pl.pholda.malpompaaligxilo.form.FormExpr
-import pl.pholda.malpompaaligxilo.form.field.CalculateField
+import pl.pholda.malpompaaligxilo.form.field.ComputeField
 
-abstract class ProgressField extends CalculateField[Int] {
+abstract class ProgressField extends ComputeField[Int] {
   def max: FormExpr[Int]
 
   def value: FormExpr[Int]

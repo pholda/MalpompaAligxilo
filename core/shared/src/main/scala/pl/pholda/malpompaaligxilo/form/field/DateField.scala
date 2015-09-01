@@ -7,8 +7,8 @@ import pl.pholda.malpompaaligxilo.util.Date
 import scala.util.Try
 
 case class DateField(
-                      minDate: Option[String] = None,
-                      maxDate: Option[String] = None,
+                      minDate: Option[Date] = None,
+                      maxDate: Option[Date] = None,
                       yearRange: Option[String] = None)
                   (implicit context: Context) extends FieldType[Date]{
   override def parse(values: Seq[String]): Option[Date] =

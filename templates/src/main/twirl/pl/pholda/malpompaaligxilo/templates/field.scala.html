@@ -1,12 +1,11 @@
 @(field: pl.pholda.malpompaaligxilo.form.Field[_])(implicit form: pl.pholda.malpompaaligxilo.form.FormInstanceJVM[_], lang: pl.pholda.malpompaaligxilo.i18n.Lang = "en")
 @import pl.pholda.malpompaaligxilo.form.field.calculateField.ProgressField
-@import pl.pholda.malpompaaligxilo.form.field.{CalculateField, CheckboxField, DateField, EmailField, EnumOption, IntField, SelectField, StringField, TableCheckboxCol, TableCheckboxField, TableCheckboxRow}
-
+@import pl.pholda.malpompaaligxilo.form.field.{ComputeField, CheckboxField, CheckboxTableField, DateField, EmailField, EnumOption, IntField, SelectField, StringField, TableCheckboxCol, TableCheckboxRow}
 @{
     field.`type` match {
         case StringField(false, default) =>
             <input type="text"
-                ng-model={"field['"+field.name+"']"}
+                ng-model={"fieldValue['"+field.name+"']"}
                 name={field.name}
                 class="form-control"
                 placeholder={field.placeholder.map(_(lang)) orNull}
@@ -14,13 +13,13 @@
                 />
         case StringField(true, default) =>
             <textarea
-            ng-model={"field['"+field.name+"']"}
+            ng-model={"fieldValue['"+field.name+"']"}
             name={field.name}
             class="form-control"
             placeholder={field.placeholder.map(_(lang)) orNull}>{field.value.map(_.toString).orElse(default) orNull}</textarea>
         case IntField(min, max, step) =>
             <input type="number"
-                ng-model={"field['"+field.name+"']"}
+                ng-model={"fieldValue['"+field.name+"']"}
                 name={field.name}
                 class="form-control"
                 placeholder={field.placeholder.map(_(lang)) orNull}
@@ -30,12 +29,12 @@
                 value={field.value.map(_.toString).orNull}
                 />
         case DateField(minDate, maxDate, yearRange) =>
-            <input type="text"
-                ng-model={"field['"+field.name+"']"}
+            <input ui-date="dateOptions" type="text"
+                ng-model={"fieldValue['"+field.name+"']"}
                 name={field.name}
                 class="form-control formDate"
-                data-mindate={minDate orNull}
-                data-maxdate={maxDate orNull}
+                data-mindate={minDate.map(_.toString) orNull}
+                data-maxdate={maxDate.map(_.toString) orNull}
                 data-yearrange={yearRange orNull}
                 placeholder={field.placeholder.map(_(lang)) orNull}
                 value={field.value.map(_.toString).orNull}
@@ -43,22 +42,22 @@
         case pf: ProgressField =>
 //            <div class="progressField" data-name={field.name}></div>
             <progress
-                ng-model={"field['"+field.name+"']"}
+                ng-model={"fieldValue['"+field.name+"']"}
                 data-name={field.name}
                 value={pf.value(form).toString}
                 max={pf.max(form).toString}
             />
-        case cf: CalculateField[_] =>
+        case cf: ComputeField[_] =>
             <span>{s"{{calculateValue('${field.name}')}}"}</span>
             //TODO ordering@selectField
         case s@SelectField(_, size, _, ordering) =>
 
             <select name={field.name} size={size.toString}
-                ng-model={"field['"+field.name+"']"}
+                ng-model={"fieldValue['"+field.name+"']"}
                 class="form-control">{
-                s.allOptions.map{ option =>
+                s.allOptionsIndexed.map{ case (idx, option) =>
                     <option
-                    value={option.value}
+                    value={idx.toString}
                     selected={
                     field.value match {
                         case Some(EnumOption(fval, _)) if fval == option.value => "selected"
@@ -66,16 +65,16 @@
                     }
                     }
                     >{option.caption(lang)}</option>
-                }.toSeq
+                }
             }</select>
         case EmailField =>
             <input type="email"
-                ng-model={"field['"+field.name+"']"}
+                ng-model={"fieldValue['"+field.name+"']"}
                 name={field.name}
                 placeholder={field.placeholder.map(_(lang)) orNull}
                 class="form-control"
                 value={field.value.map(_.toString).orNull}/>
-        case tfield@TableCheckboxField(rows, cols, disabled, default) if cols.size == 1 =>
+        case tfield@CheckboxTableField(rows, cols, disabled, default) if cols.size == 1 =>
             <table data-name={field.name}>{
             rows.map { row =>
                 <tr><td>
@@ -98,7 +97,7 @@
                 </td></tr>
             }
             }</table>
-        case tfield@TableCheckboxField(rows, cols, disabled, default) =>
+        case tfield@CheckboxTableField(rows, cols, disabled, default) =>
             <table data-name={field.name}>
             <tr><td></td>{
                 cols.map { col =>
@@ -111,21 +110,24 @@
                 <label for={field.name + "-" + row.id}>{row.caption(lang)}</label>
                 </td>{
                 cols.map {col =>
-                    <td>
-                    <input type="checkbox"
-                        class="form-control"
-                        id={field.name + "-" + col.id + "-" + row.id}
-                        name={field.name+"[]"}
-                        value={col.id + "-" + row.id}
-                        checked={
-                        field.value match {
-                            case Some(s: Set[(TableCheckboxRow, TableCheckboxCol)])
-                                if s.contains((row, cols.head)) => "checked"
-                            case _ if !form.isFilled && default => "checked"
-                            case _ => null
+                    <td>{
+                        if (!tfield.isDisabled(row, col)) {
+                            <input type="checkbox"
+                            class="form-control"
+                            id={field.name + "-" + col.id + "-" + row.id}
+                            name={field.name+"[]"}
+                            value={col.id + "-" + row.id}
+                            checked={
+                            field.value match {
+                                case Some(s: Set[(TableCheckboxRow, TableCheckboxCol)])
+                                    if s.contains((row, cols.head)) => "checked"
+                                case _ if !form.isFilled && default => "checked"
+                                case _ => null
+                            }
+                            }
+                            />
                         }
-                        }
-                    />
+                    }
                     </td>
                 }}
                 </tr>
@@ -133,7 +135,7 @@
             }</table>
         case CheckboxField(default) =>
             <input type="checkbox"
-                ng-model={"field['"+field.name+"']"}
+                ng-model={"fieldValue['"+field.name+"']"}
                 name={field.name}
                 checked={
                 field.value match {

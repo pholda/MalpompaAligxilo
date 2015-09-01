@@ -2,8 +2,8 @@ package pl.pholda.malpompaaligxilo.angular
 
 import biz.enef.angulate.ScopeController
 import org.scalajs.jquery._
-import pl.pholda.malpompaaligxilo.form.field.CalculateField
-import pl.pholda.malpompaaligxilo.form.{Field, FormInstanceJS, PrintableCalculateFieldValue}
+import pl.pholda.malpompaaligxilo.form.field.ComputeField
+import pl.pholda.malpompaaligxilo.form.{Field, FormInstanceJS, PrintableComputeFieldValue}
 import pl.pholda.malpompaaligxilo.i18n.I18nableString
 
 import scala.scalajs.js
@@ -19,7 +19,7 @@ trait FormController extends ScopeController {
 
   def fields: Dictionary[Field[_]]
 
-  $scope.field = js.Dictionary.empty
+  $scope.fieldValue = js.Dictionary.empty
 
   $scope.fieldVisible = (name: String) => try {
     fields.get(name).map(_.visible(form)).getOrElse(true)
@@ -27,14 +27,14 @@ trait FormController extends ScopeController {
     case _ => false
   }
 
-  $scope.calculateValue = (name: String) => try {
+  $scope.computedValue = (name: String) => try {
     fields.get(name) match {
       case Some(field) =>
         field.`type` match {
-          case cf: CalculateField[_] =>
+          case cf: ComputeField[_] =>
             field.value(form).map{
-              case printable: PrintableCalculateFieldValue =>
-                printable.str(lang, form.context.i18n)
+              case printable: PrintableComputeFieldValue =>
+                printable.str(lang, form.context.translationProvider)
               case string: String =>
                 string
               case i18nString: I18nableString =>

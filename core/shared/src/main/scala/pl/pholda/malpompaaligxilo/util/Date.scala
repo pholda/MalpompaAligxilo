@@ -6,6 +6,12 @@ abstract class Date {
   def getYear: Int
   def getMillis: Long
 
+  def getDayOfWeek: Int
+
+  def yearsTo(to: Date): Int
+  def monthsTo(to: Date): Int
+  def daysTo(to: Date): Int
+
   def ==(date: Date): Boolean = {
     getMillis == date.getMillis
   }

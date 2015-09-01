@@ -1,0 +1,12 @@
+msgid ""
+msgstr "Plural-Forms: nplurals=2; plural=n>1;"
+
+msgid "file"
+msgid_plural "files"
+msgstr[0] "file"
+msgstr[1] "files"
+
+msgid "One file removed"
+msgid_plural "%d files removed"
+msgstr[0] "One file removed"
+msgstr[1] "%d files removed"

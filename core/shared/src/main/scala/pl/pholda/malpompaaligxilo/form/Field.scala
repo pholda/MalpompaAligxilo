@@ -1,7 +1,7 @@
 package pl.pholda.malpompaaligxilo.form
 
 import pl.pholda.malpompaaligxilo.form.errors.RequiredError
-import pl.pholda.malpompaaligxilo.form.field.CalculateField
+import pl.pholda.malpompaaligxilo.form.field.ComputeField
 import pl.pholda.malpompaaligxilo.i18n.I18nableString
 
 case class Field[T](
@@ -16,7 +16,7 @@ case class Field[T](
   store: Boolean = true,
   separateValues: Option[T] => Option[List[(String, String)]] = {o: Option[T] => None}
                      ) extends FormElement {
-  final def isCalculate: Boolean = `type`.isInstanceOf[CalculateField[_]]
+  final def isCalculate: Boolean = `type`.isInstanceOf[ComputeField[_]]
 
   def parse(values: Seq[String]): Option[T] = `type`.parse(values)
 

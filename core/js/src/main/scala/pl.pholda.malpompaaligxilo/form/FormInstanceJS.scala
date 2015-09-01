@@ -25,14 +25,14 @@ class FormInstanceJS(
       case false =>
         field.`type` match {
           case CheckboxField(default) =>
-            scope.field.get(field.name) match {
+            scope.fieldValue.get(field.name) match {
               case Some(true) =>
                 Seq("true")
               case _ =>
                 Seq.empty
             }
           case _ =>
-            scope.field.get(field.name).map(x => Seq(x.toString)).getOrElse(Seq.empty)
+            scope.fieldValue.get(field.name).map(x => Seq(x.toString)).getOrElse(Seq.empty)
         }
     }
 

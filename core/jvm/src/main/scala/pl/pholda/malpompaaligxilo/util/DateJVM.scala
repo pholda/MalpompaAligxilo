@@ -1,8 +1,8 @@
 package pl.pholda.malpompaaligxilo.util
 
-import org.joda.time.DateTime
+import org.joda.time.{Days, Months, Years, DateTime}
 
-class DateJVM(jodaDate: DateTime) extends Date  {
+class DateJVM(protected val jodaDate: DateTime) extends Date  {
   override def getDay: Int = jodaDate.getDayOfMonth
 
   override def getMonth: Int = jodaDate.getMonthOfYear
@@ -11,7 +11,37 @@ class DateJVM(jodaDate: DateTime) extends Date  {
 
   override def getMillis: Long = jodaDate.getMillis
 
+  override def getDayOfWeek: Int = jodaDate.dayOfWeek().get()
+
+  // ISO 8601
   override def toString: String = jodaDate.toString("yyyy-MM-dd")
+
+  override def yearsTo(to: Date): Int = {
+    to match {
+      case toJVM: DateJVM =>
+        Years.yearsBetween(this.jodaDate, toJVM.jodaDate).getYears
+      case _ =>
+        throw new IllegalArgumentException("DateJVM was expected")
+    }
+  }
+
+  override def monthsTo(to: Date): Int = {
+    to match {
+      case toJVM: DateJVM =>
+        Months.monthsBetween(this.jodaDate, toJVM.jodaDate).getMonths
+      case _ =>
+        throw new IllegalArgumentException("DateJVM was expected")
+    }
+  }
+
+  override def daysTo(to: Date): Int = {
+    to match {
+      case toJVM: DateJVM =>
+        Days.daysBetween(this.jodaDate, toJVM.jodaDate).getDays
+      case _ =>
+        throw new IllegalArgumentException("DateJVM was expected")
+    }
+  }
 }
 
 object DateJVM extends DateCompanion {

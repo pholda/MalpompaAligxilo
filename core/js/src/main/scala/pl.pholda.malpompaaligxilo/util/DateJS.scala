@@ -5,7 +5,7 @@ import pl.pholda.malpompaaligxilo.i18n.Lang
 
 import scala.scalajs.js
 
-class DateJS(jsDate: js.Date) extends Date {
+class DateJS(protected val jsDate: js.Date) extends Date {
   override def getDay: Int = jsDate.getDate()
 
   override def getMonth: Int = jsDate.getMonth()+1
@@ -15,6 +15,37 @@ class DateJS(jsDate: js.Date) extends Date {
   override def getMillis: Long = jsDate.getTime().toLong
 
   override def toString: String = "%04d".format(getYear) + "-" + "%02d".format(getMonth) + "-" + "%02d".format(getDay)
+
+  override def getDayOfWeek: Int = jsDate.getDay()
+
+  //TODO correct calculation
+  override def yearsTo(to: Date): Int = {
+    to match {
+      case toJS: DateJS =>
+        ((jsDate.getTime() - toJS.jsDate.getTime())/1000/60/60/24/365.25).toInt
+      case _ =>
+        throw new IllegalArgumentException("DateJS was expected")
+    }
+  }
+
+  //TODO correct calculation
+  override def monthsTo(to: Date): Int = {
+    to match {
+      case toJS: DateJS =>
+        ((jsDate.getTime() - toJS.jsDate.getTime())/1000/60/60/24/12).toInt
+      case _ =>
+        throw new IllegalArgumentException("DateJS was expected")
+    }
+  }
+
+  override def daysTo(to: Date): Int = {
+    to match {
+      case toJS: DateJS =>
+        ((toJS.jsDate.getTime() - jsDate.getTime())/1000/60/60/24).toInt
+      case _ =>
+        throw new IllegalArgumentException("DateJS was expected")
+    }
+  }
 }
 
 object DateJS extends DateCompanion {

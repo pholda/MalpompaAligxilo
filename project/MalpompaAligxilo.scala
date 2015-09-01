@@ -10,11 +10,11 @@ object MalpompaAligxilo extends Build with UniversalKeys {
   val scalajsAngulateVersion = "0.2.1"
 
   val defaults = Defaults.coreDefaultSettings ++ List(
-    organization := "pl.pej.malpompaaligxilo",
+    organization := "pl.pholda.malpompaaligxilo",
     version := "0.1.3-SNAPSHOT",
     scalaVersion := "2.11.6",
     libraryDependencies ++= List(
-      "com.lihaoyi" %% "utest" % "0.3.1"
+      "com.lihaoyi" %%% "utest" % "0.3.1"
 
     ),
     testFrameworks += new TestFramework("utest.runner.Framework")
@@ -36,7 +36,8 @@ object MalpompaAligxilo extends Build with UniversalKeys {
     libraryDependencies ++= Seq(
       "biz.enef" %%% "scalajs-angulate" % scalajsAngulateVersion,
       "be.doeraene" %%% "scalajs-jquery" % "0.8.0"
-    )
+    ),
+    jsDependencies += RuntimeDOM
   )
   lazy val coreJVM = core.jvm
   lazy val coreJS = core.js
@@ -49,6 +50,8 @@ object MalpompaAligxilo extends Build with UniversalKeys {
 //      "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4"//,
       "org.scala-js" % "scala-parser-combinators_sjs0.6_2.11" % "1.0.2.1"
     )
+  ).jsSettings(
+    jsDependencies += RuntimeDOM
   ).dependsOn(core)
 
   lazy val dslJVM = dsl.jvm

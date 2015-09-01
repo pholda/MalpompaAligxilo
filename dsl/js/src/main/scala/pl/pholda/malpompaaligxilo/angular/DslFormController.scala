@@ -3,12 +3,14 @@ package pl.pholda.malpompaaligxilo.angular
 import biz.enef.angulate.core.{HttpService, QPromise, QService}
 import pl.pholda.malpompaaligxilo.ContextJS
 import pl.pholda.malpompaaligxilo.dsl.parser.FormSpecificationParser
+import pl.pholda.malpompaaligxilo.form.field.{SelectField, EnumOption}
 import pl.pholda.malpompaaligxilo.form.{Field, FormInstanceJS}
 import pl.pholda.malpompaaligxilo.i18n._
 
 import scala.scalajs.js
 import scala.scalajs.js.Dictionary
 import scala.scalajs.js.JSConverters._
+import scalajs.js.JSConverters._
 
 trait DslFormController extends FormController {
   def $http: HttpService
@@ -17,7 +19,19 @@ trait DslFormController extends FormController {
   def specificationUrl: String
   def poUrl: String
 
-  implicit var contextJS = new ContextJS(EmptyI18n)
+  implicit var contextJS = new ContextJS()(NoTranslations)
+
+  private def initializeFields: Unit = {
+    $scope.fieldValue = fields.flatMap{case (fieldName, field) =>
+      val value: Option[Any] = field.`type` match {
+        case sf: SelectField =>
+          sf.getNotSelectedIndex
+        case _ =>
+          None
+      }
+      value.map(fieldName -> _)
+    }.toJSDictionary
+  }
 
   $q.all(js.Array(
     $http.get[String](specificationUrl).asInstanceOf[QPromise],
@@ -25,21 +39,20 @@ trait DslFormController extends FormController {
   )).then(successCallback = {data: js.Any =>
     data match {
       case array: js.Array[js.Dynamic] =>
-        implicit val i18n = new I18nJS(array(1).data)
+        implicit val i18n = new JSObjectTranslationProvider(array(1).data)
+        contextJS = new ContextJS()
         val parser = FormSpecificationParser()
         val formSpecification = parser(array(0).data.asInstanceOf[String]).get
         _form = new FormInstanceJS(formSpecification, $scope)
         _fields = form.fields.map{f =>
           (f.name -> f).asInstanceOf[Tuple2[String, Field[_]]]
         }.toMap.toJSDictionary
+
+        initializeFields
     }
     data
   }, errorCallback = {data: js.Any =>
   })
-
-  $http.get[String]("specification").onSuccess{data =>
-  }.onFailure{error =>
-  }
 
   var _form = new FormInstanceJS(EmptyFormSpecification, $scope)
 

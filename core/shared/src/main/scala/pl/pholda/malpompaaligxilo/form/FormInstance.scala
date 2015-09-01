@@ -1,7 +1,8 @@
 package pl.pholda.malpompaaligxilo.form
 
+import com.sun.xml.internal.ws.resources.ClientMessages
 import pl.pholda.malpompaaligxilo.Context
-import pl.pholda.malpompaaligxilo.form.field.CalculateField
+import pl.pholda.malpompaaligxilo.form.field.ComputeField
 import pl.pholda.malpompaaligxilo.util.DateCompanion
 
 abstract class FormInstance(specification: FormSpecification) {
@@ -19,7 +20,7 @@ abstract class FormInstance(specification: FormSpecification) {
 
   def fieldValue[T](field: Field[T]): Option[T] = {
     field.`type` match {
-      case cf: CalculateField[_] =>
+      case cf: ComputeField[_] =>
         cf.evaluate(this)
       case _ =>
         field.parse(getRawFieldValue(field).filterNot(_.isEmpty))
@@ -28,5 +29,18 @@ abstract class FormInstance(specification: FormSpecification) {
 
   def getFieldValue[T](field: Field[T]): T = {
     fieldValue(field).get
+  }
+
+  def validate: ValidationResult = {
+    val errors = fields.flatMap{field =>
+      field.validate(this).map{
+        field -> _
+      }
+    }
+    if (errors.isEmpty) {
+      SuccessValidation
+    } else {
+      FailureValidation(errors.toMap)
+    }
   }
 }

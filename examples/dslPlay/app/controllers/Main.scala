@@ -2,10 +2,8 @@ package controllers
 
 import pl.pholda.malpompaaligxilo.ContextJVM
 import pl.pholda.malpompaaligxilo.dsl.parser.FormSpecificationParser
-import pl.pholda.malpompaaligxilo.examples.dsl.Form
-import pl.pholda.malpompaaligxilo.examples.dsl.Form._
 import pl.pholda.malpompaaligxilo.form.FormInstanceJVM
-import pl.pholda.malpompaaligxilo.i18n.{I18nJVM, EmptyI18n, Lang}
+import pl.pholda.malpompaaligxilo.i18n.{I18nJVM, Lang}
 import play.api.mvc._
 import views.html
 
@@ -33,6 +31,10 @@ object Main extends Controller {
     })
  /*@()(implicit form: pl.pholda.malpompaaligxilo.form.FormInstanceJVM[_], lang: pl.pholda.malpompaaligxilo.i18n.Lang)*/
     Ok(html.index())
+  }
+
+  def submit = Action {
+    Ok(":)")
   }
 
   def specification() = Action {
