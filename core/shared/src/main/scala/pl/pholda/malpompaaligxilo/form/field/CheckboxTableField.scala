@@ -11,15 +11,9 @@ case class CheckboxTableField(
                                ) extends FieldType[Set[(CheckboxTableRow, CheckboxTableCol)]] {
 
   override def parse(values: Seq[String]): Option[Set[(CheckboxTableRow, CheckboxTableCol)]] = {
-    if (cols.size == 1 ) {
-      val l = for (row <- rows if values contains s"${row.id}") yield
-        row -> cols.head
-      Some(l.toSet)
-    } else {
       val l = for (row <- rows; col <- cols if values contains s"${row.id}-${col.id}") yield
         row -> col
       Some(l.toSet)
-    }
   }
 
   def isDisabled(row: CheckboxTableRow, col: CheckboxTableCol): Boolean = {

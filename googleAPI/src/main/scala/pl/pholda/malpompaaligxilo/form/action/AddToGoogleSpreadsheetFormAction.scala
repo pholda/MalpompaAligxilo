@@ -23,6 +23,10 @@ case class AddToGoogleSpreadsheetFormAction(spreadsheet: Spreadsheet, worksheetT
                 s.toList.map{
                   case (row, col) => s"${field.name}-${row.id}" -> "x"
                 }
+              } else if (field.`type`.asInstanceOf[TableCheckboxField].rows.size == 1) {
+                s.toList.map{
+                  case (row, col) => s"${field.name}-${col.id}" -> "x"
+                }
               } else {
                 s.toList.map{
                   case (row, col) => s"${field.name}-${row.id}-${col.id}" -> "x"

@@ -10,11 +10,9 @@ trait FormScope extends Scope {
 
   var fields: js.Dictionary[Field[_]] = js.native
 
-  var pstro: js.Array[_] = js.native
-
   var fieldVisible: js.Function = js.native
 
   var computedValue: js.Function = js.native
 
-  var dateOptions: js.Dictionary[Any]
+  var dateOptions: js.Dictionary[Any] = js.native
 }

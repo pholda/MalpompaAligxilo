@@ -51,8 +51,9 @@
             <span>{s"{{computedValue('${field.name}')}}"}</span>
             //TODO ordering@selectField
         case s@SelectField(_, size, _, orderingOpt) =>
-
-            <select name={field.name} size={size.toString}
+            //workaround
+            <input type="hidden" name={field.name} value={"{{fieldValue['"+field.name+"']}}"}/>
+            <select size={size.toString}
                 ng-model={"fieldValue['"+field.name+"']"}
                 class="form-control">{
                 val ordered = orderingOpt match {
@@ -90,7 +91,7 @@
                     class="form-control"
                     id={field.name + "-" + row.id}
                     name={field.name+"[]"}
-                    value={row.id}
+                    value={row.id + "-" + cols.head.id}
                     checked={
                     field.value match {
                         case Some(s: Set[(TableCheckboxRow, TableCheckboxCol)])
@@ -122,7 +123,7 @@
                             class="form-control"
                             id={field.name + "-" + col.id + "-" + row.id}
                             name={field.name+"[]"}
-                            value={col.id + "-" + row.id}
+                            value={row.id + "-" + col.id}
                             checked={
                             field.value match {
                                 case Some(s: Set[(TableCheckboxRow, TableCheckboxCol)])

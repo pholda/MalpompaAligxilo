@@ -19,7 +19,7 @@
             form.fieldValue(field) match {
                 case Some(s: Set[(CheckboxTableRow, CheckboxTableCol)]) if cols.size > 1 =>
                     if (s.isEmpty) {
-                        I18n.t("(nothing)")
+                        I18n.t("_nothing_selected)")
                     } else {
                         s.map{
                             case (r, c) => r.caption(lang) + " " + c.caption(lang)
@@ -27,7 +27,7 @@
                     }
                 case Some(s: Set[(CheckboxTableRow, CheckboxTableCol)]) if cols.size == 1 =>
                     if (s.isEmpty) {
-                        I18n.t("(nothing)")
+                        I18n.t("_nothing_selected")
                     } else {
                         s.map{
                             case (r, c) => r.caption(lang)
@@ -36,8 +36,8 @@
             }
         case _ => form.fieldValue(field).getOrElse("") match {
             case d: Double => new DecimalFormat("#.##").format(d)
-            case true => I18n.t("yes")
-            case false => I18n.t("no")
+            case true => I18n.t("_yes")
+            case false => I18n.t("_no")
             case EnumOption(_, caption) => caption(lang)
             case x => x.toString
         }
