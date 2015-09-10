@@ -46,8 +46,6 @@ object MalpompaAligxilo extends Build with UniversalKeys {
 
   lazy val dsl = crossProject.in(file("dsl")).settings(defaults:_*).settings(
     libraryDependencies ++= Seq(
-//      "org.scala-lang.modules" %%% "scala-parser-combinators" % "1.0.2"
-//      "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4"//,
       "org.scala-js" % "scala-parser-combinators_sjs0.6_2.11" % "1.0.2.1"
     )
   ).jsSettings(
@@ -59,8 +57,6 @@ object MalpompaAligxilo extends Build with UniversalKeys {
   //for intellij idea
   lazy val dslShared = Project("dslShared", file("dsl/shared")).settings(defaults:_*).settings(
     libraryDependencies ++= Seq(
-      //      "org.scala-lang.modules" %%% "scala-parser-combinators" % "1.0.2"
-      //      "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4"//,
       "org.scala-js" % "scala-parser-combinators_sjs0.6_2.11" % "1.0.2"
   )).dependsOn(coreShared)
 

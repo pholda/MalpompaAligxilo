@@ -18,23 +18,33 @@ case class Spreadsheet(worksheetFeedUrl: URL)(implicit config: AccountConfig) {
 
     val JSON_FACTORY = JacksonFactory.getDefaultInstance
     val httpTransport = GoogleNetHttpTransport.newTrustedTransport()
-    val credential = new GoogleCredential.Builder()
-      .setTransport(httpTransport)
-      .setJsonFactory(JSON_FACTORY)
-      .setServiceAccountId(config.serviceAccountId)
-      .setServiceAccountPrivateKeyFromP12File(config.p12PrivateKey)
-      .setServiceAccountScopes(
-        List(
-          "https://www.googleapis.com/auth/drive",
-          "https://spreadsheets.google.com/feeds"
-        ))
-      .build()
+    val credential = {
+      val builder = new GoogleCredential.Builder()
+        .setTransport(httpTransport)
+        .setJsonFactory(JSON_FACTORY)
+        .setServiceAccountId(config.serviceAccountId)
+//        .setServiceAccountPrivateKeyFromP12File(config.p12PrivateKey)
+//        .setServiceAccountPrivateKey()
+        .setServiceAccountScopes(
+          List(
+            "https://www.googleapis.com/auth/drive",
+            "https://spreadsheets.google.com/feeds"
+          ))
+
+        {config match {
+          case AccountConfigFile(_, file) =>
+            builder.setServiceAccountPrivateKeyFromP12File(file)
+          case AccountConfigKey(_, key) =>
+            builder.setServiceAccountPrivateKey(key)
+        }}.build()
+    }
 
     service.setOAuth2Credentials(credential)
     service
   }
 
   def insertRow(data: Map[String, String], worksheetTitle: String) = {
+    println(s"inserting row, data = $data")
     val spreadsheetFeedUrl = new URL("https://spreadsheets.google.com/feeds/spreadsheets/private/full")
     val feed = service.getFeed(spreadsheetFeedUrl, classOf[SpreadsheetFeed])
 
@@ -50,9 +60,11 @@ case class Spreadsheet(worksheetFeedUrl: URL)(implicit config: AccountConfig) {
     var row = new ListEntry()
     data.foreach{
       case (k, v) => {
+        println(s"row element $k -> $v")
         row.getCustomElements.setValueLocal(k, v)
       }
     }
+    println(s"row = $row")
     service.insert(listFeedUrl, row)
   }
 }

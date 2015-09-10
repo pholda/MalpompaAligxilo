@@ -1,7 +1,7 @@
 package pl.pholda.malpompaaligxilo.form
 
 import pl.pholda.malpompaaligxilo.form.errors.RequiredError
-import pl.pholda.malpompaaligxilo.form.field.ComputeField
+import pl.pholda.malpompaaligxilo.form.field.{SuccessFieldValidation, FieldValidationResult, ComputeField}
 import pl.pholda.malpompaaligxilo.i18n.I18nableString
 
 case class Field[T](
@@ -12,27 +12,27 @@ case class Field[T](
   placeholder: Option[I18nableString] = None,
   visible: FormExpr[Boolean] = true,
   required: Boolean = false,
-  customValidate: T => Option[FormError] = {_:T => None},
+  customValidate: T => FieldValidationResult = {_:T => SuccessFieldValidation},
   store: Boolean = true,
   separateValues: Option[T] => Option[List[(String, String)]] = {o: Option[T] => None}
-                     ) extends FormElement {
+  ) extends FormElement {
   final def isCalculate: Boolean = `type`.isInstanceOf[ComputeField[_]]
 
   def parse(values: Seq[String]): Option[T] = `type`.parse(values)
 
-  def validate(implicit formInstance: FormInstance): Option[FormError] = {
-    val value = formInstance.fieldValue(this)
-    value match {
-      case None if required => Some(RequiredError)
-      case Some(v: T) =>
-        `type`.validate(v).orElse {
-          visible(formInstance) match {
-            case true => customValidate(v)
-            case _ => None
-          }
+  def validate(implicit formInstance: FormInstance): FieldValidationResult = {
+    val errors = formInstance.fieldValue(this) match {
+      case None if required => Seq(RequiredError)
+      case Some(value: T) =>
+        val typeErrors = `type`.validate(value).errors
+        val customErrors = visible(formInstance) match {
+          case true => customValidate(value).errors
+          case _ => Nil
         }
-      case _ => None
+        typeErrors ++ customErrors
+      case _ => Seq.empty
     }
+    FieldValidationResult(errors:_*)
   }
 
   def value(implicit formInstance: FormInstance): Option[T] = {

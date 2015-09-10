@@ -48,14 +48,20 @@
                 max={pf.max(form).toString}
             />
         case cf: ComputeField[_] =>
-            <span>{s"{{calculateValue('${field.name}')}}"}</span>
+            <span>{s"{{computedValue('${field.name}')}}"}</span>
             //TODO ordering@selectField
-        case s@SelectField(_, size, _, ordering) =>
+        case s@SelectField(_, size, _, orderingOpt) =>
 
             <select name={field.name} size={size.toString}
                 ng-model={"fieldValue['"+field.name+"']"}
                 class="form-control">{
-                s.allOptionsIndexed.map{ case (idx, option) =>
+                val ordered = orderingOpt match {
+                    case Some(ordering) =>
+                        s.allOptionsIndexed.toList.sortWith(ordering.ordering(s))
+                    case _ =>
+                        s.allOptionsIndexed.toList
+                }
+                ordered.map{ case (idx, option) =>
                     <option
                     value={idx.toString}
                     selected={

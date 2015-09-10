@@ -24,10 +24,12 @@ trait FieldParser extends StandardTokenParsers
     Field(
       name = field("name").asInstanceOf[FieldName],
       caption = field("caption").asInstanceOf[I18nString],
+      description = field.get("description").map(_.asInstanceOf[I18nString]),
+      placeholder = field.get("placeholder").map(_.asInstanceOf[I18nString]),
       `type` = field("type").asInstanceOf[FieldType[_]],
       visible = field.get("visible").map(_.asInstanceOf[DslFormExpr[Boolean]]).getOrElse(true),
       required = field.get("required").exists(_.asInstanceOf[Boolean]),
-      store = field.get("store").exists(_.asInstanceOf[Boolean])
+      store = field.get("store").map(_.asInstanceOf[Boolean]).getOrElse(true)
     )
   }
 

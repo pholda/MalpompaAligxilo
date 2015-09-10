@@ -4,6 +4,7 @@ import pl.pholda.malpompaaligxilo.form.errors.NothingSelectedError
 import pl.pholda.malpompaaligxilo.form.{FieldType, FormError}
 
 import scala.collection.immutable
+import scala.util.Try
 
 case class SelectField(
   options: List[EnumOption],
@@ -18,14 +19,13 @@ case class SelectField(
   }).zipWithIndex.map{case (option, idx) => idx->option}.toMap
 
   override def parse(values: Seq[String]): Option[EnumOption] = {
-    values.headOption.flatMap(allOptionsIndexed get _.toInt)
-//    values.headOption.flatMap(v => allOptions.find(_.value == v)).orElse(notSelected)
+    Try(values.headOption.flatMap(allOptionsIndexed get _.toInt)).toOption.flatten
   }
 
-  override def validate(t: EnumOption): Option[FormError] = {
+  override def validate(t: EnumOption): FieldValidationResult = {
     notSelected match {
-      case Some(ns) if ns.value == t.value => Some(NothingSelectedError)
-      case _ => None
+      case Some(ns) if ns.value == t.value => FailureFieldValidation(NothingSelectedError)
+      case _ => SuccessFieldValidation
     }
   }
 

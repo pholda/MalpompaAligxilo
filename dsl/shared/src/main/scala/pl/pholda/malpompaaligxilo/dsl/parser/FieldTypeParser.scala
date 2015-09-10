@@ -11,7 +11,7 @@ trait FieldTypeParser extends StandardTokenParsers with UtilParsers with FormExp
   implicit val context: Context
 
   lexical.reserved += ("type", "string", "multiline", "default", "int", "min", "max", "step",
-    "checkbox", "calculable", "date", "email", "select", "size", "notSelected", "orderBy",
+    "checkbox", "computed", "date", "email", "select", "size", "notSelected", "orderBy",
     "caption", "value", "checkboxTable", "rows", "cols", "disabled", "default")
 
   lexical.delimiters += ("=", "(", ")", "<", ">", "{", "}", ",")
@@ -59,7 +59,16 @@ trait FieldTypeParser extends StandardTokenParsers with UtilParsers with FormExp
     ("{" ~> rep1sep(selectOption, opt(",")) <~ "}") ~
     opt("notSelected" ~> selectOption) ~ opt("orderBy" ~> ("caption" | "value")) ^^ {
     case size ~ options ~ notSelected ~ ordering =>
-      SelectField(options, size.getOrElse(1), notSelected, None)
+      ordering match {
+        case None =>
+          SelectField(options, size.getOrElse(1), notSelected, None)
+        case Some(str) if str == "caption" =>
+          SelectField(options, size.getOrElse(1), notSelected, Some(EnumOptionOrdering.byCaption))
+        case Some(str) if str == "value" =>
+          SelectField(options, size.getOrElse(1), notSelected, Some(EnumOptionOrdering.byValue))
+        case Some(x) =>
+          throw new Exception(s"unkown ordering $x, ${x.getClass}")
+      }
   }
 
   protected[dsl] def selectOption = "<" ~> stringLit ~ i18nString <~ ">" ^^ {
@@ -71,7 +80,7 @@ trait FieldTypeParser extends StandardTokenParsers with UtilParsers with FormExp
     ("rows" ~> ("{" ~> rep1sep(checkboxTableRow, opt(",")) <~ "}")) ~
     ("cols" ~> ("{" ~> rep1sep(checkboxTableCol, opt(",")) <~ "}")) ~
     opt("disabled" ~> "{" ~> rep1sep(checkboxTableCell, opt(",")) <~ "}") ~
-    opt("default" ~ "(" ~> booleanLit <~ ")") ^^ {
+    opt("default" /*~ "("*/ ~> booleanLit /*<~ ")"*/) ^^ {
     case rows ~ cols ~ disabled ~ default =>
       CheckboxTableField(rows, cols, disabled.getOrElse(Nil), default.getOrElse(false))
   }

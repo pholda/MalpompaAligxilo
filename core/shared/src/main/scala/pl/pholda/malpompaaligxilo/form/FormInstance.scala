@@ -2,7 +2,7 @@ package pl.pholda.malpompaaligxilo.form
 
 import com.sun.xml.internal.ws.resources.ClientMessages
 import pl.pholda.malpompaaligxilo.Context
-import pl.pholda.malpompaaligxilo.form.field.ComputeField
+import pl.pholda.malpompaaligxilo.form.field.{FailureFieldValidation, SuccessFieldValidation, ComputeField}
 import pl.pholda.malpompaaligxilo.util.DateCompanion
 
 abstract class FormInstance(specification: FormSpecification) {
@@ -32,11 +32,10 @@ abstract class FormInstance(specification: FormSpecification) {
   }
 
   def validate: ValidationResult = {
-    val errors = fields.flatMap{field =>
-      field.validate(this).map{
-        field -> _
-      }
-    }
+    val errors = fields.map{field =>
+      field -> field.validate(this).errors
+    }.filter(_._2.nonEmpty)
+
     if (errors.isEmpty) {
       SuccessValidation
     } else {
