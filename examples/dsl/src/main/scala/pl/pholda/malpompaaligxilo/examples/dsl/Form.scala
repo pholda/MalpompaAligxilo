@@ -30,4 +30,14 @@ case class FormCtrl(
 
   override def specificationUrl: String = "specification"
   override def poUrl: String = s"po/$lang"
+
+  $scope.submit = () => {
+//    println(s"submitting!")
+    val data = js.Dictionary(fields.filter{
+      case (_, field) => !field.isComputed
+    }.mapValues(field => js.Array(form.getRawFieldValue(field):_*)).toSeq:_*)
+    $http.post("/", data).success((data: js.Any) => {
+      alert("success!!")
+    })
+  }
 }

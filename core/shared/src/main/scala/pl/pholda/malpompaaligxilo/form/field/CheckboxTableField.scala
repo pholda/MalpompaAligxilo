@@ -8,12 +8,12 @@ case class CheckboxTableField(
   cols: List[CheckboxTableCol],
   disabled: List[(String, String)] = Nil,
   default: Boolean = false
-                               ) extends FieldType[Set[(CheckboxTableRow, CheckboxTableCol)]] {
+                               ) extends FieldType[CheckboxTableField.Result] {
 
-  override def parse(values: Seq[String]): Option[Set[(CheckboxTableRow, CheckboxTableCol)]] = {
+  override def parse(values: Seq[String]): Option[CheckboxTableField.Result] = {
       val l = for (row <- rows; col <- cols if values contains s"${row.id}-${col.id}") yield
         row -> col
-      Some(l.toSet)
+      Some(CheckboxTableField.Result(l.toSet))
   }
 
   def isDisabled(row: CheckboxTableRow, col: CheckboxTableCol): Boolean = {
@@ -26,4 +26,8 @@ case class CheckboxTableField(
 object CheckboxTableField {
   implicit def tuple2col(t: (String, I18nableString)): CheckboxTableCol = CheckboxTableCol(t._1, t._2)
   implicit def tuple2row(t: (String, I18nableString)): CheckboxTableRow = CheckboxTableRow(t._1, t._2)
+
+  case class Result(values: Set[(CheckboxTableRow, CheckboxTableCol)]) {
+    lazy val selectedInTotal: Int = values.size
+  }
 }

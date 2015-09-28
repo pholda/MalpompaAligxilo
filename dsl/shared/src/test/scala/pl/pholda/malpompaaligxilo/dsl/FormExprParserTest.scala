@@ -52,7 +52,7 @@ trait FormExprParserTest extends TestSuite with ParserTestHelper[FormExprParser]
 
     'stringConcat{
       'literals{
-        val expr = quickParse(innerExpr, """ ( "abc" + "123" + "!@#" ) """)
+        val expr = quickParse(innerExpr, """ ( "abc" . "123" . "!@#" ) """)
         expr(form) match {
           case str: I18nableString =>
             assert(str("en")=="abc123!@#")
@@ -60,7 +60,7 @@ trait FormExprParserTest extends TestSuite with ParserTestHelper[FormExprParser]
       }
       'literal_fieldValue{
         val expr = quickParse(innerExpr,
-          """ ("abc" + $"a") """
+          """ ("abc" . $"a") """
         )
         expr(form) match {
           case str: I18nableString =>
@@ -96,6 +96,21 @@ trait FormExprParserTest extends TestSuite with ParserTestHelper[FormExprParser]
         }
       }
     }
+    'if{
+      'withElse{
+        val asl =
+          """
+            | if ( ! false ) {
+            |   "5>2"
+            | } else {
+            |   "5<=2"
+            | }
+          """.stripMargin
+        assertMatch(quickParse(innerExpr, asl)(form)){
+          case "5>2" =>
+        }
+      }
+    }
     'enumValue{
       val asl =
         """
@@ -112,6 +127,15 @@ trait FormExprParserTest extends TestSuite with ParserTestHelper[FormExprParser]
       """.stripMargin
       assertMatch(quickParse(innerExpr, asl)(form)){
         case NoI18nString("second") =>
+      }
+    }
+    'contains{
+      val asl =
+        """
+          | set["a", "e", "o"] contains "a"
+        """.stripMargin
+      assertMatch(quickParse(innerExpr, asl)(form)){
+        case true =>
       }
     }
   }

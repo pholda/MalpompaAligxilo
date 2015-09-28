@@ -4,6 +4,7 @@ import pl.pholda.malpompaaligxilo.ContextJVM
 import pl.pholda.malpompaaligxilo.dsl.parser.FormSpecificationParser
 import pl.pholda.malpompaaligxilo.form.FormInstanceJVM
 import pl.pholda.malpompaaligxilo.i18n.{I18nJVM, Lang}
+import play.api.libs.json._
 import play.api.mvc._
 import views.html
 
@@ -29,12 +30,29 @@ object Main extends Controller {
     implicit val formInstance = new FormInstanceJVM(specJVM, {field =>
       Seq()
     })
- /*@()(implicit form: pl.pholda.malpompaaligxilo.form.FormInstanceJVM[_], lang: pl.pholda.malpompaaligxilo.i18n.Lang)*/
     Ok(html.index())
   }
 
-  def submit = Action {
-    Ok(":)")
+  def submit = Action { implicit request =>
+    request.body.asJson match {
+      case Some(json) =>
+//      case Some(post) =>
+        implicit val formInstance = new FormInstanceJVM(specJVM, { field =>
+          val value = json \ field.name match {
+            case JsArray(values) =>
+              values.map{
+                case JsString(str) =>str
+                case _ => throw new IllegalArgumentException(s"unexpected token")
+              }
+          }
+          println(s"value for ${field.name} = ${value.mkString("(", ", ", ")")}")
+          value
+        })
+        println(formInstance.fieldsByName("country").value)
+        Ok(formInstance.validate.toString)
+      case _ =>
+        Ok("error")
+    }
   }
 
   def specification() = Action {

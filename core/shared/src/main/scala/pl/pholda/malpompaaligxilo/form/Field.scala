@@ -16,7 +16,7 @@ case class Field[T](
   store: Boolean = true,
   separateValues: Option[T] => Option[List[(String, String)]] = {o: Option[T] => None}
   ) extends FormElement {
-  final def isCalculate: Boolean = `type`.isInstanceOf[ComputeField[_]]
+  final def isComputed: Boolean = `type`.isInstanceOf[ComputeField[_]]
 
   def parse(values: Seq[String]): Option[T] = `type`.parse(values)
 

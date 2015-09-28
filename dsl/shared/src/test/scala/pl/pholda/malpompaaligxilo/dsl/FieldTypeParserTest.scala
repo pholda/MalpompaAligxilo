@@ -63,8 +63,8 @@ trait FieldTypeParserTest extends TestSuite with ParserTestHelper[FieldTypeParse
         }
       }
     }
-    'calculable{
-      assertMatch(quickParse(fieldType, """ type = calculable { true } """)){
+    'computed{
+      assertMatch(quickParse(fieldType, """ type = computed { true } """)){
         case CustomComputeField(expr) =>
       }
     }

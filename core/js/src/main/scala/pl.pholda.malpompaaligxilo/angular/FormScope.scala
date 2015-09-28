@@ -15,4 +15,8 @@ trait FormScope extends Scope {
   var computedValue: js.Function = js.native
 
   var dateOptions: js.Dictionary[Any] = js.native
+
+  var submit: js.Function = js.native
+
+  var submitted: Boolean = js.native
 }

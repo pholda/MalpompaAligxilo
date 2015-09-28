@@ -10,8 +10,7 @@ class FormInstanceJVM[T <: FormSpecification](
   ) extends FormInstance(specification) {
 
 //  TODO
-  override protected def getRawFieldValue(field: Field[_]): Seq[String] = rawFieldValue(field)
-
+  override def getRawFieldValue(field: Field[_]): Seq[String] = rawFieldValue(field)
 
   //TODO
   def isFilled: Boolean = false

@@ -1,5 +1,5 @@
-@import pl.pholda.malpompaaligxilo.form.PrintableComputeFieldValue
 @(field: pl.pholda.malpompaaligxilo.form.Field[_])(implicit form: pl.pholda.malpompaaligxilo.form.FormInstanceJVM[_], lang: pl.pholda.malpompaaligxilo.i18n.Lang = "en")
+@import pl.pholda.malpompaaligxilo.form.PrintableComputeFieldValue
 @import java.text.DecimalFormat
 @import pl.pholda.malpompaaligxilo.i18n.I18nableString
 @import form.context.translationProvider
@@ -8,8 +8,8 @@
 @import pl.pholda.malpompaaligxilo.i18n.I18n
 @if(field.visible(form)) {
     @{field match {
-        case Field(_, _, CustomComputeField(formula), _, _, _, _, _, _, _) =>
-            formula(form) match {
+        case Field(_, _, CustomComputeField(expression), _, _, _, _, _, _, _) =>
+            expression(form) match {
                 case Some(i18nable: I18nableString) => Html(i18nable(lang))
                 case Some(p: PrintableComputeFieldValue) => Html(p.str(lang, form.context.translationProvider))
                 case Some(x) => Html(x.toString)
@@ -17,7 +17,7 @@
             }
         case Field(_, _, CheckboxTableField(rows, cols, _, _), _, _, _, _, _, _, _) =>
             form.fieldValue(field) match {
-                case Some(s: Set[(CheckboxTableRow, CheckboxTableCol)]) if cols.size > 1 =>
+                case Some(CheckboxTableField.Result(s)) if cols.size > 1 =>
                     if (s.isEmpty) {
                         I18n.t("_nothing_selected)")
                     } else {
@@ -25,7 +25,7 @@
                             case (r, c) => r.caption(lang) + " " + c.caption(lang)
                         }.mkString(", ")
                     }
-                case Some(s: Set[(CheckboxTableRow, CheckboxTableCol)]) if cols.size == 1 =>
+                case Some(CheckboxTableField.Result(s)) if cols.size == 1 =>
                     if (s.isEmpty) {
                         I18n.t("_nothing_selected")
                     } else {

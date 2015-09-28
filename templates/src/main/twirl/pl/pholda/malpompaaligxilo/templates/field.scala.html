@@ -1,6 +1,6 @@
 @(field: pl.pholda.malpompaaligxilo.form.Field[_])(implicit form: pl.pholda.malpompaaligxilo.form.FormInstanceJVM[_], lang: pl.pholda.malpompaaligxilo.i18n.Lang = "en")
 @import pl.pholda.malpompaaligxilo.form.field.calculateField.ProgressField
-@import pl.pholda.malpompaaligxilo.form.field.{ComputeField, CheckboxField, CheckboxTableField, DateField, EmailField, EnumOption, IntField, SelectField, StringField, TableCheckboxCol, TableCheckboxRow}
+@import pl.pholda.malpompaaligxilo.form.field.{CheckboxField, CheckboxTableField, ComputeField, DateField, EmailField, EnumOption, IntField, SelectField, StringField}
 @{
     field.`type` match {
         case StringField(false, default) =>
@@ -8,42 +8,52 @@
                 ng-model={"fieldValue['"+field.name+"']"}
                 name={field.name}
                 class="form-control"
+                ng-disabled="submitted"
                 placeholder={field.placeholder.map(_(lang)) orNull}
                 value={field.value.map(_.toString).orElse(default) orNull}
+                required={if (field.required) "required" else null}
                 />
         case StringField(true, default) =>
             <textarea
             ng-model={"fieldValue['"+field.name+"']"}
             name={field.name}
             class="form-control"
-            placeholder={field.placeholder.map(_(lang)) orNull}>{field.value.map(_.toString).orElse(default) orNull}</textarea>
+            ng-disabled="submitted"
+            placeholder={field.placeholder.map(_(lang)) orNull}
+            required={if (field.required) "required" else null}>{field.value.map(_.toString).orElse(default) orNull}</textarea>
         case IntField(min, max, step) =>
             <input type="number"
                 ng-model={"fieldValue['"+field.name+"']"}
                 name={field.name}
                 class="form-control"
+                ng-disabled="submitted"
                 placeholder={field.placeholder.map(_(lang)) orNull}
                 min={min.map(_.toString) orNull}
                 max={max.map(_.toString) orNull}
                 step={step.map(_.toString) orNull}
                 value={field.value.map(_.toString).orNull}
+                required={if (field.required) "required" else null}
                 />
         case DateField(minDate, maxDate, yearRange) =>
             <input ui-date="dateOptions" type="text"
                 ng-model={"fieldValue['"+field.name+"']"}
                 name={field.name}
                 class="form-control formDate"
+                ng-disabled="submitted"
+                ui-date-format="yy-mm-dd"
                 data-mindate={minDate.map(_.toString) orNull}
                 data-maxdate={maxDate.map(_.toString) orNull}
                 data-yearrange={yearRange orNull}
                 placeholder={field.placeholder.map(_(lang)) orNull}
                 value={field.value.map(_.toString).orNull}
+                required={if (field.required) "required" else null}
                 />
         case pf: ProgressField =>
 //            <div class="progressField" data-name={field.name}></div>
             <progress
                 ng-model={"fieldValue['"+field.name+"']"}
                 data-name={field.name}
+                ng-disabled="submitted"
                 value={pf.value(form).toString}
                 max={pf.max(form).toString}
             />
@@ -55,6 +65,7 @@
             <input type="hidden" name={field.name} value={"{{fieldValue['"+field.name+"']}}"}/>
             <select size={size.toString}
                 ng-model={"fieldValue['"+field.name+"']"}
+                required={if (field.required) "required" else null}
                 class="form-control">{
                 val ordered = orderingOpt match {
                     case Some(ordering) =>
@@ -71,6 +82,7 @@
                         case _ => null
                     }
                     }
+                    ng-disabled="submitted"
                     >{option.caption(lang)}</option>
                 }
             }</select>
@@ -80,7 +92,9 @@
                 name={field.name}
                 placeholder={field.placeholder.map(_(lang)) orNull}
                 class="form-control"
-                value={field.value.map(_.toString).orNull}/>
+                ng-disabled="submitted"
+                value={field.value.map(_.toString).orNull}
+                required={if (field.required) "required" else null}/>
         case tfield@CheckboxTableField(rows, cols, disabled, default) if cols.size == 1 =>
             <table data-name={field.name}>{
             rows.map { row =>
@@ -92,14 +106,16 @@
                     id={field.name + "-" + row.id}
                     name={field.name+"[]"}
                     value={row.id + "-" + cols.head.id}
+                    ng-disabled="submitted"
                     checked={
                     field.value match {
-                        case Some(s: Set[(TableCheckboxRow, TableCheckboxCol)])
-                            if s.contains((row, cols.head)) => "checked"
+                        case Some(CheckboxTableField.Result(values))
+                            if values.contains((row, cols.head)) => "checked"
                         case _ if !form.isFilled && default => "checked"
                         case _ => null
                     }
                     }
+                    ng-model={"fieldValue['"+field.name+"'][]"}
                     />
                 </td></tr>
             }
@@ -123,15 +139,17 @@
                             class="form-control"
                             id={field.name + "-" + col.id + "-" + row.id}
                             name={field.name+"[]"}
+                            ng-disabled="submitted"
                             value={row.id + "-" + col.id}
                             checked={
                             field.value match {
-                                case Some(s: Set[(TableCheckboxRow, TableCheckboxCol)])
-                                    if s.contains((row, cols.head)) => "checked"
+                                case Some(CheckboxTableField.Result(values))
+                                    if values.contains((row, cols.head)) => "checked"
                                 case _ if !form.isFilled && default => "checked"
                                 case _ => null
                             }
                             }
+                            ng-model={s"fieldValue['${field.name}']['${row.id}-${col.id}']"}
                             />
                         }
                     }
@@ -152,7 +170,9 @@
                 }
                 }
                 class="form-control"
-                id={field.name}/>
+                ng-disabled="submitted"
+                id={field.name}
+                required={if (field.required) "required" else null}/>
         case x => Html(s"unrecognized field!! $x")
     }
 }

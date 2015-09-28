@@ -44,7 +44,6 @@ case class Spreadsheet(worksheetFeedUrl: URL)(implicit config: AccountConfig) {
   }
 
   def insertRow(data: Map[String, String], worksheetTitle: String) = {
-    println(s"inserting row, data = $data")
     val spreadsheetFeedUrl = new URL("https://spreadsheets.google.com/feeds/spreadsheets/private/full")
     val feed = service.getFeed(spreadsheetFeedUrl, classOf[SpreadsheetFeed])
 
@@ -60,11 +59,9 @@ case class Spreadsheet(worksheetFeedUrl: URL)(implicit config: AccountConfig) {
     var row = new ListEntry()
     data.foreach{
       case (k, v) => {
-        println(s"row element $k -> $v")
         row.getCustomElements.setValueLocal(k, v)
       }
     }
-    println(s"row = $row")
     service.insert(listFeedUrl, row)
   }
 }

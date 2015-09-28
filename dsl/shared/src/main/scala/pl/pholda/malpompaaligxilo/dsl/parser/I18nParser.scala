@@ -2,9 +2,10 @@ package pl.pholda.malpompaaligxilo.dsl.parser
 
 import pl.pholda.malpompaaligxilo.i18n.{TranslationProvider, I18nString, NoI18nString}
 
+import scala.util.parsing.combinator.PackratParsers
 import scala.util.parsing.combinator.syntactical.StandardTokenParsers
 
-trait I18nParser extends StandardTokenParsers {
+trait I18nParser extends StandardTokenParsers with PackratParsers {
 
   implicit val translationProvider: TranslationProvider
 

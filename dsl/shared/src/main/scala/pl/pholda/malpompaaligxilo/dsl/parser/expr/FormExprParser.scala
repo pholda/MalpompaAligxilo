@@ -6,29 +6,34 @@ import pl.pholda.malpompaaligxilo.dsl.expr.form._
 import pl.pholda.malpompaaligxilo.dsl.parser.I18nParser
 import pl.pholda.malpompaaligxilo.i18n.I18nString
 
+import scala.util.parsing.combinator.PackratParsers
 import scala.util.parsing.combinator.syntactical.StandardTokenParsers
 
-trait FormExprParser extends StandardTokenParsers with I18nParser with DateExprParser {
+trait FormExprParser extends StandardTokenParsers
+  with I18nParser
+  with DateExprParser
+  with CheckboxTableExprParser
+  with MathExprParser
+  with LogicExprParser
+  with PackratParsers {
 
-  lexical.reserved += ("value", "valueOpt" ,"mapValue", "enumValue", "enumCaption", "default")
+  lexical.reserved += ("value", "valueOpt" ,"mapValue", "enumValue", "enumCaption", "default",
+    "if", "else", "contains")
 
-  lexical.delimiters += ("(", ")", "{", "}", "$", "=", "+", "$$", "=>")
+  lexical.delimiters += ("(", ")", "{", "}", "$", "=", ".", "$$", "=>")
 
   def formExpr: Parser[DslFormExpr[_]] = "{" ~> expr <~ "}"
 
-  override protected[dsl] def innerExpr: Parser[DslFormExpr[_]] =
-    fieldValue/* | fieldValueOpt*/ | compare | literal | stringConcat | i18nExpr | date | map |
-      enumValue | enumCaption
+  protected[dsl] lazy val innerExpr: PackratParser[DslFormExpr[_]] =
+    logicExpr | date | mathExpr | checkboxTableExpr | ifStatement |
+    compare | literal | stringConcat | contains | container | i18nExpr | map |
+      enumValue | enumCaption |  fieldValue/* | fieldValueOpt*/
 
   protected[dsl] def i18nExpr = i18nString ^^ {
     Literal[I18nString]
   }
 
-  protected[dsl] def expr = innerExpr | ("{"~>innerExpr<~"}")
-
-//  protected[dsl] def fieldValueOpt: Parser[DslFormExpr[Option[Any]]] = ("valueOpt"|"$$")  ~> stringLit  ^^ {
-//    FieldValueOpt
-//  }
+  override protected[dsl] lazy val expr: PackratParser[DslFormExpr[_]] = innerExpr | ("{"~>innerExpr<~"}")
 
   protected[dsl] def fieldValue: Parser[DslFormExpr[Any]] = ("value"|"$") ~> stringLit ^^ {
     FieldValue
@@ -38,13 +43,15 @@ trait FormExprParser extends StandardTokenParsers with I18nParser with DateExprP
     "true" ^^^ Literal(true) |
     "false" ^^^ Literal(false) |
     stringLit ^^ {Literal(_)} |
-    numericLit ^^ {Literal(_)}
+    numericLit ^^ {num => Literal(num.toInt)}
 
+  @deprecated
   protected[dsl] def compare: Parser[DslFormExpr[Boolean]] = "(" ~> (expr <~ "=") ~ expr <~ ")" ^^ {
     case a ~ b => Compare(a, b)
   }
 
-  protected[dsl] def stringConcat: Parser[StringConcat] = ("(" ~> expr <~ "+") ~ rep1sep(expr, "+") <~ ")" ^^ {
+  @deprecated
+  protected[dsl] def stringConcat: Parser[StringConcat] = ("(" ~> expr <~ ".") ~ rep1sep(expr, ".") <~ ")" ^^ {
     case a~b => StringConcat(a::b:_*)
   }
 
@@ -74,4 +81,13 @@ trait FormExprParser extends StandardTokenParsers with I18nParser with DateExprP
   protected[dsl] def enumValue = "enumValue" ~> "(" ~> innerExpr <~ ")" ^^ EnumValue
 
   protected[dsl] def enumCaption = "enumCaption" ~> "(" ~> innerExpr <~ ")" ^^ EnumCaption
+
+  protected[dsl] def ifStatement = ("if" ~> "(" ~> innerExpr <~ ")") ~
+    ("{" ~> innerExpr <~ "}" ~ "else" ~ "{") ~ innerExpr <~ "}" ^^ {
+    case ifExpr~trueExpr~falseExpr => IfStatement(ifExpr, trueExpr, falseExpr)
+  }
+
+  protected[dsl] def contains = (expr <~ "contains") ~ expr ^^ {
+    case container~element => Contains(container, element)
+  }
 }

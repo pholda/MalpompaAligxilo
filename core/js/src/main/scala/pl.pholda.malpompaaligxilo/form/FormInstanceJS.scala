@@ -2,7 +2,10 @@ package pl.pholda.malpompaaligxilo.form
 
 import pl.pholda.malpompaaligxilo.ContextJS
 import pl.pholda.malpompaaligxilo.angular.FormScope
-import pl.pholda.malpompaaligxilo.form.field.CheckboxField
+import pl.pholda.malpompaaligxilo.form.field.{DateField, CheckboxTableField, CheckboxField}
+
+import scala.scalajs.js
+import scala.util.Try
 
 class FormInstanceJS(
   specification: FormSpecification,
@@ -11,17 +14,45 @@ class FormInstanceJS(
   implicit val context: ContextJS
   ) extends FormInstance(specification) {
 
-  override protected def getRawFieldValue(field: Field[_]): Seq[String] = {
+  override def getRawFieldValue(field: Field[_]): Seq[String] = {
     field.`type`.arrayValue match {
         //TODO check this part
       case true =>
+        field.`type` match {
+          case CheckboxTableField(rows, cols, _, default) =>
+            val selected = for {
+              row <- rows
+              col <- cols
+            } yield {
+              scope.fieldValue.get(field.name) match {
+                case Some(dict) =>
+                  dict.asInstanceOf[js.Dictionary[Boolean]].getOrElse(s"${row.id}-${col.id}", false) match {
+                    case true =>
+                      Some(s"${row.id}-${col.id}")
+                    case _ =>
+                      None
+                  }
+                case _ =>
+                  None
+
+              }/*asInstanceOf[js.Dictionary[Boolean]].getOrElse(s"${row.id}-${col.id}", false) match {
+                case true =>
+                  Some(s"${row.id}-${col.id}")
+                case _ =>
+                  None
+              }*/
+            }
+            selected.flatten
+          case _ =>
+            Seq.empty
+        }
 //        val checked = new ListBuffer[String]
 //        jQuery(s"[name='$field[]']:checked").each{(a: js.Any, e: Element) =>
 //          checked.append(jQuery(e).`val`().asInstanceOf[String])
 //          a
 //        }
 //        checked.toSeq
-        Seq()
+//        Seq()
       case false =>
         field.`type` match {
           case CheckboxField(default) =>

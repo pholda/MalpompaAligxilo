@@ -12,7 +12,7 @@ abstract class FormInstance(specification: FormSpecification) {
 
   def dates: DateCompanion = context.date
 
-  protected def getRawFieldValue(field: Field[_]): Seq[String]
+  def getRawFieldValue(field: Field[_]): Seq[String]
 
   def fields: List[Field[_]] = specification.fields
 

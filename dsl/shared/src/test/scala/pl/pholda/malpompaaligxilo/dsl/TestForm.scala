@@ -11,7 +11,7 @@ trait TestForm {
   implicit val context: Context
 
   class Form extends FormSpecification {
-    override def fields: List[Field[_]] = a :: date :: intField :: selectField :: Nil
+    override def fields: List[Field[_]] = a :: date :: intField :: selectField :: cbTable :: Nil
 
     val a = Field(
       name = "a",
@@ -38,6 +38,19 @@ trait TestForm {
         EnumOption("1", NoI18nString("first")),
         EnumOption("2", NoI18nString("second"))
       ))
+    )
+
+    val cbTable = Field(
+      name = "cbt",
+      caption = NoI18nString("Checkbox table field"),
+      `type` = CheckboxTableField(
+        List(
+          CheckboxTableRow("a", NoI18nString("a")),
+          CheckboxTableRow("b", NoI18nString("b"))
+        ), List(
+          CheckboxTableCol("1", NoI18nString("1")),
+          CheckboxTableCol("2", NoI18nString("2"))
+        ))
     )
 
     override def id: String = "id"

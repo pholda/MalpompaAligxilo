@@ -1,9 +1,8 @@
+import com.typesafe.sbt.packager.universal.UniversalKeys
+import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import play.twirl.sbt.SbtTwirl
 import sbt.Keys._
 import sbt._
-import org.scalajs.sbtplugin.ScalaJSPlugin
-import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
-import com.typesafe.sbt.packager.universal.UniversalKeys
 
 object MalpompaAligxilo extends Build with UniversalKeys {
 
@@ -11,7 +10,7 @@ object MalpompaAligxilo extends Build with UniversalKeys {
 
   val defaults = Defaults.coreDefaultSettings ++ List(
     organization := "pl.pholda.malpompaaligxilo",
-    version := "0.1.3-SNAPSHOT",
+    version := "0.1.4-SNAPSHOT",
     scalaVersion := "2.11.6",
     libraryDependencies ++= List(
       "com.lihaoyi" %%% "utest" % "0.3.1"
@@ -60,21 +59,13 @@ object MalpompaAligxilo extends Build with UniversalKeys {
       "org.scala-js" % "scala-parser-combinators_sjs0.6_2.11" % "1.0.2"
   )).dependsOn(coreShared)
 
-//  lazy val coreTests = Project(id = "coreTests",
-//    base = file("coreTests"),
-//    settings = defaults ++ List(
-//      name := "coreTests",
-//      publishArtifact := false
-//    )
-//  ).dependsOn(coreJVM)
-//
   lazy val googleAPI = Project(id = "googleAPI",
     base = file("googleAPI"),
     settings = defaults ++ List(
       name := "google-api",
       libraryDependencies ++= Seq(
         "com.google.gdata" % "core" % "1.47.1",
-        "com.google.api-client" % "google-api-client" % "1.19.1"
+        "com.google.api-client" % "google-api-client" % "1.20.0"
       )
     )
   ).dependsOn(coreJVM)

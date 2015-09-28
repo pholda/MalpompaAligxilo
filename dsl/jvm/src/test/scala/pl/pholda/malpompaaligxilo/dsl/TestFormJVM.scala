@@ -17,6 +17,7 @@ object TestFormJVM extends TestForm {
       case form.specification.date => Seq("2010-01-01")
       case form.specification.intField => Seq("123")
       case form.specification.selectField => Seq("1")
+      case form.specification.cbTable => Seq("a-1", "b-1", "c-1")
       case _ => Seq()
     }
   )(context)

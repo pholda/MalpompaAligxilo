@@ -14,27 +14,25 @@ trait DateExprParser extends StandardTokenParsers with UtilParsers {
 
   lexical.delimiters += ("(", ")", ",", "<", "<=", "=", ">", ">=", "!=")
 
-  protected[dsl] def innerExpr: Parser[DslFormExpr[_]]
-
-  def date: Parser[DslFormExpr[_]] = dateFromString | dateDiff | dateCompare | dateToday
+  def date: PackratParser[DslFormExpr[_]] = dateFromString | dateDiff | dateCompare | dateToday
 
   protected[dsl] def dateToday: Parser[DslFormExpr[Date]] = "date" ~ "(" ~ "today" ~ ")" ^^^ DateToday
 
-  protected[dsl] def dateFromString: Parser[DslFormExpr[Date]] = "date" ~> "(" ~> innerExpr <~ ")" ^^ {
+  protected[dsl] def dateFromString: Parser[DslFormExpr[Date]] = "date" ~> "(" ~> expr <~ ")" ^^ {
     DateFromString
   }
 
   protected[dsl] def dateDiff: Parser[DslFormExpr[Int]] =
     ("dateDiff" ~> "(" ~> ("years" | "months" | "days") <~ ",") ~
-      innerExpr ~ ("," ~> innerExpr <~ ")") ^^ {
+      expr ~ ("," ~> expr <~ ")") ^^ {
       case unit ~ from ~ to => DateDiff(unit, from, to)
     }
 
-  protected[dsl] def dateCompare: Parser[DslFormExpr[Boolean]] =
-    "compareDates" ~> "(" ~> innerExpr ~ ("<" | "<=" | "=" | ">" | ">=" | "!=") ~ innerExpr <~ ")" ^^ {
+  protected[dsl] def dateCompare: PackratParser[DslFormExpr[Boolean]] =
+    "compareDates" ~> "(" ~> expr ~ ("<" | "<=" | "=" | ">" | ">=" | "!=") ~ expr <~ ")" ^^ {
       case a ~ op ~ b => DateCompare(op, a, b)
     }
 
   protected[dsl] def dateOfWeek: Parser[DslFormExpr[Int]] =
-    "dayOfWeek" ~> "(" ~> innerExpr <~ ")" ^^ DayOfWeek
+    "dayOfWeek" ~> "(" ~> expr <~ ")" ^^ DayOfWeek
 }

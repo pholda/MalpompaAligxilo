@@ -11,7 +11,7 @@
             <dd>@if(field.description.nonEmpty){
                 <div class="fieldDesc">@field.description.get</div>
             }</dd>
-            @if(form.isFilled && field.validate.nonEmpty){
+            @if(form.isFilled && field.validate.isSuccess){
                 <dd class="error">
                 @{
                     field.validate.getOrElse("undefined") match {

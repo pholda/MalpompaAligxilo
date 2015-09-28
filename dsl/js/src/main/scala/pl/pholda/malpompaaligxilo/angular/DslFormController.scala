@@ -3,12 +3,12 @@ package pl.pholda.malpompaaligxilo.angular
 import biz.enef.angulate.core.{HttpService, QPromise, QService}
 import pl.pholda.malpompaaligxilo.ContextJS
 import pl.pholda.malpompaaligxilo.dsl.parser.FormSpecificationParser
-import pl.pholda.malpompaaligxilo.form.field.{SelectField, EnumOption}
+import pl.pholda.malpompaaligxilo.form.field._
 import pl.pholda.malpompaaligxilo.form.{Field, FormInstanceJS}
 import pl.pholda.malpompaaligxilo.i18n._
 
 import scala.scalajs.js
-import scala.scalajs.js.Dictionary
+import scala.scalajs.js.{JSON, Dictionary}
 import scala.scalajs.js.JSConverters._
 import scalajs.js.JSConverters._
 
@@ -26,6 +26,17 @@ trait DslFormController extends FormController {
       val value: Option[Any] = field.`type` match {
         case sf: SelectField =>
           sf.getNotSelectedIndex
+        case StringField(_, default) => default
+        case CheckboxField(default) =>
+//          println(s"default = $default, name = ${field.name}")
+          Option(default)
+//        case IntField()
+        case CheckboxTableField(rows, cols, disabled, default) =>
+          Some(js.Dictionary((for {
+            row <- rows
+            col <- cols
+            if !(disabled contains (row.id, col.id))
+          } yield s"${row.id}-${col.id}" -> default):_*))
         case _ =>
           None
       }
@@ -56,7 +67,7 @@ trait DslFormController extends FormController {
 
   var _form = new FormInstanceJS(EmptyFormSpecification, $scope)
 
-  override def form: FormInstanceJS = _form
+ implicit override def form: FormInstanceJS = _form
 
   var _fields: Dictionary[Field[_]] = Dictionary.empty
 

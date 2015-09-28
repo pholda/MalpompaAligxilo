@@ -11,8 +11,10 @@ case class StringConcat(a: DslFormExpr[_]*) extends DslFormExpr[Any] {
         NoI18nString(string)
       case i18nable: I18nableString =>
         i18nable
+      case d: Double =>
+        NoI18nString(d.formatted("%.2f"))
       case x =>
-        NoI18nString(s"<$x>")
+        NoI18nString(s"$x")
     }
   } reduce(_ + _)
 

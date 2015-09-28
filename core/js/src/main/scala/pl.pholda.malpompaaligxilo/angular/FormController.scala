@@ -27,6 +27,8 @@ trait FormController extends ScopeController {
     case _ => false
   }
 
+  $scope.submitted = false
+
   $scope.computedValue = (name: String) => try {
     fields.get(name) match {
       case Some(field) =>
@@ -38,7 +40,7 @@ trait FormController extends ScopeController {
               case string: String =>
                 string
               case i18nString: I18nableString =>
-                i18nString("en")
+                i18nString(lang)
               case x =>
                 x.toString
             }.getOrElse("")

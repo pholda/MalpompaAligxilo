@@ -1,0 +1,14 @@
+@(field: pl.pholda.malpompaaligxilo.form.Field[_])(implicit form: pl.pholda.malpompaaligxilo.form.FormInstanceJVM[_], lang: pl.pholda.malpompaaligxilo.i18n.Lang = "en")
+@import pl.pholda.malpompaaligxilo.templates.html.i18n
+@import pl.pholda.malpompaaligxilo.form.field.EmailField
+<span ng-show="@{form.id}.$submitted || @{form.id}.@{field.name}.$touched">
+    @if(field.required){
+        <span ng-show="@{form.id}.@{field.name}.$error.required">@i18n("_this field is required")</span>
+    }
+    @(field.`type`) match {
+        case EmailField => {
+            <div ng-show="@{form.id}.@{field.name}.$error.email">@i18n("_invalid email adress")</div>
+        }
+        case _ => {}
+    }
+</span>

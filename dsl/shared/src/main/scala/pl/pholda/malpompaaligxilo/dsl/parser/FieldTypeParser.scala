@@ -47,7 +47,7 @@ trait FieldTypeParser extends StandardTokenParsers with UtilParsers with FormExp
 
   protected[dsl] def checkboxField = "checkbox" ~> opt("default" ~ "(" ~> booleanLit <~ ")") ^^ {
     case default =>
-      CheckboxField(default.getOrElse(true))
+      CheckboxField(default.getOrElse(false))
   }
 
   protected[dsl] def dateField = "date" ~> opt("min" ~> dateLit) ~ opt("max" ~> dateLit) ^^ {
@@ -80,7 +80,7 @@ trait FieldTypeParser extends StandardTokenParsers with UtilParsers with FormExp
     ("rows" ~> ("{" ~> rep1sep(checkboxTableRow, opt(",")) <~ "}")) ~
     ("cols" ~> ("{" ~> rep1sep(checkboxTableCol, opt(",")) <~ "}")) ~
     opt("disabled" ~> "{" ~> rep1sep(checkboxTableCell, opt(",")) <~ "}") ~
-    opt("default" /*~ "("*/ ~> booleanLit /*<~ ")"*/) ^^ {
+    opt("default" ~> "(" ~> booleanLit <~ ")") ^^ {
     case rows ~ cols ~ disabled ~ default =>
       CheckboxTableField(rows, cols, disabled.getOrElse(Nil), default.getOrElse(false))
   }

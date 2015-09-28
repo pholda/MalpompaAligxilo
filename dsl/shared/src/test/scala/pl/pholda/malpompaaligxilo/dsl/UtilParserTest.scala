@@ -1,14 +1,21 @@
 package pl.pholda.malpompaaligxilo.dsl
 
+
+
 import pl.pholda.malpompaaligxilo.dsl.parser.UtilParsers
+import pl.pholda.malpompaaligxilo.dsl.parser.expr.FormExprParser
+import pl.pholda.malpompaaligxilo.i18n.TranslationProvider
 import pl.pholda.malpompaaligxilo.util.{Date, DateCompanion}
 import utest._
+
+import scala.collection.Set
 
 trait UtilParserTest extends TestSuite with ParserTestHelper[UtilParsers] {
   def testForm: TestForm
 
-  override val parsers: UtilParsers = new UtilParsers {
-    override protected implicit val dateCompanion: DateCompanion = testForm.context.date
+  override val parsers = new FormExprParser {
+    override implicit val translationProvider: TranslationProvider = testForm.context.translationProvider
+    override implicit val dateCompanion: DateCompanion = testForm.context.date
   }
 
   import parsers._
@@ -33,6 +40,17 @@ trait UtilParserTest extends TestSuite with ParserTestHelper[UtilParsers] {
     'intLit{
       val int = quickParse(intLit, "123")
       assert(int == 123)
+    }
+    'set{
+      val asl =
+        """
+          |set["abc", "cba"]
+        """.stripMargin
+      assertMatch(quickParse(container, asl)(testForm.form)){
+        case collection: Set[Any] =>
+          assert(collection.contains("abc"))
+          assert(collection.contains("cba"))
+      }
     }
   }
 }

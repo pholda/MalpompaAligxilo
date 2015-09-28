@@ -1,17 +1,10 @@
 fields = {
-< name = "name", type = string, caption = @"Name" >
-< name = "sex", type = checkbox default ( true ), caption = @"Sex" >
+< name = "name", type = string default ("blabla"), caption = @"Name">
+< name = "sex", type = checkbox default (true) , caption = @"Sex">
+< name = "email", type = email, caption = @"Email">
 < name = "birth", type = date, caption = @"Date of birth" >
-< name = "birth2", type = date, caption = @"Date2" >
-< name = "info", type = calculable {(@"Your name: " + $ "name")} , caption = @"Info" >
-< name = "info2", type = calculable
-    {
-        mapValue ( compareDates ( $"birth" < $"birth2" ) ) {
-            true => "birth < birth2",
-            false => "birth >= birth2"
-        }
-    } , caption = @"Info2"
->
+< name = "birth2", type = date, caption = @"Date2">
+< name = "info2", type = computed { selectedInTotal($"partoprentempo") * {5 + 2} } , caption = @"Info2" >
 < name = "country", type = select
     {
         < "pl" @"Poland" >
@@ -19,7 +12,7 @@ fields = {
         < "uk" @"United Kingdom" >
     } notSelected < "kurwa" @"Please choose country.." > orderBy caption, caption = @"Country"
 >
-< name = "countryInfo", type = calculable
+< name = "countryInfo", type = computed
     {
         mapValue (enumValue($"country")) {
             "uk" => "UK",
@@ -28,20 +21,6 @@ fields = {
         }
     } , caption = @"CountryInfo"
 >
-< name = "meals", type = checkboxTable
-    rows {
-        < "b" @"Breakfast" >
-        < "d" @"Dinner" >
-        < "s" @"Supper" >
-    }
-    cols {
-        < "1" @"Day 1">
-        < "2" @"Day 2">
-        < "3" @"Day 3">
-    }
-    disabled {
-        < "b" "1" > <"s" "3">
-    }
-    default ( true ), caption = @"Meals"
->
+<name = "partoprentempo", caption=@"Tempo de partopreno", type=checkboxTable rows {<"tago" @"Tago">} cols {<"12" "12.11"><"13" "13.11"><"14" "14.11"><"15" "15.11">} default (true)>
+
 }
