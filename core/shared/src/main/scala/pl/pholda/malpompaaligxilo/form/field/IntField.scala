@@ -10,4 +10,9 @@ case class IntField(min: Option[Int] = None, max: Option[Int] = None, step: Opti
   override def parse(values: Seq[String]): Option[Int] = values.headOption.flatMap(s => Try{s.toInt}.toOption)
 
   override val arrayValue: Boolean = false
+
+  override def separatedValues(value: Option[Int]): List[(String, String)] = value match {
+    case Some(v) => ("" -> v.toString) :: Nil
+    case _ => Nil
+  }
 }

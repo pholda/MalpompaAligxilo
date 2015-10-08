@@ -9,4 +9,6 @@ abstract class FieldType[T] {
   def parse(values: Seq[String]): Option[T]
 
   def arrayValue: Boolean
+
+  def separatedValues(value: Option[T]): List[(String, String)]
 }

@@ -14,7 +14,9 @@ class DateJS(protected val jsDate: js.Date) extends Date {
 
   override def getMillis: Long = jsDate.getTime().toLong
 
-  override def toString: String = "%04d".format(getYear) + "-" + "%02d".format(getMonth) + "-" + "%02d".format(getDay)
+  override def toString: String = iso8601
+
+  override def iso8601: String = "%04d".format(getYear) + "-" + "%02d".format(getMonth) + "-" + "%02d".format(getDay)
 
   override def getDayOfWeek: Int = jsDate.getDay()
 

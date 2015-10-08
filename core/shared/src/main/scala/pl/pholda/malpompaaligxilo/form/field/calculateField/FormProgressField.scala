@@ -19,4 +19,5 @@ case object FormProgressField extends ProgressField {
     }
   }
 
+  override def separatedValues(value: Option[Int]): List[(String, String)] = ???
 }

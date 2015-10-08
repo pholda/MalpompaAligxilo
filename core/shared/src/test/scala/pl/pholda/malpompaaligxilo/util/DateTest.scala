@@ -20,6 +20,9 @@ class DateTest(companion: DateCompanion) extends TestSuite {
           assertDate(1999, 7, 21, companion.fromString("1999-07-21"))
         }
       }
+      'iso8601{
+        assert(companion.fromString("1991-01-02").iso8601 == "1991-01-02")
+      }
       'compare{
         'first{
           val d1 = companion.fromString("1999-07-20")

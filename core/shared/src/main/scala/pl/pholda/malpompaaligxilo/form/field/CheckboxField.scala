@@ -10,4 +10,9 @@ case class CheckboxField(default: Boolean = false) extends FieldType[Boolean] {
   }
 
   override val arrayValue: Boolean = false
+
+  override def separatedValues(value: Option[Boolean]): List[(String, String)] = value match {
+    case Some(true) => "" -> "x" :: Nil
+    case _ => Nil
+  }
 }

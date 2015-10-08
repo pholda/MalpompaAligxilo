@@ -6,12 +6,12 @@ import sbt._
 
 object MalpompaAligxilo extends Build with UniversalKeys {
 
-  val scalajsAngulateVersion = "0.2.1"
+  val scalajsAngulateVersion = "0.2.2"
 
   val defaults = Defaults.coreDefaultSettings ++ List(
     organization := "pl.pholda.malpompaaligxilo",
-    version := "0.1.4-SNAPSHOT",
-    scalaVersion := "2.11.6",
+    version := "0.1.5-SNAPSHOT",
+    scalaVersion := "2.11.7",
     libraryDependencies ++= List(
       "com.lihaoyi" %%% "utest" % "0.3.1"
 
@@ -65,7 +65,8 @@ object MalpompaAligxilo extends Build with UniversalKeys {
       name := "google-api",
       libraryDependencies ++= Seq(
         "com.google.gdata" % "core" % "1.47.1",
-        "com.google.api-client" % "google-api-client" % "1.20.0"
+        "com.google.api-client" % "google-api-client" % "1.20.0",
+        "com.typesafe" % "config" % "1.3.0" % "test"
       )
     )
   ).dependsOn(coreJVM)

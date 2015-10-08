@@ -1,53 +1,38 @@
-//package pl.pej.malpompaaligxilo.form.action
-//
-//import java.io.File
-//import java.net.URL
-//
-//import org.scalatest.FunSuite
-//import pl.pej.malpompaaligxilo.form.field.StringField
-//import pl.pej.malpompaaligxilo.form.{ScalaContext, Field, Context, Form}
-//import pl.pej.malpompaaligxilo.googleapi.{Spreadsheet, AccountConfig}
-//import pl.pej.malpompaaligxilo.util.NoI18nString
-//
-//class AddToGoogleSpreadsheetFormActionTest extends FunSuite {
-//  test("simple test") {
-//    val form = new Form{
-//      override val id: String = "id"
-//
-//      override protected def getRawFieldValue(field: Field[_]): Seq[String] = {
-//        field match {
-//          case this.name =>
-//            Seq("Stefan")
-//          case _ =>
-//            Seq.empty
-//        }
-//      }
-//
-//      override def fields: List[Field[_]] = name :: Nil
-//
-//      override def isFilled: Boolean = true
-//
-//      override implicit val context: Context = ScalaContext
-//
-//      val name = Field(
-//        name = "name",
-//        caption = NoI18nString("Name"),
-//        `type` = StringField()
-//      )
-//    }
-//
-//    implicit val accountConfig = AccountConfig(
-//      serviceAccountId = "90211112486-s84fu8sqfg5hlnjcgglucup6nap73qnh@developer.gserviceaccount.com",
-//      p12PrivateKey = new File("MalmpompaAligxilo-0f665c366cc1.p12")
-//    )
-//    val action = AddToGoogleSpreadsheetFormAction(
-//      spreadsheet = Spreadsheet(
-//        worksheetFeedUrl = new URL("https://spreadsheets.google.com/feeds/worksheets/1v9hB-6DYzR-VKQoPHbr6VfZFFVqcBTO8vX8vHoJ4mBc/private/full")
-//      ),
-//      worksheetTitle = "Arkusz1"
-//    )
-//    action(form)
-//
-//
-//  }
-//}
+package pl.pholda.malpompaaligxilo.form.action
+
+import java.io.File
+import java.net.URL
+
+import com.typesafe.config.{ConfigFactory, Config}
+import pl.pholda.malpompaaligxilo.ContextJVM
+import pl.pholda.malpompaaligxilo.form.{FormInstanceJVM, FormInstance}
+import pl.pholda.malpompaaligxilo.googleapi.{AccountConfigFile, Spreadsheet}
+import pl.pholda.malpompaaligxilo.i18n.NoTranslations
+import utest._
+
+object AddToGoogleSpreadsheetFormActionTest extends TestSuite {
+  implicit val context = new ContextJVM()(NoTranslations)
+  def formInstance = new FormInstanceJVM[TestForm.type](TestForm, {
+    case TestForm.abc => Seq("abc value")
+    case _ => Seq.empty
+  })
+
+  val conf = ConfigFactory.load("googleAPItest.conf")
+
+  val tests = TestSuite{
+    'writing{
+      implicit val accountConfig = AccountConfigFile(
+        conf.getString("serviceAccountId"),
+        new File(conf.getString("p12"))
+      )
+      val spreadsheet = Spreadsheet(new URL(conf.getString("worksheetFeedUrl")))
+      val action = AddToGoogleSpreadsheetFormAction(
+        spreadsheet,
+        conf.getString("worksheetTitle")
+      )
+      action.run(formInstance)
+      val row = spreadsheet.readLastRow(conf.getString("worksheetTitle"), "abc" :: Nil)
+      assert(row("abc") == "abc value")
+    }
+  }
+}

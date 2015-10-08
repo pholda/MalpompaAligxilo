@@ -40,4 +40,13 @@ case class SelectField(
   }
 
   override val arrayValue: Boolean = false
+
+  override def separatedValues(value: Option[EnumOption]): List[(String, String)] = {
+    value match {
+      case Some(selected) =>
+        "" -> selected.value :: Nil
+      case _ =>
+        Nil
+    }
+  }
 }

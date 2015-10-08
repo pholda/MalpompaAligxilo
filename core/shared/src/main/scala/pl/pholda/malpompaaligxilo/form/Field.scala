@@ -13,14 +13,13 @@ case class Field[T](
   visible: FormExpr[Boolean] = true,
   required: Boolean = false,
   customValidate: T => FieldValidationResult = {_:T => SuccessFieldValidation},
-  store: Boolean = true,
-  separateValues: Option[T] => Option[List[(String, String)]] = {o: Option[T] => None}
+  store: Boolean = true
   ) extends FormElement {
   final def isComputed: Boolean = `type`.isInstanceOf[ComputeField[_]]
 
   def parse(values: Seq[String]): Option[T] = `type`.parse(values)
 
-  def validate(implicit formInstance: FormInstance): FieldValidationResult = {
+  def validate(implicit formInstance: FormInstance[_]): FieldValidationResult = {
     val errors = formInstance.fieldValue(this) match {
       case None if required => Seq(RequiredError)
       case Some(value: T) =>
@@ -35,11 +34,14 @@ case class Field[T](
     FieldValidationResult(errors:_*)
   }
 
-  def value(implicit formInstance: FormInstance): Option[T] = {
+  def value(implicit formInstance: FormInstance[_]): Option[T] = {
     formInstance.fieldValue(this)
   }
 
-  def separatedValues(implicit formInstance: FormInstance): Option[List[(String, String)]] = {
-    separateValues(value)
+  def separatedValues(implicit formInstance: FormInstance[_]): List[(String, String)] = {
+    `type`.separatedValues(value).map{
+      case ("", v) => s"$name" -> v
+      case (k, v) => s"$name-$k" -> v
+    }
   }
 }

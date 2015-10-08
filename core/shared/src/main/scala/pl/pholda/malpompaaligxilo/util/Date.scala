@@ -31,4 +31,6 @@ abstract class Date {
   def <=(d: Date): Boolean = {
     ! >(d)
   }
+
+  def iso8601: String
 }

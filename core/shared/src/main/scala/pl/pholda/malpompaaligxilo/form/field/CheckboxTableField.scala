@@ -1,6 +1,7 @@
 package pl.pholda.malpompaaligxilo.form.field
 
 import pl.pholda.malpompaaligxilo.form._
+import pl.pholda.malpompaaligxilo.form.field.CheckboxTableField.Result
 import pl.pholda.malpompaaligxilo.i18n.I18nableString
 
 case class CheckboxTableField(
@@ -21,6 +22,24 @@ case class CheckboxTableField(
   }
 
   override val arrayValue: Boolean = true
+
+  override def separatedValues(value: Option[Result]): List[(String, String)] = {
+    value match {
+      case Some(result) if cols.size == 1 =>
+        result.values.toList.map{
+          case (row, col) => s"${row.id}" -> "x"
+        }
+      case Some(result) if rows.size == 1 =>
+        result.values.toList.map{
+          case (row, col) => s"${col.id}" -> "x"
+        }
+      case Some(result) =>
+        result.values.toList.map{
+          case (row, col) => s"${row.id}-${col.id}" -> "x"
+        }
+      case None => Nil
+    }
+  }
 }
 
 object CheckboxTableField {

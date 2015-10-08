@@ -13,8 +13,9 @@ class DateJVM(protected val jodaDate: DateTime) extends Date  {
 
   override def getDayOfWeek: Int = jodaDate.dayOfWeek().get()
 
-  // ISO 8601
-  override def toString: String = jodaDate.toString("yyyy-MM-dd")
+  override def toString: String = iso8601
+
+  override def iso8601: String = jodaDate.toString("yyyy-MM-dd")
 
   override def yearsTo(to: Date): Int = {
     to match {

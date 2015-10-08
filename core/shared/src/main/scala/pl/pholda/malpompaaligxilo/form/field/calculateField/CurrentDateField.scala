@@ -7,4 +7,6 @@ import pl.pholda.malpompaaligxilo.util.Date
 
 case class CurrentDateField()(implicit context: Context) extends ComputeField[Date] {
   override def formula: FormExpr[Option[Date]] = Some(context.date.now)
+
+  override def separatedValues(value: Option[Date]): List[(String, String)] = ???
 }

@@ -7,8 +7,8 @@ import pl.pholda.malpompaaligxilo.form.field.{DateField, CheckboxTableField, Che
 import scala.scalajs.js
 import scala.util.Try
 
-class FormInstanceJS(
-  specification: FormSpecification,
+class FormInstanceJS[T <: FormSpecification](
+  specification: T,
   scope: FormScope
                       )(
   implicit val context: ContextJS
@@ -34,25 +34,12 @@ class FormInstanceJS(
                   }
                 case _ =>
                   None
-
-              }/*asInstanceOf[js.Dictionary[Boolean]].getOrElse(s"${row.id}-${col.id}", false) match {
-                case true =>
-                  Some(s"${row.id}-${col.id}")
-                case _ =>
-                  None
-              }*/
+              }
             }
             selected.flatten
           case _ =>
             Seq.empty
         }
-//        val checked = new ListBuffer[String]
-//        jQuery(s"[name='$field[]']:checked").each{(a: js.Any, e: Element) =>
-//          checked.append(jQuery(e).`val`().asInstanceOf[String])
-//          a
-//        }
-//        checked.toSeq
-//        Seq()
       case false =>
         field.`type` match {
           case CheckboxField(default) =>

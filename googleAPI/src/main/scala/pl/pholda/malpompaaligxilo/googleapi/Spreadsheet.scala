@@ -5,6 +5,7 @@ import java.net.URL
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
 import com.google.api.client.json.jackson2.JacksonFactory
+import com.google.gdata.client.Query
 import com.google.gdata.client.spreadsheet.SpreadsheetService
 import com.google.gdata.data.spreadsheet._
 
@@ -23,8 +24,6 @@ case class Spreadsheet(worksheetFeedUrl: URL)(implicit config: AccountConfig) {
         .setTransport(httpTransport)
         .setJsonFactory(JSON_FACTORY)
         .setServiceAccountId(config.serviceAccountId)
-//        .setServiceAccountPrivateKeyFromP12File(config.p12PrivateKey)
-//        .setServiceAccountPrivateKey()
         .setServiceAccountScopes(
           List(
             "https://www.googleapis.com/auth/drive",
@@ -41,6 +40,27 @@ case class Spreadsheet(worksheetFeedUrl: URL)(implicit config: AccountConfig) {
 
     service.setOAuth2Credentials(credential)
     service
+  }
+
+  /**
+   * test purpose only
+   * @param worksheetTitle
+   * @param headers
+   * @return
+   */
+  def readLastRow(worksheetTitle: String, headers: List[String]): Map[String, String] = {
+    val spreadsheetFeedUrl = new URL("https://spreadsheets.google.com/feeds/spreadsheets/private/full")
+    val feed = service.getFeed(spreadsheetFeedUrl, classOf[SpreadsheetFeed])
+
+    val worksheetFeed: WorksheetFeed = service.getFeed(worksheetFeedUrl, classOf[WorksheetFeed])
+
+    val worksheet = worksheetFeed.getEntries.find(_.getTitle.getPlainText == worksheetTitle).getOrElse{
+      throw new Exception("worksheet not found!")
+    }
+
+    val query = service.query(new Query(worksheet.getListFeedUrl()), classOf[ListFeed])
+    val customElements = query.getEntries().last.getCustomElements
+    headers.map{header => header -> customElements.getValue(header)}.toMap
   }
 
   def insertRow(data: Map[String, String], worksheetTitle: String) = {
