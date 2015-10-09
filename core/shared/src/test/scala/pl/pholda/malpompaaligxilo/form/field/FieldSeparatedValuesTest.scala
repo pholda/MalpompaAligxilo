@@ -1,7 +1,11 @@
 package pl.pholda.malpompaaligxilo.form.field
 
 import pl.pholda.malpompaaligxilo.Context
-import pl.pholda.malpompaaligxilo.form.FormExpr
+import pl.pholda.malpompaaligxilo.form.field.calculateField.cost.CostDef.MultipleCostDef
+import pl.pholda.malpompaaligxilo.form.field.calculateField.cost.CostValue.MultipleCostValue
+import pl.pholda.malpompaaligxilo.form.field.calculateField.cost.CostsField
+import pl.pholda.malpompaaligxilo.form.{Field, FormExpr}
+import pl.pholda.malpompaaligxilo.i18n.NoI18nString
 import utest._
 
 trait FieldSeparatedValuesTest extends TestSuite {
@@ -83,6 +87,15 @@ trait FieldSeparatedValuesTest extends TestSuite {
         }
         assert(field.separatedValues(Some("abc")) == "" -> "abc" :: Nil)
       }
+    }
+    'costsField{
+      val field = CostsField(
+        definition = MultipleCostDef("b", NoI18nString("b"), 10, FormExpr{5}),
+        {costValue => NoI18nString("")}
+      )
+      assert(field.separatedValues(Some(MultipleCostValue("b", NoI18nString("b"), 10, 5))) ==
+        "" -> "50.0" :: Nil
+      )
     }
   }
 }

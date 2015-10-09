@@ -4,7 +4,7 @@ import pl.pholda.malpompaaligxilo.dsl.DslFormExpr
 import pl.pholda.malpompaaligxilo.form.FormInstance
 
 object Operation {
-  def expr2double(expr: DslFormExpr[_])(implicit formInstance: FormInstance): Double = {
+  def expr2double(expr: DslFormExpr[_])(implicit formInstance: FormInstance[_]): Double = {
     expr(formInstance) match {
       case d: Double => d
       case i: Int => i.toDouble

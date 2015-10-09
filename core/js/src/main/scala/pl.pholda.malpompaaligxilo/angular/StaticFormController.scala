@@ -19,7 +19,7 @@ abstract class StaticFormController(
 
   val formSpecification: FormSpecification
 
-  lazy val form: FormInstanceJS = new FormInstanceJS(formSpecification, $scope)
+  lazy val form: FormInstanceJS[_] = new FormInstanceJS(formSpecification, $scope)
 
   lazy val fields: Dictionary[Field[_]] = form.fields.map{f =>
     (f.name -> f).asInstanceOf[Tuple2[String, Field[_]]]

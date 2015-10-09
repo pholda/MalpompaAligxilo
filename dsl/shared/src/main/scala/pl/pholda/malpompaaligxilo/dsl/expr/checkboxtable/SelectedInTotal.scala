@@ -5,7 +5,7 @@ import pl.pholda.malpompaaligxilo.form.FormInstance
 import pl.pholda.malpompaaligxilo.form.field.CheckboxTableField
 
 case class SelectedInTotal(inner: DslFormExpr[Any]) extends DslFormExpr[Int] {
-  override def apply(formInstance: FormInstance): Int = {
+  override def apply(formInstance: FormInstance[_]): Int = {
     inner.apply(formInstance) match {
       case result: CheckboxTableField.Result =>
         result.selectedInTotal

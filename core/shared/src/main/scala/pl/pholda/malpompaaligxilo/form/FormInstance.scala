@@ -5,7 +5,7 @@ import pl.pholda.malpompaaligxilo.Context
 import pl.pholda.malpompaaligxilo.form.field.{FailureFieldValidation, SuccessFieldValidation, ComputeField}
 import pl.pholda.malpompaaligxilo.util.DateCompanion
 
-abstract class FormInstance[T <: FormSpecification](specification: T) {
+abstract class FormInstance[+T <: FormSpecification](specification: T) {
   def id: String = specification.id
 
   def context: Context

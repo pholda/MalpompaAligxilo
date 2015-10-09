@@ -5,7 +5,7 @@ import pl.pholda.malpompaaligxilo.form.FormInstance
 import pl.pholda.malpompaaligxilo.form.field.EnumOption
 
 case class ValueOf(inner: DslFormExpr[Any]) extends DslFormExpr[String] {
-  override def apply(formInstance: FormInstance): String = {
+  override def apply(formInstance: FormInstance[_]): String = {
     inner(formInstance) match {
       case EnumOption(value, _) => value
       case x => throw new IllegalArgumentException(s"Unable to take value of $x")

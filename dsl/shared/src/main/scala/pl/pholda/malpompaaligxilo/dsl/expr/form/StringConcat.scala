@@ -5,7 +5,7 @@ import pl.pholda.malpompaaligxilo.form.FormInstance
 import pl.pholda.malpompaaligxilo.i18n.{I18nableString, NoI18nString}
 
 case class StringConcat(a: DslFormExpr[_]*) extends DslFormExpr[Any] {
-  override def apply(formInstance: FormInstance): Any = a map {expr =>
+  override def apply(formInstance: FormInstance[_]): Any = a map {expr =>
     expr(formInstance) match {
       case string: String =>
         NoI18nString(string)

@@ -7,7 +7,7 @@ import pl.pholda.malpompaaligxilo.form.field.{DateField, CheckboxTableField, Che
 import scala.scalajs.js
 import scala.util.Try
 
-class FormInstanceJS[T <: FormSpecification](
+class FormInstanceJS[+T <: FormSpecification](
   specification: T,
   scope: FormScope
                       )(

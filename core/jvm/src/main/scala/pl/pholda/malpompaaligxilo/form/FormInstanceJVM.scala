@@ -2,7 +2,7 @@ package pl.pholda.malpompaaligxilo.form
 
 import pl.pholda.malpompaaligxilo.ContextJVM
 
-class FormInstanceJVM[T <: FormSpecification](
+class FormInstanceJVM[+T <: FormSpecification](
   val specification: T,
   rawFieldValue: Field[_] => Seq[String]
 )(

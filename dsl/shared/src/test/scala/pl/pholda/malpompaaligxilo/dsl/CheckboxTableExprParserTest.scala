@@ -25,11 +25,6 @@ trait CheckboxTableExprParserTest extends TestSuite with ParserTestHelper[FormEx
           |selectedInTotal($"cbt")
           |
         """.stripMargin
-
-//      assertMatch(quickParse(selectedInTotal, expr)(testForm.form)){
-//        case a => println(a)
-////        case 3 =>
-//      }
     }
   }
 

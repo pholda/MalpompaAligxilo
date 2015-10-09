@@ -5,7 +5,7 @@ import pl.pholda.malpompaaligxilo.form.FormInstance
 import pl.pholda.malpompaaligxilo.util.Date
 
 case class DayOfWeek(inner: DslFormExpr[Any]) extends DslFormExpr[Int] {
-  override def apply(formInstance: FormInstance): Int = {
+  override def apply(formInstance: FormInstance[_]): Int = {
     inner(formInstance) match {
       case date: Date =>
         date.getDayOfWeek

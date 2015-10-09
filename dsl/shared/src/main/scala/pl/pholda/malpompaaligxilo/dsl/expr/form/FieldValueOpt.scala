@@ -4,5 +4,6 @@ import pl.pholda.malpompaaligxilo.dsl.DslFormExpr
 import pl.pholda.malpompaaligxilo.form.FormInstance
 
 case class FieldValueOpt(fieldName: String) extends DslFormExpr[Option[Any]] {
-  override def apply(form: FormInstance): Option[Any] = form.fieldsByName(fieldName).value(form)
+  override def apply(formInstance: FormInstance[_]): Option[Any] =
+    formInstance.fieldsByName(fieldName).value(formInstance)
 }

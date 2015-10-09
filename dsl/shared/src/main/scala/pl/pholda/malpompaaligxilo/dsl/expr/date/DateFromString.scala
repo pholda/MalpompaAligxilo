@@ -5,7 +5,7 @@ import pl.pholda.malpompaaligxilo.form.FormInstance
 import pl.pholda.malpompaaligxilo.util.Date
 
 case class DateFromString(string: DslFormExpr[Any]) extends DslFormExpr[Date] {
-  override def apply(formInstance: FormInstance): Date = {
+  override def apply(formInstance: FormInstance[_]): Date = {
     val stringDate = string(formInstance) match {
       case Some(s: String) => s
       case s: String => s

@@ -56,5 +56,5 @@ trait TestForm {
     override def id: String = "id"
   }
 
-  val form: FormInstance
+  val form: FormInstance[_]
 }

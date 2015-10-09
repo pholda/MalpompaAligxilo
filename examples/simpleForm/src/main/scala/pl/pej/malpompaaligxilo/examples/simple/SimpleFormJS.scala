@@ -3,7 +3,7 @@ package pl.pholda.malpompaaligxilo.examples.simple
 import org.scalajs.dom
 import org.scalajs.dom.Element
 import pl.pholda.malpompaaligxilo.form.{JSContext, Field}
-import pl.pholda.malpompaaligxilo.form.field.{TableCheckboxField, CalculateField}
+import pl.pholda.malpompaaligxilo.form.field.{ComputeField, TableCheckboxField, CalculateField}
 import pl.pholda.malpompaaligxilo.form.field.calculateField.ProgressField
 import pl.pholda.malpompaaligxilo.util.util.DatesJS
 
@@ -65,7 +65,7 @@ object SimpleFormJS extends JSApp {
           } catch {
             case e: Exception => println(s"erraro3 cxe $name ${e.getMessage}")
           }
-        case Field(name, _, cf: CalculateField[_], _, _, _, _, _, _, _) =>
+        case Field(name, _, cf: ComputeField[_], _, _, _, _, _, _, _) =>
           try {
             jQuery(s".formExpression[data-name='$name']").html(cf.evaluate(form) match {
               case Some(x) => x.toString

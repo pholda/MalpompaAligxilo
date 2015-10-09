@@ -20,3 +20,9 @@ msgstr "send!"
 
 msgid "years"
 msgstr "years"
+
+msgid "Age"
+msgstr "Age"
+
+msgid "discount for young"
+msgstr "discount for young"

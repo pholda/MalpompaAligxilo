@@ -6,7 +6,7 @@ import pl.pholda.malpompaaligxilo.form.FormInstance
 
 case class Logical2(operand1: DslFormExpr[_], operand2: DslFormExpr[_])
                    (operation: (Any, Any) => Boolean) extends DslFormExpr[Boolean] {
-  override def apply(formInstance: FormInstance): Boolean = {
+  override def apply(formInstance: FormInstance[_]): Boolean = {
     operation(expr2double(operand1)(formInstance), expr2double(operand2)(formInstance))
   }
 }

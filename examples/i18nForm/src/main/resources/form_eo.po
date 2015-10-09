@@ -20,3 +20,9 @@ msgstr "aliĝu!"
 
 msgid "years"
 msgstr "jaroj"
+
+msgid "Age"
+msgstr "Aĝo"
+
+msgid "discount for young"
+msgstr "rabato por junuloj"

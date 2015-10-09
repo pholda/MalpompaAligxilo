@@ -38,17 +38,14 @@ object Main extends Controller {
       case Some(json) =>
 //      case Some(post) =>
         implicit val formInstance = new FormInstanceJVM(specJVM, { field =>
-          val value = json \ field.name match {
+          json \ field.name match {
             case JsArray(values) =>
               values.map{
                 case JsString(str) =>str
                 case _ => throw new IllegalArgumentException(s"unexpected token")
               }
           }
-          println(s"value for ${field.name} = ${value.mkString("(", ", ", ")")}")
-          value
         })
-        println(formInstance.fieldsByName("country").value)
         Ok(formInstance.validate.toString)
       case _ =>
         Ok("error")

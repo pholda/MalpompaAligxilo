@@ -5,7 +5,7 @@ import pl.pholda.malpompaaligxilo.form.FormInstance
 
 case class IfStatement(ifExpr: DslFormExpr[_], trueExpr: DslFormExpr[_], falseExpr: DslFormExpr[_])
   extends DslFormExpr[Any] {
-  override def apply(formInstance: FormInstance): Any = {
+  override def apply(formInstance: FormInstance[_]): Any = {
     if (ifExpr(formInstance) == true) {
       trueExpr(formInstance)
     } else

@@ -5,7 +5,7 @@ import pl.pholda.malpompaaligxilo.form.FormInstance
 import pl.pholda.malpompaaligxilo.util.Date
 
 case class DateDiff(unit: String, from: DslFormExpr[Any], to: DslFormExpr[Any]) extends DslFormExpr[Int] {
-  override def apply(formInstance: FormInstance): Int = {
+  override def apply(formInstance: FormInstance[_]): Int = {
     val fromDate = from(formInstance) match {
       case d: Date => d
       case x => throw new Exception(s"date was expected, found: $x")

@@ -17,7 +17,7 @@ object Examples extends Build with UniversalKeys
   ).aggregate(/*simpleForm, simpleFormPlay, */i18nForm, i18nFormPlay, exampleDsl, exampleDslPlay)
 
 
-  lazy val i18nForm = Project(id = "i18nForm",
+  lazy val i18nForm = Project(id = "exampleI18nForm",
     base = file("examples/i18nForm"),
     settings = defaults ++ List(
       name := "examples.i18n-form",
@@ -30,10 +30,10 @@ object Examples extends Build with UniversalKeys
       skip in packageJSDependencies := false,
       publishArtifact := false
     )
-  ).dependsOn(core.js, core.jvm, googleAPI).enablePlugins(ScalaJSPlugin)
+  ).dependsOn(core.js, core.jvm, googleAPI, templates).enablePlugins(ScalaJSPlugin)
 
 
-  lazy val i18nFormPlay = Project(id = "i18nFormPlay",
+  lazy val i18nFormPlay = Project(id = "exampleI18nFormPlay",
     base = file("examples/i18nFormPlay"),
     settings = defaults ++ List(
       name := "examples.i18nFormPlay",

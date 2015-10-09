@@ -1,3 +1,4 @@
+@import pl.pholda.malpompaaligxilo.form.field.FailureFieldValidation
 @(field: pl.pholda.malpompaaligxilo.form.Field[_])(implicit form: pl.pholda.malpompaaligxilo.form.FormInstanceJVM[_], lang: pl.pholda.malpompaaligxilo.i18n.Lang = "en")
 @import pl.pholda.malpompaaligxilo.form.errors.BadDateFormatError
 @import pl.pholda.malpompaaligxilo.form.errors.NothingSelectedError
@@ -11,17 +12,21 @@
             <dd>@if(field.description.nonEmpty){
                 <div class="fieldDesc">@field.description.get</div>
             }</dd>
-            @if(form.isFilled && field.validate.nonEmpty){
-                <dd class="error">
-                @{
-                    field.validate.getOrElse("undefined") match {
-                        case RequiredError => "this field is required"
-                        case NothingSelectedError => "nothing was selected"
-                        case BadDateFormatError => "bad date format"
-                        case CustomError(msg) => msg(lang)
+            @if(form.isFilled) {
+                @field.validate match {
+                    case FailureFieldValidation(errors: Seq[pl.pholda.malpompaaligxilo.form.FormError]) => {
+                        <dd class="error">
+                            @for(e <- errors) {
+                                @e match {
+                                case RequiredError => {"this field is required"}
+                                case NothingSelectedError => {"nothing was selected"}
+                                case BadDateFormatError => {"bad date format"}
+                                case CustomError(msg) => {@msg(lang)}
+                                }
+                            }
+                        </dd>
                     }
                 }
-                </dd>
             }
         </dl>
     </label>

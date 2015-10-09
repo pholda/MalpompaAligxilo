@@ -5,7 +5,7 @@ import pl.pholda.malpompaaligxilo.form.FormInstance
 import pl.pholda.malpompaaligxilo.util.Date
 
 case object DateToday extends DslFormExpr[Date] {
-  override def apply(formInstance: FormInstance): Date = {
+  override def apply(formInstance: FormInstance[_]): Date = {
     formInstance.dates.now
   }
 }

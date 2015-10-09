@@ -1,7 +1,10 @@
 package pl.pholda.malpompaaligxilo
 
 import pl.pholda.malpompaaligxilo.form.field._
-import pl.pholda.malpompaaligxilo.form.{Field, FormInstance, FormSpecification}
+import pl.pholda.malpompaaligxilo.form.field.calculateField.cost.CostDef.{MultipleCostDef, SingleCostDef}
+import pl.pholda.malpompaaligxilo.form.field.calculateField.cost.CostValue.MultipleCostValue
+import pl.pholda.malpompaaligxilo.form.field.calculateField.cost.CostsField
+import pl.pholda.malpompaaligxilo.form.{FormExpr, Field, FormInstance, FormSpecification}
 import pl.pholda.malpompaaligxilo.i18n.{NoI18nString, TranslationProvider}
 
 trait TestForm {
@@ -10,7 +13,8 @@ trait TestForm {
   implicit val context: Context
 
   object TestFormSpec extends FormSpecification {
-    override def fields: List[Field[_]] = a :: date :: intField :: selectField :: cbTable :: Nil
+    override def fields: List[Field[_]] = a :: date :: intField :: selectField :: cbTable ::
+      singleCost :: multipleCost :: Nil
 
     val a = Field(
       name = "a",
@@ -52,8 +56,30 @@ trait TestForm {
         ))
     )
 
+    val singleCost = Field(
+      name = "singleCost",
+      caption = NoI18nString("singleCost"),
+      `type` = CostsField(
+        definition = SingleCostDef("a", NoI18nString("a"), 50, FormExpr{f =>
+          a.value(f).contains("value-a")
+        }),
+        "total = "+_.total
+      )
+    )
+
+    val multipleCost = Field(
+      name = "multipleCost",
+      caption = NoI18nString("multipleCost"),
+      `type` = CostsField(
+        definition = MultipleCostDef("b", NoI18nString("b"), 10, FormExpr{ f =>
+          intField.value(f).get
+        }),
+        "total = "+_.total
+      )
+    )
+
     override def id: String = "id"
   }
 
-  implicit val form: FormInstance
+  implicit val form: FormInstance[_]
 }

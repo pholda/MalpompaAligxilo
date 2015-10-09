@@ -2,6 +2,7 @@ package pl.pholda.malpompaaligxilo.examples.dsl
 
 import biz.enef.angulate._
 import biz.enef.angulate.core.{HttpService, QService}
+import org.scalajs.dom
 import pl.pholda.malpompaaligxilo.angular.{DslFormController, FormScope}
 
 import scala.scalajs.js
@@ -32,12 +33,11 @@ case class FormCtrl(
   override def poUrl: String = s"po/$lang"
 
   $scope.submit = () => {
-//    println(s"submitting!")
     val data = js.Dictionary(fields.filter{
       case (_, field) => !field.isComputed
     }.mapValues(field => js.Array(form.getRawFieldValue(field):_*)).toSeq:_*)
     $http.post("/", data).success((data: js.Any) => {
-      alert("success!!")
+      dom.alert("success!!")
     })
   }
 }

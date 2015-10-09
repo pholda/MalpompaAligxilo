@@ -2,12 +2,18 @@ package pl.pholda.malpompaaligxilo.examples.i18n
 
 import pl.pholda.malpompaaligxilo.Context
 import pl.pholda.malpompaaligxilo.form.field._
+import pl.pholda.malpompaaligxilo.form.field.calculateField.cost.CostDef.SingleCostDef
+import pl.pholda.malpompaaligxilo.form.field.calculateField.cost.CostValue.{ComplexCostValue, MultipleCostValue, SingleCostValue}
+import pl.pholda.malpompaaligxilo.form.field.calculateField.cost.{CostValue, CostsField}
 import pl.pholda.malpompaaligxilo.form.{FormExpr, FormInstance, Field, FormSpecification}
+import pl.pholda.malpompaaligxilo.i18n.I18nString
+import pl.pholda.malpompaaligxilo.templates.html.costValue
 
 class I18nFormSpec(implicit context: Context) extends FormSpecification {
   import context.translationProvider
 
-  override def fields: List[Field[_]] = name :: surname :: hasMiddleName :: middleName :: birthDate :: age :: Nil
+  override def fields: List[Field[_]] = name :: surname :: hasMiddleName :: middleName :: birthDate :: age ::
+    cost :: Nil
 
   override def id: String = "i18nForm"
 
@@ -49,8 +55,8 @@ class I18nFormSpec(implicit context: Context) extends FormSpecification {
 
   val age = Field(
     name = "age",
-    caption = "Age",
-    `type` = CustomCalculateField[Age](FormExpr{implicit form =>
+    caption = translationProvider.t("Age"),
+    `type` = CustomComputeField[Age](FormExpr{implicit form =>
         birthDate.value match {
           case Some(bd) =>
             Some(Age(form.dates.now.getYear - bd.getYear))
@@ -62,4 +68,22 @@ class I18nFormSpec(implicit context: Context) extends FormSpecification {
       birthDate.value.nonEmpty
     }
   )
+
+  val cost = Field(
+    name = "Cost",
+    caption = "Cost",
+    `type` = CostsField(
+      definition = SingleCostDef("age", translationProvider.t("discount for young"), -10, FormExpr{implicit f=>age.value.exists(_.age<10)}),
+      printer = costPrinter
+    )
+  )
+
+  def costPrinter(costValue: CostValue): I18nString = costValue match {
+    case SingleCostValue(_, desc, value) =>
+      desc + ": " + value.toString
+    case multiple@MultipleCostValue(_, desc, itemCost, items) =>
+      desc + ": " + (multiple.total + " ("+itemCost+" × "+items+")")
+    case ComplexCostValue(values) =>
+      ""
+  }
 }

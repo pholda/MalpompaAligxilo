@@ -8,14 +8,14 @@
 @import pl.pholda.malpompaaligxilo.i18n.I18n
 @if(field.visible(form)) {
     @{field match {
-        case Field(_, _, CustomComputeField(expression), _, _, _, _, _, _, _) =>
+        case Field(_, _, CustomComputeField(expression), _, _, _, _, _, _) =>
             expression(form) match {
                 case Some(i18nable: I18nableString) => Html(i18nable(lang))
                 case Some(p: PrintableComputeFieldValue) => Html(p.str(lang, form.context.translationProvider))
                 case Some(x) => Html(x.toString)
                 case None => Html("")
             }
-        case Field(_, _, CheckboxTableField(rows, cols, _, _), _, _, _, _, _, _, _) =>
+        case Field(_, _, CheckboxTableField(rows, cols, _, _), _, _, _, _, _, _) =>
             form.fieldValue(field) match {
                 case Some(CheckboxTableField.Result(s)) if cols.size > 1 =>
                     if (s.isEmpty) {

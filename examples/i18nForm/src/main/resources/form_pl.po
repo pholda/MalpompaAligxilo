@@ -20,3 +20,9 @@ msgstr "wyślij!"
 
 msgid "years"
 msgstr "lat"
+
+msgid "Age"
+msgstr "Wiek"
+
+msgid "discount for young"
+msgstr "ulga dla młodych"
