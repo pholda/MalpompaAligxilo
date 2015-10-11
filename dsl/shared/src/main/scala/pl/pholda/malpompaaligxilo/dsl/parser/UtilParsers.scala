@@ -6,7 +6,6 @@ import pl.pholda.malpompaaligxilo.dsl.parser.expr.FormSpecStdTokenParsers
 import pl.pholda.malpompaaligxilo.util.{Date, DateCompanion}
 
 import scala.util.parsing.combinator.PackratParsers
-import scala.util.parsing.combinator.syntactical.StandardTokenParsers
 import scala.util.parsing.combinator.token.StdTokens
 
 trait UtilParsers extends FormSpecStdTokenParsers with PackratParsers with StdTokens {
@@ -25,7 +24,8 @@ trait UtilParsers extends FormSpecStdTokenParsers with PackratParsers with StdTo
   }
 
   protected[dsl] def doubleLit: Parser[Double] =
-    elem("number", _.isInstanceOf[NumericLit]) ^^ (_.chars.toDouble)
+    {elem("number", _.isInstanceOf[NumericLit]) ^^ (_.chars.toDouble)} |
+    {elem("real number", _.isInstanceOf[lexical.RealNumericLit]) ^^ (_.chars.toDouble)}
 
   protected[dsl] def dateLit: Parser[Date] = stringLit ^^ dateCompanion.fromString
 
