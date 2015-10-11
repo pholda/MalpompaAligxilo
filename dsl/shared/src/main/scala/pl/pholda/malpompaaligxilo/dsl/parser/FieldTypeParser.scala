@@ -4,6 +4,8 @@ import pl.pholda.malpompaaligxilo.Context
 import pl.pholda.malpompaaligxilo.dsl.DslFormExpr
 import pl.pholda.malpompaaligxilo.dsl.parser.expr.FormExprParser
 import pl.pholda.malpompaaligxilo.form.field._
+import pl.pholda.malpompaaligxilo.form.field.calculateField.cost.CostDef.{ComplexCostDef, MultipleCostDef, SingleCostDef}
+import pl.pholda.malpompaaligxilo.form.field.calculateField.cost.{CostDef, CostsField}
 import pl.pholda.malpompaaligxilo.form.{FieldType, FormExpr}
 import scala.util.parsing.combinator.syntactical.StandardTokenParsers
 
@@ -12,13 +14,14 @@ trait FieldTypeParser extends StandardTokenParsers with UtilParsers with FormExp
 
   lexical.reserved += ("type", "string", "multiline", "default", "int", "min", "max", "step",
     "checkbox", "computed", "date", "email", "select", "size", "notSelected", "orderBy",
-    "caption", "value", "checkboxTable", "rows", "cols", "disabled", "default")
+    "caption", "value", "checkboxTable", "rows", "cols", "disabled", "default",
+    "costs", "single", "multiple", "complex")
 
   lexical.delimiters += ("=", "(", ")", "<", ">", "{", "}", ",")
 
   def fieldType: Parser[FieldType[_]] = "type" ~> "=" ~> (
       stringField | intField | computedField | checkboxField | dateField | emailField |
-      selectField | checkboxTableField
+      selectField | checkboxTableField | costsField
     )
 
   protected[dsl] def stringField =
@@ -97,5 +100,29 @@ trait FieldTypeParser extends StandardTokenParsers with UtilParsers with FormExp
 
   protected[dsl] def checkboxTableCell = "<" ~> stringLit ~ stringLit <~ ">" ^^ {
     case row ~ col => row -> col
+  }
+
+  protected[dsl] def costsField = "costs" ~> "{" ~> costDef <~ "}" ^^ {
+    case cost =>
+      CostsField(cost, {costValue =>
+        ":("
+      })
+  }
+
+  protected[dsl] def costDef: PackratParser[CostDef] = singleCostDef | multipleCostDef | complexCostDef
+
+  protected[dsl] def singleCostDef = "single" ~> "<" ~> stringLit ~ i18nString ~ numericLit ~ formExpr <~ ">" ^^ {
+    case item ~ description ~ itemCost ~ activeExpr =>
+      SingleCostDef(item, description, itemCost.toDouble, activeExpr.asInstanceOf[DslFormExpr[Boolean]])
+  }
+
+  protected[dsl] def multipleCostDef = "multiple" ~> "<" ~> stringLit ~ i18nString ~ numericLit ~ formExpr <~ ">" ^^ {
+    case item ~ description ~ itemCost ~ quantityExpr =>
+      MultipleCostDef(item, description, itemCost.toDouble, quantityExpr.asInstanceOf[DslFormExpr[Int]])
+  }
+
+  protected[dsl] def complexCostDef = "complex" ~> "{" ~> rep1sep(costDef, opt(",")) <~ "}" ^^ {
+    case items =>
+      ComplexCostDef(items)
   }
 }
