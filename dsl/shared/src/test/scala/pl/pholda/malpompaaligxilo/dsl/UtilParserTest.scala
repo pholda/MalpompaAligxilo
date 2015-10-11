@@ -1,7 +1,5 @@
 package pl.pholda.malpompaaligxilo.dsl
 
-
-
 import pl.pholda.malpompaaligxilo.dsl.parser.UtilParsers
 import pl.pholda.malpompaaligxilo.dsl.parser.expr.FormExprParser
 import pl.pholda.malpompaaligxilo.i18n.TranslationProvider
@@ -40,6 +38,10 @@ trait UtilParserTest extends TestSuite with ParserTestHelper[UtilParsers] {
     'intLit{
       val int = quickParse(intLit, "123")
       assert(int == 123)
+    }
+    'doubleLit{
+      val double = quickParse(doubleLit, "123.1")
+      assert(double == 123.1)
     }
     'set{
       val asl =

@@ -9,7 +9,7 @@ import pl.pholda.malpompaaligxilo.i18n.I18nString
 import scala.util.parsing.combinator.PackratParsers
 import scala.util.parsing.combinator.syntactical.StandardTokenParsers
 
-trait FormExprParser extends StandardTokenParsers
+trait FormExprParser extends FormSpecStdTokenParsers
   with I18nParser
   with DateExprParser
   with CheckboxTableExprParser
@@ -43,7 +43,8 @@ trait FormExprParser extends StandardTokenParsers
     "true" ^^^ Literal(true) |
     "false" ^^^ Literal(false) |
     stringLit ^^ {Literal(_)} |
-    numericLit ^^ {num => Literal(num.toInt)}
+    intLit ^^ {num => Literal(num)} |
+    doubleLit ^^ {Literal(_)}
 
   @deprecated
   protected[dsl] def compare: Parser[DslFormExpr[Boolean]] = "(" ~> (expr <~ "=") ~ expr <~ ")" ^^ {

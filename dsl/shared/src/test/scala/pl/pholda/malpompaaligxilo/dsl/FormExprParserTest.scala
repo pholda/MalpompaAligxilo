@@ -2,6 +2,7 @@ package pl.pholda.malpompaaligxilo.dsl
 
 import pl.pholda.malpompaaligxilo.dsl.expr.form.StringConcat
 import pl.pholda.malpompaaligxilo.dsl.parser.expr.FormExprParser
+import pl.pholda.malpompaaligxilo.form.FormInstance
 import pl.pholda.malpompaaligxilo.form.field.EnumOption
 import pl.pholda.malpompaaligxilo.i18n.{NoI18nString, I18nableString, TranslationProvider}
 import pl.pholda.malpompaaligxilo.util.DateCompanion
@@ -17,7 +18,7 @@ trait FormExprParserTest extends TestSuite with ParserTestHelper[FormExprParser]
 
   val tests = TestSuite{
 
-    def form = testForm.form
+    def form: FormInstance[_] = testForm.form
     import parsers._
 
     'fieldValue{

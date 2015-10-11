@@ -1,6 +1,7 @@
 package pl.pholda.malpompaaligxilo.dsl
 
 import pl.pholda.malpompaaligxilo.dsl.parser.expr.FormExprParser
+import pl.pholda.malpompaaligxilo.form.FormInstance
 import pl.pholda.malpompaaligxilo.i18n.TranslationProvider
 import pl.pholda.malpompaaligxilo.util.DateCompanion
 import utest._
@@ -16,7 +17,7 @@ trait LogicExprParserTest extends TestSuite with ParserTestHelper[FormExprParser
 
   val tests = TestSuite {
 
-    def form = testForm.form
+    def form: FormInstance[_] = testForm.form
 
     'negation{
       val expr = """ { ! { true } } """

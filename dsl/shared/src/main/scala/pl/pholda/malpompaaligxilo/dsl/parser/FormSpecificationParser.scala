@@ -3,12 +3,13 @@ package pl.pholda.malpompaaligxilo.dsl.parser
 import pl.pholda.malpompaaligxilo.Context
 import pl.pholda.malpompaaligxilo.dsl._
 import pl.pholda.malpompaaligxilo.dsl.form.DslFormSpecification
-import pl.pholda.malpompaaligxilo.dsl.parser.expr.FormExprParser
+import pl.pholda.malpompaaligxilo.dsl.parser.expr.{FormSpecStdTokenParsers, FormExprParser}
 import pl.pholda.malpompaaligxilo.form.{Field, FieldName, FieldType}
 import pl.pholda.malpompaaligxilo.i18n.{TranslationProvider, I18nString, TranslationProvider$}
 import pl.pholda.malpompaaligxilo.util.DateCompanion
 
 import scala.util.parsing.combinator.PackratParsers
+import scala.util.parsing.combinator.lexical.StdLexical
 import scala.util.parsing.combinator.syntactical.StandardTokenParsers
 import scala.util.parsing.input.CharSequenceReader
 
@@ -17,8 +18,10 @@ case class FormSpecificationParser(implicit context: Context) extends FormSpecif
   override implicit val translationProvider: TranslationProvider = context.translationProvider
 }
 
-trait FormSpecificationParserTrait extends StandardTokenParsers
+trait FormSpecificationParserTrait extends FormSpecStdTokenParsers
   with FieldParser with PackratParsers {
+//
+//  override val lexical: StdLexical = new FormSpecificationLexical()
 
   lexical.reserved += ("fields")
 

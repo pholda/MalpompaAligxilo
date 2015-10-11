@@ -23,13 +23,13 @@ trait CostsFieldParserTest extends TestSuite with ParserTestHelper[FieldTypePars
   val tests = TestSuite{
     'costDef{
       'singleCostDef{
-        assertMatch(quickParse(costDef, """ single < "item" "desc" 10 { true } > """)(testForm.form)){
-          case SingleCostDef("item", NoI18nString("desc"), 10.0, expression) =>
+        assertMatch(quickParse(costDef, """ single < "item" "desc" 10.3 { true } > """)(testForm.form)){
+          case SingleCostDef("item", NoI18nString("desc"), 10.3, expression) =>
         }
       }
       'multipleCostDef{
-        assertMatch(quickParse(costDef, """ multiple < "item" "desc" 10 { $"intField" } > """)(testForm.form)){
-          case MultipleCostDef("item", NoI18nString("desc"), 10.0, expression) =>
+        assertMatch(quickParse(costDef, """ multiple < "item" "desc" 10.1 { $"intField" } > """)(testForm.form)){
+          case MultipleCostDef("item", NoI18nString("desc"), 10.1, expression) =>
 
         }
       }
@@ -37,12 +37,12 @@ trait CostsFieldParserTest extends TestSuite with ParserTestHelper[FieldTypePars
         assertMatch(quickParse(costDef,
           """
             |complex {
-            |  single < "item" "desc" 10 { true } >
-            |  multiple < "item" "desc" 10 { $"intField" } >
+            |  single < "item" "desc" 10.3 { true } >
+            |  multiple < "item" "desc" 10.1 { $"intField" } >
             |}  """.stripMargin)(testForm.form)){
           case ComplexCostDef(
-            SingleCostDef("item", NoI18nString("desc"), 10.0, _) ::
-            MultipleCostDef("item", NoI18nString("desc"), 10.0, _) :: Nil
+            SingleCostDef("item", NoI18nString("desc"), 10.3, _) ::
+            MultipleCostDef("item", NoI18nString("desc"), 10.1, _) :: Nil
           ) =>
         }
       }

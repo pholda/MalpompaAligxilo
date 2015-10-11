@@ -111,14 +111,14 @@ trait FieldTypeParser extends StandardTokenParsers with UtilParsers with FormExp
 
   protected[dsl] def costDef: PackratParser[CostDef] = singleCostDef | multipleCostDef | complexCostDef
 
-  protected[dsl] def singleCostDef = "single" ~> "<" ~> stringLit ~ i18nString ~ numericLit ~ formExpr <~ ">" ^^ {
+  protected[dsl] def singleCostDef = "single" ~> "<" ~> stringLit ~ i18nString ~ doubleLit ~ formExpr <~ ">" ^^ {
     case item ~ description ~ itemCost ~ activeExpr =>
-      SingleCostDef(item, description, itemCost.toDouble, activeExpr.asInstanceOf[DslFormExpr[Boolean]])
+      SingleCostDef(item, description, itemCost, activeExpr.asInstanceOf[DslFormExpr[Boolean]])
   }
 
-  protected[dsl] def multipleCostDef = "multiple" ~> "<" ~> stringLit ~ i18nString ~ numericLit ~ formExpr <~ ">" ^^ {
+  protected[dsl] def multipleCostDef = "multiple" ~> "<" ~> stringLit ~ i18nString ~ doubleLit ~ formExpr <~ ">" ^^ {
     case item ~ description ~ itemCost ~ quantityExpr =>
-      MultipleCostDef(item, description, itemCost.toDouble, quantityExpr.asInstanceOf[DslFormExpr[Int]])
+      MultipleCostDef(item, description, itemCost, quantityExpr.asInstanceOf[DslFormExpr[Int]])
   }
 
   protected[dsl] def complexCostDef = "complex" ~> "{" ~> rep1sep(costDef, opt(",")) <~ "}" ^^ {
