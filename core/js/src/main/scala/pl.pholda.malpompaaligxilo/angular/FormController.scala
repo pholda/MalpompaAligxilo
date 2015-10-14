@@ -14,6 +14,8 @@ import scala.util.Try
 trait FormController extends ScopeController {
   def $scope: FormScope
 
+  def $sce: StrictContextualEscaping
+
   def form: FormInstanceJS[_]
 
   protected lazy val lang: String = Try(jQuery("html").attr("lang")).getOrElse("en")
@@ -35,7 +37,8 @@ trait FormController extends ScopeController {
       case Some(field) =>
         field.`type` match {
           case costsField: CostsField =>
-            costsField.printer(field.value(form).map(_.asInstanceOf[CostValue]).get)(lang)
+            val html = costsField.printer(field.value(form).map(_.asInstanceOf[CostValue]).get)(lang)
+            $sce.trustAsHtml(html)
           case cf: ComputeField[_] =>
             field.value(form).map{
               case printable: PrintableComputeFieldValue =>

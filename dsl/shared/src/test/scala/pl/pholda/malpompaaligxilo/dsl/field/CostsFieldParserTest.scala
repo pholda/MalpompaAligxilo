@@ -4,6 +4,7 @@ import pl.pholda.malpompaaligxilo.Context
 import pl.pholda.malpompaaligxilo.dsl.{TestForm, ParserTestHelper}
 import pl.pholda.malpompaaligxilo.dsl.parser.FieldTypeParser
 import pl.pholda.malpompaaligxilo.form.field.calculateField.cost.CostDef.{ComplexCostDef, MultipleCostDef, SingleCostDef}
+import pl.pholda.malpompaaligxilo.form.field.calculateField.cost.CostsField
 import pl.pholda.malpompaaligxilo.i18n.{NoI18nString, TranslationProvider}
 import pl.pholda.malpompaaligxilo.util.{Date, DateCompanion}
 import utest._
@@ -45,6 +46,14 @@ trait CostsFieldParserTest extends TestSuite with ParserTestHelper[FieldTypePars
             MultipleCostDef("item", NoI18nString("desc"), 10.1, _) :: Nil
           ) =>
         }
+      }
+      'currencyFormat{
+        assertMatch(quickParse(costsField,
+          """
+            |costs { single < "item" "desc" 10.3 { true } > } currencyFormat "%.2f :-)"
+          """.stripMargin)(testForm.form){
+          case cf@CostsField(_, "%.2f :-)") =>
+        })
       }
     }
   }

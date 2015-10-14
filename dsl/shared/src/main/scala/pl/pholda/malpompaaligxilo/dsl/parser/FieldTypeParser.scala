@@ -5,8 +5,10 @@ import pl.pholda.malpompaaligxilo.dsl.DslFormExpr
 import pl.pholda.malpompaaligxilo.dsl.parser.expr.FormExprParser
 import pl.pholda.malpompaaligxilo.form.field._
 import pl.pholda.malpompaaligxilo.form.field.calculateField.cost.CostDef.{ComplexCostDef, MultipleCostDef, SingleCostDef}
-import pl.pholda.malpompaaligxilo.form.field.calculateField.cost.{CostDef, CostsField}
+import pl.pholda.malpompaaligxilo.form.field.calculateField.cost.CostValue.{ComplexCostValue, MultipleCostValue, SingleCostValue}
+import pl.pholda.malpompaaligxilo.form.field.calculateField.cost.{CostValue, CostDef, CostsField}
 import pl.pholda.malpompaaligxilo.form.{FieldType, FormExpr}
+import pl.pholda.malpompaaligxilo.i18n.{I18nString, NoI18nString}
 import scala.util.parsing.combinator.syntactical.StandardTokenParsers
 
 trait FieldTypeParser extends StandardTokenParsers with UtilParsers with FormExprParser {
@@ -15,7 +17,7 @@ trait FieldTypeParser extends StandardTokenParsers with UtilParsers with FormExp
   lexical.reserved += ("type", "string", "multiline", "default", "int", "min", "max", "step",
     "checkbox", "computed", "date", "email", "select", "size", "notSelected", "orderBy",
     "caption", "value", "checkboxTable", "rows", "cols", "disabled", "default",
-    "costs", "single", "multiple", "complex")
+    "costs", "single", "multiple", "complex", "currencyFormat")
 
   lexical.delimiters += ("=", "(", ")", "<", ">", "{", "}", ",")
 
@@ -102,11 +104,9 @@ trait FieldTypeParser extends StandardTokenParsers with UtilParsers with FormExp
     case row ~ col => row -> col
   }
 
-  protected[dsl] def costsField = "costs" ~> "{" ~> costDef <~ "}" ^^ {
-    case cost =>
-      CostsField(cost, {costValue =>
-        ":("
-      })
+  protected[dsl] def costsField = ("costs" ~> "{" ~> costDef <~ "}") ~ opt("currencyFormat" ~> stringLit) ^^ {
+    case cost ~ currencyFormat =>
+      CostsField(cost, currencyFormat.getOrElse("%.2f€"))()
   }
 
   protected[dsl] def costDef: PackratParser[CostDef] = singleCostDef | multipleCostDef | complexCostDef

@@ -1,4 +1,6 @@
 @(field: pl.pholda.malpompaaligxilo.form.Field[_])(implicit form: pl.pholda.malpompaaligxilo.form.FormInstanceJVM[_], lang: pl.pholda.malpompaaligxilo.i18n.Lang = "en")
+@import pl.pholda.malpompaaligxilo.form.field.calculateField.cost.CostsField
+@import pl.pholda.malpompaaligxilo.form.field.calculateField.cost.CostValue
 @import pl.pholda.malpompaaligxilo.form.PrintableComputeFieldValue
 @import java.text.DecimalFormat
 @import pl.pholda.malpompaaligxilo.i18n.I18nableString
@@ -8,6 +10,8 @@
 @import pl.pholda.malpompaaligxilo.i18n.I18n
 @if(field.visible(form)) {
     @{field match {
+        case f@Field(_, _, cf@CostsField(_,_), _, _, _, _, _, _) =>
+            Html(f.value.asInstanceOf[Option[CostValue]].map(cf.printer(_)(lang)).getOrElse(""))
         case Field(_, _, CustomComputeField(expression), _, _, _, _, _, _) =>
             expression(form) match {
                 case Some(i18nable: I18nableString) => Html(i18nable(lang))

@@ -1,3 +1,4 @@
+@import pl.pholda.malpompaaligxilo.form.field.calculateField.cost.CostsField
 @(field: pl.pholda.malpompaaligxilo.form.Field[_])(implicit form: pl.pholda.malpompaaligxilo.form.FormInstanceJVM[_], lang: pl.pholda.malpompaaligxilo.i18n.Lang = "en")
 @import pl.pholda.malpompaaligxilo.form.field.calculateField.ProgressField
 @import pl.pholda.malpompaaligxilo.form.field.{CheckboxField, CheckboxTableField, ComputeField, DateField, EmailField, EnumOption, IntField, SelectField, StringField}
@@ -57,6 +58,8 @@
                 value={pf.value(form).toString}
                 max={pf.max(form).toString}
             />
+        case costsField: CostsField =>
+            <span ng-bind-html={s"computedValue('${field.name}')"}></span>
         case cf: ComputeField[_] =>
             <span>{s"{{computedValue('${field.name}')}}"}</span>
             //TODO ordering@selectField
