@@ -63,22 +63,30 @@
         case cf: ComputeField[_] =>
             <span>{s"{{computedValue('${field.name}')}}"}</span>
             //TODO ordering@selectField
-        case s@SelectField(_, size, _, orderingOpt) =>
-            //workaround
-            <input type="hidden" name={field.name} value={"{{fieldValue['"+field.name+"']}}"}/>
+        case selectField@SelectField(options, size, notSelected, orderingOpt) =>
             <select size={size.toString}
+                name={field.name}
                 ng-model={"fieldValue['"+field.name+"']"}
                 required={if (field.required) "required" else null}
-                class="form-control">{
+                class="form-control">{notSelected match {
+                    case Some(option) =>
+                        <option
+                        value=""
+                        ng-disabled="submitted"
+                        >{option.caption(lang)}</option>
+                    case None =>
+                        null
+                }}
+                {
                 val ordered = orderingOpt match {
                     case Some(ordering) =>
-                        s.allOptionsIndexed.toList.sortWith(ordering.ordering(s))
+                        options.sortWith(ordering.ordering(selectField))// allOptionsIndexed.toList.sortWith(ordering.ordering(s))
                     case _ =>
-                        s.allOptionsIndexed.toList
+                        options
                 }
-                ordered.map{ case (idx, option) =>
+                ordered.map{ option =>
                     <option
-                    value={idx.toString}
+                    value={option.value}
                     selected={
                     field.value match {
                         case Some(EnumOption(fval, _)) if fval == option.value => "selected"

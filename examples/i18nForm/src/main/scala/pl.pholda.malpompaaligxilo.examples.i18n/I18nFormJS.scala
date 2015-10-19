@@ -3,7 +3,7 @@ package pl.pholda.malpompaaligxilo.examples.i18n
 import biz.enef.angulate._
 import org.scalajs.jquery.jQuery
 import pl.pholda.malpompaaligxilo.ContextJS
-import pl.pholda.malpompaaligxilo.angular.{FormScope, StaticFormController}
+import pl.pholda.malpompaaligxilo.angular.{StrictContextualEscaping, FormScope, StaticFormController}
 import pl.pholda.malpompaaligxilo.form.FormSpecification
 import pl.pholda.malpompaaligxilo.i18n.{JSObjectTranslationProvider, Lang}
 
@@ -16,7 +16,7 @@ object I18nFormJS extends JSApp {
 
   implicit val lang: Lang = jQuery("html").attr("lang")
 
-  class I18nFormCtrl(val $scope: FormScope) extends StaticFormController($scope) {
+  class I18nFormCtrl(val $scope: FormScope, val $sce: StrictContextualEscaping) extends StaticFormController($scope) {
     override val formSpecification: FormSpecification = new I18nFormSpec()
   }
 

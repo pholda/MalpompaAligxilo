@@ -91,7 +91,9 @@ trait FieldSeparatedValuesTest extends TestSuite {
     'costsField{
       val field = CostsField(
         definition = MultipleCostDef("b", NoI18nString("b"), 10, FormExpr{5}),
-        {costValue => NoI18nString("")}
+        currencyFormat = "%.2f :-)"
+      )(
+        "total = "+_.total
       )
       assert(field.separatedValues(Some(MultipleCostValue("b", NoI18nString("b"), 10, 5))) ==
         "" -> "50.0" :: Nil

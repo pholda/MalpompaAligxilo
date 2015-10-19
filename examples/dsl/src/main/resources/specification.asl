@@ -1,5 +1,5 @@
 fields = {
-< name = "name", type = string default ("blabla"), caption = @"Name">
+< name = "name", type = string default ("blabla"), caption = @"Name", required = true>
 < name = "sex", type = checkbox default (true) , caption = @"Sex">
 < name = "email", type = email, caption = @"Email">
 < name = "birth", type = date, caption = @"Date of birth" >
@@ -10,7 +10,7 @@ fields = {
         < "pl" @"Poland" >
         < "de" @"Germany" >
         < "uk" @"United Kingdom" >
-    } notSelected < "kurwa" @"Please choose country.." > orderBy caption, caption = @"Country"
+    } notSelected < "" @"Please choose country.." > orderBy caption, caption = @"Country"
 >
 < name = "countryInfo", type = computed
     {

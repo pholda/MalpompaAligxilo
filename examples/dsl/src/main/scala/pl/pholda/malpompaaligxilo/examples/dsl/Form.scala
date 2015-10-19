@@ -3,7 +3,7 @@ package pl.pholda.malpompaaligxilo.examples.dsl
 import biz.enef.angulate._
 import biz.enef.angulate.core.{HttpService, QService}
 import org.scalajs.dom
-import pl.pholda.malpompaaligxilo.angular.{DslFormController, FormScope}
+import pl.pholda.malpompaaligxilo.angular.{StrictContextualEscaping, DslFormController, FormScope}
 
 import scala.scalajs.js
 import scala.scalajs.js.JSApp
@@ -21,6 +21,7 @@ object Form extends JSApp {
 case class FormCtrl(
   $scope: FormScope,
   $http: HttpService,
+  $sce: StrictContextualEscaping,
   $q: QService
 ) extends DslFormController {
   $scope.dateOptions = js.Dictionary(

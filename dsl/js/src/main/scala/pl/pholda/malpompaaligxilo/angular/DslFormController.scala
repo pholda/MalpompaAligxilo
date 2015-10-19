@@ -25,8 +25,6 @@ trait DslFormController extends FormController {
   private def initializeFields: Unit = {
     $scope.fieldValue = fields.flatMap{case (fieldName, field) =>
       val value: Option[Any] = field.`type` match {
-        case sf: SelectField =>
-          sf.getNotSelectedIndex
         case StringField(_, default) => default
         case CheckboxField(default) =>
           Option(default)

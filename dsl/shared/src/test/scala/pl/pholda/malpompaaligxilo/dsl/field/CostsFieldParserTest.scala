@@ -51,9 +51,9 @@ trait CostsFieldParserTest extends TestSuite with ParserTestHelper[FieldTypePars
         assertMatch(quickParse(costsField,
           """
             |costs { single < "item" "desc" 10.3 { true } > } currencyFormat "%.2f :-)"
-          """.stripMargin)(testForm.form){
+          """.stripMargin)(testForm.form)){
           case cf@CostsField(_, "%.2f :-)") =>
-        })
+        }
       }
     }
   }

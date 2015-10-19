@@ -63,6 +63,8 @@ trait TestForm {
         definition = SingleCostDef("a", NoI18nString("a"), 50, FormExpr{f =>
           a.value(f).contains("value-a")
         }),
+        currencyFormat = "%.2f :-)"
+      )(
         "total = "+_.total
       )
     )
@@ -74,6 +76,8 @@ trait TestForm {
         definition = MultipleCostDef("b", NoI18nString("b"), 10, FormExpr{ f =>
           intField.value(f).get
         }),
+        currencyFormat = "%.2f :-)"
+      )(
         "total = "+_.total
       )
     )

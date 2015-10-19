@@ -74,7 +74,9 @@ class I18nFormSpec(implicit context: Context) extends FormSpecification {
     caption = "Cost",
     `type` = CostsField(
       definition = SingleCostDef("age", translationProvider.t("discount for young"), -10, FormExpr{implicit f=>age.value.exists(_.age<10)}),
-      printer = costPrinter
+      currencyFormat = "%.2f :-)"
+    )(
+      "total = "+_.total
     )
   )
 
