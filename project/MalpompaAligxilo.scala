@@ -10,7 +10,7 @@ object MalpompaAligxilo extends Build with UniversalKeys {
 
   val defaults = Defaults.coreDefaultSettings ++ List(
     organization := "pl.pholda.malpompaaligxilo",
-    version := "0.1.5-SNAPSHOT",
+    version := "0.1.5",
     scalaVersion := "2.11.7",
     libraryDependencies ++= List(
       "com.lihaoyi" %%% "utest" % "0.3.1"
