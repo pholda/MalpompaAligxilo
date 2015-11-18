@@ -1,6 +1,7 @@
 package pl.pholda.malpompaaligxilo.form
 
 import pl.pholda.malpompaaligxilo.ContextJVM
+import pl.pholda.malpompaaligxilo.form.db.DbReader
 
 class FormInstanceJVM[+T <: FormSpecification](
   val specification: T,
@@ -9,7 +10,10 @@ class FormInstanceJVM[+T <: FormSpecification](
   implicit val context: ContextJVM
   ) extends FormInstance(specification) {
 
-//  TODO
+  //TODO
+  override def dbReader: DbReader = ???
+
+  //  TODO
   override def getRawFieldValue(field: Field[_]): Seq[String] = rawFieldValue(field)
 
   //TODO

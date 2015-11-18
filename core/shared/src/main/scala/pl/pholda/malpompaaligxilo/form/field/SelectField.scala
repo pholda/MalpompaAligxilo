@@ -1,6 +1,6 @@
 package pl.pholda.malpompaaligxilo.form.field
 
-import pl.pholda.malpompaaligxilo.form.errors.NothingSelectedError
+import pl.pholda.malpompaaligxilo.form.validation.errors.NothingSelectedError
 import pl.pholda.malpompaaligxilo.form.{FieldType, FormError}
 
 import scala.collection.immutable

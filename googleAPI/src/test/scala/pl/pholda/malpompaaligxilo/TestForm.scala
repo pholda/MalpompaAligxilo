@@ -1,4 +1,4 @@
-package pl.pholda.malpompaaligxilo.form.action
+package pl.pholda.malpompaaligxilo
 
 import pl.pholda.malpompaaligxilo.form.field.StringField
 import pl.pholda.malpompaaligxilo.form.{Field, FormSpecification}

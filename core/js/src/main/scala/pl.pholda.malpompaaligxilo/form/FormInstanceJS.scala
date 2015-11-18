@@ -2,6 +2,7 @@ package pl.pholda.malpompaaligxilo.form
 
 import pl.pholda.malpompaaligxilo.ContextJS
 import pl.pholda.malpompaaligxilo.angular.FormScope
+import pl.pholda.malpompaaligxilo.form.db.DbReader
 import pl.pholda.malpompaaligxilo.form.field.{DateField, CheckboxTableField, CheckboxField}
 
 import scala.scalajs.js
@@ -13,6 +14,8 @@ class FormInstanceJS[+T <: FormSpecification](
                       )(
   implicit val context: ContextJS
   ) extends FormInstance(specification) {
+//TODO
+  override def dbReader: DbReader = ???
 
   override def getRawFieldValue(field: Field[_]): Seq[String] = {
     field.`type`.arrayValue match {

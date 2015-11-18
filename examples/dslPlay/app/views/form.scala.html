@@ -1,13 +1,17 @@
 @(implicit form: pl.pholda.malpompaaligxilo.form.FormInstanceJVM[pl.pholda.malpompaaligxilo.dsl.form.DslFormSpecification], lang: pl.pholda.malpompaaligxilo.i18n.Lang)
-<form novalidate name="@{form.id}" ng-submit="@{form.id}.$valid && submit()">
+<form novalidate name="form">
     <div class="form-horizontal">
         <div class="row">
             <h1>GenericForm</h1>
         </div>
-        @for(f <- form.fields) {
-            @field(f)
-        }
         <hr/><br/>
+        <input name="aaa" type="text" ng-model="aaa" blabla required/>
+        @*<input name="email" ng-model="aaa" class="form-control ng-pristine ng-untouched ng-valid" type="email" >*@
+        <hr/><br/>
+        <span ng-show="form.aaa.$error.dupa">The value is not a valid integer!</span>
+        <span ng-show="form.aaa.$error.required">The value is not a valid integer!</span>
         <input type="submit">
+        {{aaa}}<br/>
+        {{form.aaa.$error | json }}
     </div>
 </form>

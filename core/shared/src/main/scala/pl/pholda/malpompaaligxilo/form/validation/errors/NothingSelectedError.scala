@@ -1,4 +1,4 @@
-package pl.pholda.malpompaaligxilo.form.errors
+package pl.pholda.malpompaaligxilo.form.validation.errors
 
 import pl.pholda.malpompaaligxilo.form.FormError
 import pl.pholda.malpompaaligxilo.i18n.{I18nString, TranslationProvider}

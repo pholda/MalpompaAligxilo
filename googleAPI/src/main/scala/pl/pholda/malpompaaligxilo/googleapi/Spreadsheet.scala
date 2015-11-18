@@ -11,9 +11,9 @@ import com.google.gdata.data.spreadsheet._
 
 import scala.collection.JavaConversions._
 
-case class Spreadsheet(worksheetFeedUrl: URL)(implicit config: AccountConfig) {
+case class Spreadsheet(url: URL)(implicit config: AccountConfig) {
 
-  protected lazy val service: SpreadsheetService = {
+  protected[googleapi] lazy val service: SpreadsheetService = {
     val service = new SpreadsheetService("MySpreadsheetIntegration")
     service.setProtocolVersion(SpreadsheetService.Versions.V3)
 
@@ -42,46 +42,11 @@ case class Spreadsheet(worksheetFeedUrl: URL)(implicit config: AccountConfig) {
     service
   }
 
-  /**
-   * test purpose only
-   * @param worksheetTitle
-   * @param headers
-   * @return
-   */
-  def readLastRow(worksheetTitle: String, headers: List[String]): Map[String, String] = {
-    val spreadsheetFeedUrl = new URL("https://spreadsheets.google.com/feeds/spreadsheets/private/full")
-    val feed = service.getFeed(spreadsheetFeedUrl, classOf[SpreadsheetFeed])
+  protected[googleapi] lazy val feed = service.getFeed(Spreadsheet.feedUrl, classOf[SpreadsheetFeed])
 
-    val worksheetFeed: WorksheetFeed = service.getFeed(worksheetFeedUrl, classOf[WorksheetFeed])
+  protected[googleapi] lazy val worksheetFeed: WorksheetFeed = service.getFeed(url, classOf[WorksheetFeed])
+}
 
-    val worksheet = worksheetFeed.getEntries.find(_.getTitle.getPlainText == worksheetTitle).getOrElse{
-      throw new Exception("worksheet not found!")
-    }
-
-    val query = service.query(new Query(worksheet.getListFeedUrl()), classOf[ListFeed])
-    val customElements = query.getEntries().last.getCustomElements
-    headers.map{header => header -> customElements.getValue(header)}.toMap
-  }
-
-  def insertRow(data: Map[String, String], worksheetTitle: String) = {
-    val spreadsheetFeedUrl = new URL("https://spreadsheets.google.com/feeds/spreadsheets/private/full")
-    val feed = service.getFeed(spreadsheetFeedUrl, classOf[SpreadsheetFeed])
-
-    val worksheetFeed: WorksheetFeed = service.getFeed(worksheetFeedUrl, classOf[WorksheetFeed])
-
-    val worksheet = worksheetFeed.getEntries.find(_.getTitle.getPlainText == worksheetTitle).getOrElse{
-      throw new Exception("worksheet not found!")
-    }
-
-    val listFeedUrl = worksheet.getListFeedUrl()
-    val listFeed = service.getFeed(listFeedUrl, classOf[ListFeed])
-
-    var row = new ListEntry()
-    data.foreach{
-      case (k, v) => {
-        row.getCustomElements.setValueLocal(k, v)
-      }
-    }
-    service.insert(listFeedUrl, row)
-  }
+object Spreadsheet {
+  protected val feedUrl = new URL("https://spreadsheets.google.com/feeds/spreadsheets/private/full")
 }

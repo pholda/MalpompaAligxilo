@@ -61,6 +61,7 @@ object Examples extends Build with UniversalKeys
     publishArtifact := false,
     libraryDependencies ++= Seq(
       "com.lihaoyi" %% "upickle" % "0.2.8",
+      "com.greencatsoft" %%% "scalajs-angular" % "0.6",
       "be.doeraene" %%% "scalajs-jquery" % "0.8.0"
     )
   ).dependsOn(coreJS, coreJVM, dslJS, dslJVM).enablePlugins(ScalaJSPlugin)
