@@ -19,4 +19,6 @@ trait FormScope extends Scope {
   var submit: js.Function = js.native
 
   var submitted: Boolean = js.native
+
+  var minDate: js.Function = js.native
 }

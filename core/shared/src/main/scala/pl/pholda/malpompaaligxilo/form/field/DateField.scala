@@ -9,7 +9,8 @@ import scala.util.Try
 case class DateField(
                       minDate: Option[Date] = None,
                       maxDate: Option[Date] = None,
-                      yearRange: Option[String] = None)
+                      yearRange: Option[String] = None
+                    )
                   (implicit context: Context) extends FieldType[Date]{
   override def parse(values: Seq[String]): Option[Date] =
   Try(values.headOption.map(str => context.date.fromString(str))).toOption.flatten

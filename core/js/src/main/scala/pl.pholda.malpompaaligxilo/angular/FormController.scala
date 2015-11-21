@@ -59,4 +59,12 @@ trait FormController extends ScopeController {
   } catch {
     case e: Exception => ""
   }
+
+  $scope.minDate = (date1: String, date2: String) => {
+    if (js.isUndefined(date2)){
+      date1
+    } else {
+      date2
+    }
+  }
 }

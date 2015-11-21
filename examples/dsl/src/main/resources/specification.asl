@@ -2,8 +2,9 @@ fields = {
 < name = "name", type = string default ("blabla"), caption = @"Name", required = true>
 < name = "sex", type = checkbox default (true) , caption = @"Sex">
 < name = "email", type = email, caption = @"Email">
-< name = "birth", type = date, caption = @"Date of birth" >
+< name = "birth", type = date min "1990-10-10", caption = @"Date of birth">
 < name = "birth2", type = date, caption = @"Date2">
+< name = "range", type = dateRange min "2016-07-16" max "2016-07-23", caption = "Date range">
 < name = "info2", type = computed { selectedInTotal($"partoprentempo") * {5 + 2} } , caption = @"Info2" >
 < name = "country", type = select
     {

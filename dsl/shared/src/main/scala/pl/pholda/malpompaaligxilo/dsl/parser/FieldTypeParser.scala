@@ -15,14 +15,14 @@ trait FieldTypeParser extends StandardTokenParsers with UtilParsers with FormExp
   implicit val context: Context
 
   lexical.reserved += ("type", "string", "multiline", "default", "int", "min", "max", "step",
-    "checkbox", "computed", "date", "email", "select", "size", "notSelected", "orderBy",
+    "checkbox", "computed", "date", "dateRange", "email", "select", "size", "notSelected", "orderBy",
     "caption", "value", "checkboxTable", "rows", "cols", "disabled", "default",
     "costs", "single", "multiple", "complex", "currencyFormat")
 
   lexical.delimiters += ("=", "(", ")", "<", ">", "{", "}", ",")
 
   def fieldType: Parser[FieldType[_]] = "type" ~> "=" ~> (
-      stringField | intField | computedField | checkboxField | dateField | emailField |
+      stringField | intField | computedField | checkboxField | dateField | dateRangeField | emailField |
       selectField | checkboxTableField | costsField
     )
 
@@ -58,6 +58,11 @@ trait FieldTypeParser extends StandardTokenParsers with UtilParsers with FormExp
   protected[dsl] def dateField = "date" ~> opt("min" ~> dateLit) ~ opt("max" ~> dateLit) ^^ {
     case min ~ max =>
       DateField(min, max)
+  }
+
+  protected[dsl] def dateRangeField = "dateRange" ~> opt("min" ~> dateLit) ~ opt("max" ~> dateLit) ^^ {
+    case min ~ max =>
+      DateRangeField(min, max)
   }
   
   protected[dsl] def selectField = "select" ~> opt("size" ~> intLit) ~

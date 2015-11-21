@@ -43,6 +43,8 @@ class DateJVM(protected val jodaDate: DateTime) extends Date  {
         throw new IllegalArgumentException("DateJVM was expected")
     }
   }
+
+  override def -(days: Int): Date = ???
 }
 
 object DateJVM extends DateCompanion {

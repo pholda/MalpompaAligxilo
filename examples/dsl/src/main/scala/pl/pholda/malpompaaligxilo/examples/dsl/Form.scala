@@ -12,7 +12,7 @@ import scala.scalajs.js.annotation.JSExport
 object Form extends JSApp {
   @JSExport
   override def main(): Unit = {
-    val module = angular.createModule("malpompaAligxilo", "ui.date" :: Nil)
+    val module = angular.createModule("malpompaAligxilo", "mgcrea.ngStrap" :: Nil)
 
     module.controllerOf[FormCtrl]("FormCtrl")
   }

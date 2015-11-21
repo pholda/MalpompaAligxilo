@@ -1,4 +1,5 @@
 @import pl.pholda.malpompaaligxilo.form.field.calculateField.cost.CostsField
+@import pl.pholda.malpompaaligxilo.form.field.DateRangeField
 @(field: pl.pholda.malpompaaligxilo.form.Field[_])(implicit form: pl.pholda.malpompaaligxilo.form.FormInstanceJVM[_], lang: pl.pholda.malpompaaligxilo.i18n.Lang = "en")
 @import pl.pholda.malpompaaligxilo.form.field.calculateField.ProgressField
 @import pl.pholda.malpompaaligxilo.form.field.{CheckboxField, CheckboxTableField, ComputeField, DateField, EmailField, EnumOption, IntField, SelectField, StringField}
@@ -36,19 +37,49 @@
                 required={if (field.required) "required" else null}
                 />
         case DateField(minDate, maxDate, yearRange) =>
-            <input ui-date="dateOptions" type="text"
+            <div class="form-group" ng-class="{'has-error': false}">
+            <label class="control-label"><i class="fa fa-calendar"></i></label>
+                <input class="form-control"
                 ng-model={"fieldValue['"+field.name+"']"}
-                name={field.name}
-                class="form-control formDate"
-                ng-disabled="submitted"
-                ui-date-format="yy-mm-dd"
-                data-mindate={minDate.map(_.toString) orNull}
-                data-maxdate={maxDate.map(_.toString) orNull}
-                data-yearrange={yearRange orNull}
-                placeholder={field.placeholder.map(_(lang)) orNull}
-                value={field.value.map(_.toString).orNull}
+                name="date"
+                bs-datepicker=""
+                type="text"
                 required={if (field.required) "required" else null}
+                value={field.value.map(_.toString).orNull}
+                placeholder={field.placeholder.map(_(lang)) orNull}
+                ng-disabled="submitted"
+                data-date-format="yyyy-MM-dd"
+                data-model-date-format="yyyy-MM-dd"
+                data-min-date={minDate.map(_.toString).orNull}
+                data-max-date={maxDate.map(_.toString).orNull}
                 />
+            </div>
+        case DateRangeField(minDate, maxDate, fromPlaceholder, toPlaceholder) =>
+            <div class="form-group">
+                <div class="form-group col-xs-6">
+                <input class="form-control"
+                    ng-model={"fieldValue['"+field.name+"'].from"}
+                    data-max-date={"{{fieldValue['"+field.name+"'].to || '"+maxDate.map(_.toString).getOrElse("")+"'}}"}
+                    data-min-date={minDate.map(_.toString).orNull}
+                    data-start-date={minDate.map(_.toString).orNull}
+                    placeholder={fromPlaceholder.map(_(lang)).orNull}
+                    data-date-format="yyyy-MM-dd"
+                    data-model-date-format="yyyy-MM-dd"
+                    bs-datepicker="" type="text"/>
+                </div>
+                <div class="form-group col-xs-6">
+                <input class="form-control"
+                    ng-model={"fieldValue['"+field.name+"'].to"}
+                    data-min-date={"{{fieldValue['"+field.name+"'].from || '"+maxDate.map(_.toString).getOrElse("")+"'}}"}
+                    data-max-date={maxDate.map(_.toString).orNull}
+                    data-start-date={maxDate.map(_.toString).orNull}
+                    placeholder={toPlaceholder.map(_(lang)).orNull}
+                    bs-datepicker=""
+                    data-date-format="yyyy-MM-dd"
+                    data-model-date-format="yyyy-MM-dd"
+                    type="text"/>
+                </div>
+            </div>
         case pf: ProgressField =>
 //            <div class="progressField" data-name={field.name}></div>
             <progress

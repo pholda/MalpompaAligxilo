@@ -32,5 +32,7 @@ abstract class Date {
     ! >(d)
   }
 
+  def -(days: Int): Date
+
   def iso8601: String
 }

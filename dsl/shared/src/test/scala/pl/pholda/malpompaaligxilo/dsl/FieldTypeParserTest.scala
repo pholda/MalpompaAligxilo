@@ -91,6 +91,11 @@ trait FieldTypeParserTest extends TestSuite with ParserTestHelper[FieldTypeParse
         }
       }
     }
+    'dataRange{
+      assertMatch(quickParse(fieldType, """ type = dateRange """)) {
+        case DateRangeField(_, _)
+      }
+    }
     'select{
       'simple{
         assertMatch(quickParse(fieldType, """ type = select { < "low" @"low" > < "high" @"high" >} """)){

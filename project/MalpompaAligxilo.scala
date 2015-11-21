@@ -10,7 +10,7 @@ object MalpompaAligxilo extends Build with UniversalKeys {
 
   val defaults = Defaults.coreDefaultSettings ++ List(
     organization := "pl.pholda.malpompaaligxilo",
-    version := "0.1.5",
+    version := "0.1.6-SNAPSHOT",
     scalaVersion := "2.11.7",
     libraryDependencies ++= List(
       "com.lihaoyi" %%% "utest" % "0.3.1"
@@ -34,7 +34,8 @@ object MalpompaAligxilo extends Build with UniversalKeys {
   ).jsSettings(
     libraryDependencies ++= Seq(
       "biz.enef" %%% "scalajs-angulate" % scalajsAngulateVersion,
-      "be.doeraene" %%% "scalajs-jquery" % "0.8.0"
+      "be.doeraene" %%% "scalajs-jquery" % "0.8.0",
+      "io.github.widok" %%% "scala-js-momentjs" % "0.1.4"
     ),
     jsDependencies += RuntimeDOM
   )

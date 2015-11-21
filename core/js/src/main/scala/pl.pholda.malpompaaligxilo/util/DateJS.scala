@@ -1,9 +1,8 @@
 package pl.pholda.malpompaaligxilo.util
 
 
-import pl.pholda.malpompaaligxilo.i18n.Lang
-
 import scala.scalajs.js
+import org.widok.moment._
 
 class DateJS(protected val jsDate: js.Date) extends Date {
   override def getDay: Int = jsDate.getDate()
@@ -47,6 +46,11 @@ class DateJS(protected val jsDate: js.Date) extends Date {
       case _ =>
         throw new IllegalArgumentException("DateJS was expected")
     }
+  }
+
+  override def -(days: Int): Date = {
+//    Moment(jsDate).subtract(1, )
+    ???
   }
 }
 
